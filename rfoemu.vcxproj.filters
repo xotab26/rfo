@@ -120,10 +120,10 @@
     <ClCompile Include="source\Character\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Network\Network.cpp">
+    <ClCompile Include="source\Network\TcpServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Network\Connection.cpp">
+    <ClCompile Include="source\Network\connection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -269,16 +269,16 @@
     <ClInclude Include="source\Character\Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Network\Network.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Network\Connection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\Network\Protocol\protocol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\Network\Protocol\login_client_2232.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\TcpServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\connection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

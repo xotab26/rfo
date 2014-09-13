@@ -1,7 +1,13 @@
-#include "Connection.h"
+#include "connection.h"
 
 
-Connection::Connection(boost::asio::io_service io_service) 
-	: socket(io_service) {
-	
+bool connection::start(){
+
+	return true;
+}
+
+std::string connection::address(){
+	tcp::endpoint remote_ep = socket_.remote_endpoint();
+	boost::asio::ip::address remote_ad = remote_ep.address();
+	return remote_ad.to_string();
 }
