@@ -1,0 +1,4 @@
+Ubuntu 14
+---------
+libmysql++-dev
+libmysqlclient-dev
