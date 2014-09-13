@@ -4,8 +4,9 @@
 
 class CCharacter{
 public:
-	CCharacter();
-	~CCharacter();
+	CCharacter() { }
+
+	~CCharacter(){ }
 
 	bool Set(mysqlpp::Row row);
 private:

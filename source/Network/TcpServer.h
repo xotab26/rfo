@@ -1,6 +1,6 @@
 #pragma once
 
-#include "connection.h"
+#include "TcpConnection.h"
 
 typedef std::pair<uint, connection::pointer> Connection_;
 typedef std::map<uint, connection::pointer> Connections_;
@@ -8,34 +8,90 @@ typedef std::map<uint, connection::pointer> Connections_;
 class TcpServer
 {
 public:
-	TcpServer(const char *name, ushort port, boost::asio::io_service& io_service) : acceptor_(io_service, tcp::endpoint(tcp::v4(), port)){
+	/// <summary>
+	/// Initializes a new instance of the <see cref="TcpServer"/> class.
+	/// </summary>
+	/// <param name="name">The name.</param>
+	/// <param name="port">The port.</param>
+	/// <param name="io_service">The io_service.</param>
+	TcpServer(const char *name, const char *port, boost::asio::io_service& io_service) 
+		: acceptor_(io_service, tcp::endpoint(tcp::v4(), std::atoi(port))),
+		socket_(io_service)
+	{
+		Port = boost::lexical_cast<std::string>(port).c_str();
 		Name = name;
-		Port = port;
 		connCount = 0;
 		isRunning = false;
 	}
 
+	/// <summary>
+	/// Finalizes an instance of the <see cref="TcpServer"/> class.
+	/// </summary>
 	~TcpServer(){ }
 
-	void start();
-	void stop();
-	void accept();
+	/// <summary>
+	/// Starts this instance.
+	/// </summary>
+	void start(){
+		try
+		{
+			start_accept();
+			isRunning = true;
+			printf("%s running\n", Name);
+			run();
+		}
+		catch(std::exception& e)
+		{
+			isRunning = false;
+			std::cerr << "Exception: " << e.what() << std::endl;
+		}
+	}
+
+	void run(){
+		try
+		{
+			acceptor_.get_io_service().reset();
+			acceptor_.get_io_service().run();
+		}
+		catch(std::exception& e)
+		{
+			std::cerr << "Exception: " << e.what() << std::endl;
+			run();
+		}
+	}
+
+	/// <summary>
+	/// Stops this instance.
+	/// </summary>
+	void stop(){
+		acceptor_.get_io_service().stop();
+		printf("%s stopped running\n", Name);
+		isRunning = false;
+	}
 
 	Connections_ Connections;
 
-	int Port;
 	const char *Name;
-	const char *Address;
+	std::string Port;
+	std::string Address;
 	bool isRunning;	
+
 private:
 	uint connCount;
-	tcp::endpoint endpoint;
 
-	void TcpServer::start_accept(){
+	/// <summary>
+	/// Starts accepting new sockets.
+	/// </summary>
+	void start_accept(){
 		connection::pointer new_connection = connection::create(acceptor_.get_io_service());
 		acceptor_.async_accept(new_connection->socket(), boost::bind(&TcpServer::handle_accept, this, new_connection, boost::asio::placeholders::error));
 	}
 
+	/// <summary>
+	/// Handles accepted sockets.
+	/// </summary>
+	/// <param name="new_connection">The new_connection.</param>
+	/// <param name="error">The error.</param>
 	void handle_accept(connection::pointer new_connection, const boost::system::error_code& error){
 		if (!error){
 			new_connection->id = connCount++;
@@ -49,4 +105,5 @@ private:
 	}
 
 	tcp::acceptor acceptor_;
+	tcp::socket socket_;
 };

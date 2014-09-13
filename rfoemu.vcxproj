@@ -134,7 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\Network\connection.cpp" />
+    <ClCompile Include="source\Network\TcpConnection.cpp" />
     <ClCompile Include="source\Network\TcpServer.cpp" />
     <ClCompile Include="source\Account\Account.cpp" />
     <ClCompile Include="source\Character\Character.cpp" />
@@ -173,7 +173,7 @@
     <ClCompile Include="source\Utilities\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Network\connection.h" />
+    <ClInclude Include="source\Network\TcpConnection.h" />
     <ClInclude Include="source\Network\TcpServer.h" />
     <ClInclude Include="source\Account\Account.h" />
     <ClInclude Include="source\Character\Character.h" />

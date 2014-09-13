@@ -123,7 +123,7 @@
     <ClCompile Include="source\Network\TcpServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Network\connection.cpp">
+    <ClCompile Include="source\Network\TcpConnection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -278,7 +278,7 @@
     <ClInclude Include="source\Network\TcpServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Network\connection.h">
+    <ClInclude Include="source\Network\TcpConnection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
