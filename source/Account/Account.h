@@ -8,7 +8,9 @@ typedef unsigned int uint;
 class CAccount{
 public:
 	CAccount(uint accountId);
+	CAccount();
 	~CAccount();
+	void Set(uint _id);
 
 	uint Id;
 	short Type;

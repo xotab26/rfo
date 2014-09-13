@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "../Database/Database.h"
 
 void WriteLine(char* line){
 	std::cout << line << "\n";
@@ -12,7 +13,7 @@ void WriteLine(std::string line){
 	WriteLine(line.c_str());
 }
 
-std::map<std::string, std::string> ReadCfg(){
+ConfigContainer ReadCfg(){
 	boost::property_tree::ptree pt;
 
 	if (!boost::filesystem::exists("config.ini")){
@@ -20,14 +21,16 @@ std::map<std::string, std::string> ReadCfg(){
 		outfile.close();
 	}
 
-	std::map<std::string, std::string> map;
+	ConfigContainer map;
 
 	read_ini("config.ini", pt);
 	
-	for (auto section : pt){
+	for (auto section : pt){		
+		Config cfg;
 		for (auto& key : section.second){
-			map[key.first] = key.second.get_value<std::string>();
+			cfg[key.first] = key.second.get_value<std::string>();			
 		}
+		map[section.first] = cfg;
 	}
 
 	return map;

@@ -2,10 +2,10 @@
 
 DBConfig::DBConfig(){
 	auto cfg = ReadCfg();
-	Host = cfg["DbHost"];
-	Name = cfg["DbName"];
-	User = cfg["DbUser"];
-	Pass = cfg["DbPass"];
+	Host = cfg["MySQL"]["DbHost"];
+	Name = cfg["MySQL"]["DbName"];
+	User = cfg["MySQL"]["DbUser"];
+	Pass = cfg["MySQL"]["DbPass"];
 }
 
 CDatabase::CDatabase(){

@@ -1,7 +1,19 @@
 #include "Account.h"
 
 CAccount::CAccount(uint accountId){
-	auto id = std::to_string(accountId);
+	Set(accountId);
+}
+
+CAccount::CAccount(){
+
+}
+
+CAccount::~CAccount(){
+
+}
+
+void CAccount::Set(uint _id){
+	auto id = std::to_string(_id);
 
 	std::string query("SELECT * FROM Accounts WHERE id='" + id + "'");
 	CDatabase db;
@@ -26,8 +38,4 @@ CAccount::CAccount(uint accountId){
 			Character[i].Set(rows[i]);
 		}
 	}
-}
-
-CAccount::~CAccount(){
-
 }
