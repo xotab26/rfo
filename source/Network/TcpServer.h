@@ -99,7 +99,7 @@ private:
 			new_connection->id = connCount++;
 			new_connection->start();
 
-			printf("New connection from %s\n", new_connection->address());
+			printf("New connection from %s\n", new_connection->address().c_str());
 			Connections.insert(Connection_(new_connection->id, new_connection));
 
 			start_accept();
