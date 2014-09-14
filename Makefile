@@ -1,10 +1,10 @@
 OS = Linux
 
 VERSION = 0.1.0
-CC      = /usr/bin/g++
-CFLAGS  = -Wall -I/usr/include/cppconn -std=c++11 -DVERSION=\"$(VERSION)\"
-CXXFLAGS=
-LDFLAGS = -lpthread -I/usr/include -L/usr/lib -lmysqlcppconn -lboost_system -lboost_filesystem
+CC      = g++
+CFLAGS  = -g3 -Wall -DUNIX_BUILD -DMYSQLPP_MYSQL_HEADERS_BURIED -DMYSQLPP_NO_DLL -DVERSION=\"$(VERSION)\" -std=c++11
+CXXFLAGS= 
+LDFLAGS = -lpthread -ldl -lmysqlpp -lmysqlclient -lnsl -lz -lm -I/usr/include/cppconn -I/usr/include -L/usr/lib -lboost_system -lboost_filesystem -lboost_asio
 
 BUILDDIR  = .
 SOURCEDIR = source
