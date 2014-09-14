@@ -14,7 +14,7 @@ public:
 	/// <param name="name">The name.</param>
 	/// <param name="port">The port.</param>
 	/// <param name="io_service">The io_service.</param>
-	TcpServer(const char *name, const char *port, boost::asio::io_service& io_service) 
+	TcpServer(const char *name, const char *port, CONNECTION_TYPE server_type, boost::asio::io_service& io_service) 
 		: acceptor_(io_service, tcp::endpoint(tcp::v4(), std::atoi(port))),
 		socket_(io_service)
 	{
@@ -22,6 +22,7 @@ public:
 		Name = name;
 		connCount = 0;
 		isRunning = false;
+		serverType = server_type;
 	}
 
 	/// <summary>
@@ -70,6 +71,7 @@ public:
 	}
 
 	Connections_ Connections;
+	CONNECTION_TYPE serverType;
 
 	const char *Name;
 	std::string Port;
@@ -83,7 +85,7 @@ private:
 	/// Starts accepting new sockets.
 	/// </summary>
 	void start_accept(){
-		connection::pointer new_connection = connection::create(acceptor_.get_io_service());
+		connection::pointer new_connection = connection::create(acceptor_.get_io_service(), serverType);
 		acceptor_.async_accept(new_connection->socket(), boost::bind(&TcpServer::handle_accept, this, new_connection, boost::asio::placeholders::error));
 	}
 

@@ -2,6 +2,7 @@
 
 #include "Protocol/protocol.h"
 #include "../Account/Account.h"
+#include "Login.h"
 
 class connection
 	: public boost::enable_shared_from_this<connection>
@@ -14,8 +15,8 @@ public:
 	/// </summary>
 	/// <param name="io_service">The io_service.</param>
 	/// <returns></returns>
-	static pointer create(boost::asio::io_service& io_service){
-		return pointer(new connection(io_service));
+	static pointer create(boost::asio::io_service& io_service, CONNECTION_TYPE server_type){
+		return pointer(new connection(io_service, server_type));
 	}
 
 	/// <summary>
@@ -23,7 +24,6 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	bool start(){
-		id = -1;
 		do_read();
 		return true;
 	}
@@ -64,6 +64,7 @@ private:
 	/// The socket_
 	/// </summary>
 	tcp::socket socket_;
+	CONNECTION_TYPE connection_type;
 
 	char data_[MAX_RECEIVE_SIZE];
 
@@ -71,16 +72,25 @@ private:
 	/// Initializes a new instance of the <see cref="connection"/> class.
 	/// </summary>
 	/// <param name="io_service">The io_service.</param>
-	connection(boost::asio::io_service& io_service) : socket_(io_service) {	}
+	connection(boost::asio::io_service& io_service, CONNECTION_TYPE server_type) : socket_(io_service) { connection_type = server_type; }
 
 	/// <summary>
 	/// Accepts the specified data.
 	/// </summary>
 	/// <param name="data">The data.</param>
 	/// <param name="length">The length.</param>
-	void accept_data(const char *data, std::size_t &length)
+	void accept_data(pktHeader header, std::vector<char> data)
 	{
-		
+		switch (connection_type)
+		{
+		case 0://login server
+			login::command(this, header, data);
+			break;
+		case 1://world server
+			break;
+		case 2://zone server
+			break;
+		}
 	}
 
 	/// <summary>
@@ -89,12 +99,35 @@ private:
 	void do_read(){
 		auto self(shared_from_this());
 		socket_.async_receive(boost::asio::buffer(data_), [this, self](boost::system::error_code ec, std::size_t length)	{
-			if (!ec && length > 0)
+			if (!ec && length > 3)
 			{
-				char len[2] = {data_[0], data_[1]};
-				int size = boost::lexical_cast<int>(len);
+				pktHeader header;
+				char _len[2] = {data_[0], data_[1]};
+				char _len2[2] = {data_[2], data_[3]};
+				short paktLen = Convert::ToShort(_len);
+				short dataLen = Convert::ToShort(_len2);
+
+				short el;
+				if((paktLen - 6) == dataLen){
+					header.len = dataLen;
+					el = 2;
+				}else{
+					header.len = paktLen;
+					el = 0;
+				}
+
+				char kind[2] = {data_[2+el], 0};
+				header.kind = Convert::ToShort(kind);
+
+				char id[2] = {data_[3+el], 0};
+				header.id = Convert::ToShort(id);
+
+				std::vector<char> data;
+				for(int i = 0; i < length;i++){
+					data.push_back(data_[i]);
+				}
 				
-				accept_data(data_, length);
+				accept_data(header, data);
 			}
 			do_read();
 		});
@@ -118,4 +151,3 @@ private:
 		});
 	}
 };
-

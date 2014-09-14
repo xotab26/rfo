@@ -173,6 +173,7 @@
     <ClCompile Include="source\Utilities\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Network\Login.h" />
     <ClInclude Include="source\Network\TcpConnection.h" />
     <ClInclude Include="source\Network\TcpServer.h" />
     <ClInclude Include="source\Account\Account.h" />
