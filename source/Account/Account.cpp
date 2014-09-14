@@ -22,10 +22,10 @@ void CAccount::Set(uint _id){
 		mysqlpp::StoreQueryResult rows = db.Select(query.c_str());
 		if (!rows.empty()) AccountRow = rows[0];
 		Id = (uint) AccountRow["id"];
-		Nick = AccountRow["nick"];
-		Pass = AccountRow["pass"];
-		Email = AccountRow["email"];
 		Type = (short) AccountRow["type"];
+		Nick = (std::string) AccountRow["nick"];
+		Pass = (std::string) AccountRow["pass"];
+		Email = (std::string) AccountRow["email"];
 
 		query = std::string("SELECT * FROM Characters WHERE account='" + id + "'");
 		rows = db.Select(query.c_str());
