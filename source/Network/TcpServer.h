@@ -14,13 +14,13 @@ public:
 	/// <param name="name">The name.</param>
 	/// <param name="port">The port.</param>
 	/// <param name="io_service">The io_service.</param>
-	TcpServer(const char *name, const char *port, CONNECTION_TYPE server_type, boost::asio::io_service& io_service) 
+	TcpServer(const char *name, const char *port, C_TYPE server_type, boost::asio::io_service& io_service) 
 		: acceptor_(io_service, tcp::endpoint(tcp::v4(), std::atoi(port))),
 		socket_(io_service)
 	{
 		Port = boost::lexical_cast<std::string>(port).c_str();
 		Name = name;
-		connCount = 0;
+		connCount = 1;
 		isRunning = false;
 		serverType = server_type;
 	}
@@ -71,7 +71,7 @@ public:
 	}
 
 	Connections_ Connections;
-	CONNECTION_TYPE serverType;
+	C_TYPE serverType;
 
 	const char *Name;
 	std::string Port;
@@ -85,8 +85,8 @@ private:
 	/// Starts accepting new sockets.
 	/// </summary>
 	void start_accept(){
-		connection::pointer new_connection = connection::create(acceptor_.get_io_service(), serverType);
-		acceptor_.async_accept(new_connection->socket(), boost::bind(&TcpServer::handle_accept, this, new_connection, boost::asio::placeholders::error));
+		connection::pointer new_conn = connection::create(acceptor_.get_io_service(), serverType);
+		acceptor_.async_accept(new_conn->socket(), boost::bind(&TcpServer::handle_accept, this, new_conn, boost::asio::placeholders::error));
 	}
 
 	/// <summary>
@@ -94,13 +94,13 @@ private:
 	/// </summary>
 	/// <param name="new_connection">The new_connection.</param>
 	/// <param name="error">The error.</param>
-	void handle_accept(connection::pointer new_connection, const boost::system::error_code& error){
+	void handle_accept(connection::pointer new_conn, const boost::system::error_code& error){
 		if (!error){
-			new_connection->id = connCount++;
-			new_connection->start();
-
-			printf("New connection from %s\n", new_connection->address().c_str());
-			Connections.insert(Connection_(new_connection->id, new_connection));
+			new_conn->id = connCount++;
+			if(new_conn->start()){
+				Connections.insert(Connection_(new_conn->id, new_conn));
+				printf("New connection from %s\n", new_conn->address().c_str());
+			}
 
 			start_accept();
 		}

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Protocol/protocol.h"
-#include "../Account/Account.h"
 #include "Login.h"
 
 class connection
@@ -9,13 +7,22 @@ class connection
 {
 public:
 	typedef boost::shared_ptr<connection> pointer;
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="connection"/> class.
+	/// </summary>
+	/// <param name="io_service">The io_service.</param>
+	connection(boost::asio::io_service& io_service, C_TYPE server_type) : socket_(io_service)
+	{ 
+		connection_type = server_type;
+	}
 	
 	/// <summary>
 	/// Creates a pointer for a new instance.
 	/// </summary>
 	/// <param name="io_service">The io_service.</param>
 	/// <returns></returns>
-	static pointer create(boost::asio::io_service& io_service, CONNECTION_TYPE server_type){
+	static pointer create(boost::asio::io_service& io_service, C_TYPE server_type){
 		return pointer(new connection(io_service, server_type));
 	}
 
@@ -33,6 +40,30 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	bool stop();
+
+	void SendMsg(char* byType, void* send){
+		std::vector<char> data;
+		data.push_back('0');
+		data.push_back('0');
+
+		const char* values = byType;
+		const char* end = values + strlen(values);
+		data.insert(data.end(), values, end);
+
+		values = (const char*) send;
+		end = values + strlen(values);
+		data.insert(data.end(), values, end);
+
+		values = (const char*) 4;
+		end = values + strlen(values);
+		data.insert(data.end(), values, end);
+
+		values = (const char*) ((short) sizeof(&data[0]));		
+		for(int i = 0;i < 2;i++)
+			data[i] = values[i];
+
+		do_write(&data[0], sizeof(&data[0]));
+	}
 
 	/// <summary>
 	/// Gets the socket for this instance.
@@ -59,37 +90,58 @@ public:
 	/// </summary>
 	CAccount account;
 
-private:
+	byte XorPlus;
+	ushort XorKey;
+
 	/// <summary>
 	/// The socket_
 	/// </summary>
-	tcp::socket socket_;
-	CONNECTION_TYPE connection_type;
+	C_TYPE connection_type;
 
 	char data_[MAX_RECEIVE_SIZE];
 
-	/// <summary>
-	/// Initializes a new instance of the <see cref="connection"/> class.
-	/// </summary>
-	/// <param name="io_service">The io_service.</param>
-	connection(boost::asio::io_service& io_service, CONNECTION_TYPE server_type) : socket_(io_service) { connection_type = server_type; }
-
-	/// <summary>
-	/// Accepts the specified data.
-	/// </summary>
-	/// <param name="data">The data.</param>
-	/// <param name="length">The length.</param>
-	void accept_data(pktHeader header, std::vector<char> data)
-	{
-		switch (connection_type)
+	void parse(char* data, size_t length){
+		if (length > 3)
 		{
-		case 0://login server
-			login::command(this, header, data);
-			break;
-		case 1://world server
-			break;
-		case 2://zone server
-			break;
+			char *data2 = new char[length];
+			memcpy(data2, data_, length);
+
+			pktHeader header;
+			char _len[2] = {data_[0], data_[1]};
+			char _len2[2] = {data_[2], data_[3]};
+			short paktLen = Convert::ToShort(_len);
+			short dataLen = Convert::ToShort(_len2);
+
+			short el;
+			if((paktLen - 6) == dataLen){
+				header.len = dataLen;
+				el = 2;
+			}else{
+				header.len = paktLen;
+				el = 0;
+			}
+
+			char kind[2] = {data_[2+el], 0};
+			header.kind = Convert::ToShort(kind);
+
+			char id[2] = {data_[3+el], 0};
+			header.id = Convert::ToShort(id);
+
+			std::vector<char> data;
+			for(int i = 0; i < length;i++){
+				data.push_back(data_[i]);
+			}
+
+			switch (connection_type)
+			{
+			case 0://login server
+				login::command(&shared_from_this(), header, data);
+				break;
+			case 1://world server
+				break;
+			case 2://zone server
+				break;
+			}
 		}
 	}
 
@@ -97,39 +149,28 @@ private:
 	/// Do_reads this instance.
 	/// </summary>
 	void do_read(){
-		auto self(shared_from_this());
-		socket_.async_receive(boost::asio::buffer(data_), [this, self](boost::system::error_code ec, std::size_t length)	{
-			if (!ec && length > 3)
+		pointer self(shared_from_this());
+		socket_.async_receive(boost::asio::buffer(data_), [this, self](boost::system::error_code e, std::size_t length){
+			if (!e)
 			{
-				pktHeader header;
-				char _len[2] = {data_[0], data_[1]};
-				char _len2[2] = {data_[2], data_[3]};
-				short paktLen = Convert::ToShort(_len);
-				short dataLen = Convert::ToShort(_len2);
-
-				short el;
-				if((paktLen - 6) == dataLen){
-					header.len = dataLen;
-					el = 2;
-				}else{
-					header.len = paktLen;
-					el = 0;
-				}
-
-				char kind[2] = {data_[2+el], 0};
-				header.kind = Convert::ToShort(kind);
-
-				char id[2] = {data_[3+el], 0};
-				header.id = Convert::ToShort(id);
-
-				std::vector<char> data;
-				for(int i = 0; i < length;i++){
-					data.push_back(data_[i]);
-				}
-				
-				accept_data(header, data);
+				parse(data_, length);
 			}
-			do_read();
+			else
+			{
+				auto ec = e.value();
+				char *error = "Unknown";
+
+				switch (ec)
+				{
+				case 10053:
+					Print::Error(ec, "Connection Aborted");
+					return;
+				case 10054:
+					Print::Error(ec, "Connection Reset");
+					return;
+				}
+			}
+			self->do_read();
 		});
 	}
 
@@ -137,17 +178,21 @@ private:
 	/// Do_writes the specified data.
 	/// </summary>
 	/// <param name="data">The data.</param>
-	void do_write(char *data){
+	void do_write(char *data, short size){
 		void* fullData = malloc(sizeof(uint16_t) + sizeof(data)); 
 		//memcpy(fullData, (void*)opcode, sizeof(opcode));
 		memcpy(&fullData + sizeof(uint16_t), data, sizeof(data));
 		auto buf = boost::asio::buffer(fullData, sizeof(fullData));
 
 		auto self(shared_from_this());
-		boost::asio::async_write(socket_, buf, [this, self](boost::system::error_code ec, std::size_t /*length*/){
-			if (!ec) {
+		boost::asio::async_write(socket_, buf, [this, self](boost::system::error_code ec, std::size_t length){
+			if (!ec)
+			{
 				
 			}
 		});
 	}
+	
+private:
+	tcp::socket socket_;
 };

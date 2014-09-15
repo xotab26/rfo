@@ -1,25 +1,23 @@
 #pragma once
 
-#include "Protocol/protocol.h"
-#include "TcpConnection.h"
+#include "Protocol/login_client_2232.h"
+#include "../Account/Account.h"
 
 class login {
 public:
 
-	static void command(void* cn, pktHeader header, std::vector<char> data)
+	static void command(void* ptr, pktHeader header, std::vector<char> data)
 	{
-		//auto conn = (connection*) cn;
-
 		switch (header.kind)
 		{
-		case 0:
-			break;
-		case 1:
-			break;
-		case 21://account
+		case account_msg:
+			account(ptr, header.id, data);
 			break;
 		}
 	}
+
+	static void account(void* ptr, short id, std::vector<char> data);
+
 private:
 
 };

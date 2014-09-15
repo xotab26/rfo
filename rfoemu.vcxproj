@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Network\Login.cpp" />
     <ClCompile Include="source\Network\TcpConnection.cpp" />
     <ClCompile Include="source\Network\TcpServer.cpp" />
     <ClCompile Include="source\Account\Account.cpp" />

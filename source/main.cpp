@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 		}
 		
 		boost::asio::io_service io_service;
-		TcpServer loginServer("Login Server", "10001", (CONNECTION_TYPE)0, io_service);
+		TcpServer loginServer("Login Server", "10001", C_TYPE::login, io_service);
 		loginServer.start();
 
 		std::cin.get();
