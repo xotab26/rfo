@@ -1,25 +1,47 @@
-#include "Network/TcpServer.h"
-#include "Utilities/utils.h"
+#include <exception>
+#include <iostream>
+#include <pthread.h>
+#include "Network/UdpServer.h"
+
 
 int main(int argc, char* argv[])
 {
-	try{
-		WriteLine("RF Online Emulator - Version 0.1.0");
+	auto cfg = Config::ReadCfg();
 
+	UdpServer server;
+	UdpServer server2;
+
+	server.Address = Config::LoginIP.c_str();
+	server.Port = Config::LoginPort.c_str();
+
+	server2.Address = Config::WorldIP.c_str();
+	server2.Port = Config::WorldPort.c_str();
+
+	try{
 		for(int i = 0; i < argc; i++){
-			if(argv[i] == "223"){
-				PROTOCOL_TYPE = 1;
-			}else if(argv[i] == "2232"){
-				PROTOCOL_TYPE = 2;
-			}else{
-				PROTOCOL_TYPE = 0;
+			if(argv[i] == "debug"){
+				server.debug = true;
+			}
+			if(argv[i] == "world"){
+				server.Address = Config::WorldIP.c_str();
+				server.Port = Config::WorldPort.c_str();
+				SERVER_DEPLOY_TYPE = 1;
+			}
+			if(argv[i] == "zone"){
+				server.Address = Config::ZoneIP.c_str();
+				server.Port = Config::ZonePort.c_str();
+				SERVER_DEPLOY_TYPE = 2;
+			}
+			if(argv[i] == "db"){
+				server.Port = "45600";
+				SERVER_DEPLOY_TYPE = 3;
 			}
 		}
-		
-		boost::asio::io_service io_service;
-		TcpServer loginServer("Login Server", "10001", C_TYPE::login, io_service);
-		loginServer.start();
+				
+		server.start(cfg["World"]["WorldName"].c_str());
+		server2.start(cfg["World"]["WorldName"].c_str());
 
+		printf("Stopping...");
 		std::cin.get();
 	}
 	catch (std::exception& e){

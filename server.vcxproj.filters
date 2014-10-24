@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Account">
+      <UniqueIdentifier>{21ce59f2-fa6e-4ae8-9bd4-818d20ca4086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network">
+      <UniqueIdentifier>{a41c02fb-a762-4bfd-83cd-1f647fdcd980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Character">
+      <UniqueIdentifier>{3d8533e7-2035-4a81-b062-99744213924a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database">
+      <UniqueIdentifier>{55d42059-2a9d-4921-aee0-d0c0e158c1b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network\Protocol">
+      <UniqueIdentifier>{e3391b44-e9fe-4de4-84a8-c28879fcadc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network\3rdparty">
+      <UniqueIdentifier>{f3c097b7-0914-4cb9-a243-4bd3bd199400}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{ce925d47-93dd-429d-a1bb-f7cd2db8ac29}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\Account\Account.cpp">
+      <Filter>Source Files\Account</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Network\UdpServer.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Character\Character.cpp">
+      <Filter>Source Files\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Database\Database.cpp">
+      <Filter>Source Files\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Network\3rdparty\net_skeleton.c">
+      <Filter>Source Files\Network\3rdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Utilities.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\Network\UdpServer.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\Protocol.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Account\Account.h">
+      <Filter>Source Files\Account</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Character\Character.h">
+      <Filter>Source Files\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Database\Database.h">
+      <Filter>Source Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\Protocol\login_client_2232.h">
+      <Filter>Source Files\Network\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\3rdparty\net_skeleton.h">
+      <Filter>Source Files\Network\3rdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Utilities.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\PacketManager.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

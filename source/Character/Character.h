@@ -8,7 +8,9 @@ public:
 
 	~CCharacter(){ }
 
-	bool Set(mysqlpp::Row row);
+	bool Set(db_row row){
+		return (CharacterRow = row).size() == 0;
+	}
 private:
-	mysqlpp::Row CharacterRow;
+	db_row CharacterRow;
 };

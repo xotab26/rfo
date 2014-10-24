@@ -1,6 +1,6 @@
-﻿#pragma pack(push, 1)
+﻿#include "../Protocol.h"
 
-#include "protocol.h"
+#pragma pack(push, 1)
 
 #define join_account_request_cllo 1
 struct _join_account_request_cllo
@@ -59,9 +59,6 @@ struct _world_list_request_cllo
 struct _world_list_result_locl
 {
 	BYTE	byRetCode;
-
-	//월드수[1] {	오픈[1], 이름크기[1], 이름[..(NULL포함)]	}..
-
 	WORD	wDataSize;
 	char	sListData[0x0FFF];
 

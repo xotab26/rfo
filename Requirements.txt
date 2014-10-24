@@ -1,5 +1,4 @@
-Ubuntu 14
+Ubuntu 14.04 (64bit)
 ---------
-boost-1.54.0
-libmysql++-dev
-libmysqlclient-dev
+apt-get install build-essential libmysqlclient-dev -y
+--------

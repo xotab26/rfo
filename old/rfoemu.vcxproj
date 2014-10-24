@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C1C8BC63-5243-4DC8-9996-9935B0EC4C75}</ProjectGuid>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <Keyword>ManagedCProj</Keyword>
+    <RootNamespace>rfoemu</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\includes\boost_1_54_0;C:\includes\mysql-5.6.20-win32\include;C:\includes\mysql++-3.2.1\lib;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
+    <LibraryPath>C:\includes\boost_1_54_0\lib32-msvc-11.0;C:\Users\Jared\Documents\Visual Studio 2013\Projects\rfoemu\libs\32;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\includes\boost_1_54_0;C:\includes\mysql-5.6.20-winx64\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
+    <LibraryPath>C:\includes\boost_1_54_0\lib64-msvc-11.0;C:\Users\Jared\Documents\Visual Studio 2013\Projects\rfoemu\libs\64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\includes\boost_1_54_0;C:\includes\mysql-connector-c-6.1.5-winx64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\includes\boost_1_54_0\lib64-msvc-11.0;C:\includes\mysql-connector-c-6.1.5-winx64\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\includes\boost_1_54_0;C:\includes\mysql-connector-c-6.1.5-winx64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\includes\boost_1_54_0\lib64-msvc-11.0;C:\includes\mysql-connector-c-6.1.5-winx64\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;MYSQLPP_MYSQL_HEADERS_BURIED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libmysql.lib;mysqlcppconn.lib;mysqlpp_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;MYSQLPP_NO_DLL;_WIN32_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libmysql.lib;mysqlpp_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="source\Network\Login.cpp" />
+    <ClCompile Include="source\Network\TcpConnection.cpp" />
+    <ClCompile Include="source\Network\TcpServer.cpp" />
+    <ClCompile Include="source\Account\Account.cpp" />
+    <ClCompile Include="source\Character\Character.cpp" />
+    <ClCompile Include="source\Database\Database.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\Database\MySQL++\beemutex.cpp" />
+    <ClCompile Include="source\Database\MySQL++\cmdline.cpp" />
+    <ClCompile Include="source\Database\MySQL++\connection.cpp" />
+    <ClCompile Include="source\Database\MySQL++\cpool.cpp" />
+    <ClCompile Include="source\Database\MySQL++\datetime.cpp" />
+    <ClCompile Include="source\Database\MySQL++\dbdriver.cpp" />
+    <ClCompile Include="source\Database\MySQL++\field_names.cpp" />
+    <ClCompile Include="source\Database\MySQL++\field_types.cpp" />
+    <ClCompile Include="source\Database\MySQL++\manip.cpp" />
+    <ClCompile Include="source\Database\MySQL++\myset.cpp" />
+    <ClCompile Include="source\Database\MySQL++\mysql++.cpp" />
+    <ClCompile Include="source\Database\MySQL++\mystring.cpp" />
+    <ClCompile Include="source\Database\MySQL++\null.cpp" />
+    <ClCompile Include="source\Database\MySQL++\options.cpp" />
+    <ClCompile Include="source\Database\MySQL++\qparms.cpp" />
+    <ClCompile Include="source\Database\MySQL++\query.cpp" />
+    <ClCompile Include="source\Database\MySQL++\result.cpp" />
+    <ClCompile Include="source\Database\MySQL++\row.cpp" />
+    <ClCompile Include="source\Database\MySQL++\scopedconnection.cpp" />
+    <ClCompile Include="source\Database\MySQL++\sqlstream.cpp" />
+    <ClCompile Include="source\Database\MySQL++\sql_buffer.cpp" />
+    <ClCompile Include="source\Database\MySQL++\ssqls2.cpp" />
+    <ClCompile Include="source\Database\MySQL++\stadapter.cpp" />
+    <ClCompile Include="source\Database\MySQL++\tcp_connection.cpp" />
+    <ClCompile Include="source\Database\MySQL++\transaction.cpp" />
+    <ClCompile Include="source\Database\MySQL++\type_info.cpp" />
+    <ClCompile Include="source\Database\MySQL++\uds_connection.cpp" />
+    <ClCompile Include="source\Database\MySQL++\utility.cpp" />
+    <ClCompile Include="source\Database\MySQL++\vallist.cpp" />
+    <ClCompile Include="source\Database\MySQL++\wnp_connection.cpp" />
+    <ClCompile Include="source\Utilities\utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\Network\Login.h" />
+    <ClInclude Include="source\Network\TcpConnection.h" />
+    <ClInclude Include="source\Network\TcpServer.h" />
+    <ClInclude Include="source\Account\Account.h" />
+    <ClInclude Include="source\Character\Character.h" />
+    <ClInclude Include="source\Database\Database.h" />
+    <ClInclude Include="source\Database\MySQL++\autoflag.h" />
+    <ClInclude Include="source\Database\MySQL++\beemutex.h" />
+    <ClInclude Include="source\Database\MySQL++\cmdline.h" />
+    <ClInclude Include="source\Database\MySQL++\common.h" />
+    <ClInclude Include="source\Database\MySQL++\comparable.h" />
+    <ClInclude Include="source\Database\MySQL++\connection.h" />
+    <ClInclude Include="source\Database\MySQL++\cpool.h" />
+    <ClInclude Include="source\Database\MySQL++\datetime.h" />
+    <ClInclude Include="source\Database\MySQL++\dbdriver.h" />
+    <ClInclude Include="source\Database\MySQL++\exceptions.h" />
+    <ClInclude Include="source\Database\MySQL++\field.h" />
+    <ClInclude Include="source\Database\MySQL++\field_names.h" />
+    <ClInclude Include="source\Database\MySQL++\field_types.h" />
+    <ClInclude Include="source\Database\MySQL++\insertpolicy.h" />
+    <ClInclude Include="source\Database\MySQL++\manip.h" />
+    <ClInclude Include="source\Database\MySQL++\myset.h" />
+    <ClInclude Include="source\Database\MySQL++\mysql++.h" />
+    <ClInclude Include="source\Database\MySQL++\mystring.h" />
+    <ClInclude Include="source\Database\MySQL++\noexceptions.h" />
+    <ClInclude Include="source\Database\MySQL++\null.h" />
+    <ClInclude Include="source\Database\MySQL++\options.h" />
+    <ClInclude Include="source\Database\MySQL++\qparms.h" />
+    <ClInclude Include="source\Database\MySQL++\query.h" />
+    <ClInclude Include="source\Database\MySQL++\querydef.h" />
+    <ClInclude Include="source\Database\MySQL++\refcounted.h" />
+    <ClInclude Include="source\Database\MySQL++\result.h" />
+    <ClInclude Include="source\Database\MySQL++\row.h" />
+    <ClInclude Include="source\Database\MySQL++\scopedconnection.h" />
+    <ClInclude Include="source\Database\MySQL++\sqlstream.h" />
+    <ClInclude Include="source\Database\MySQL++\sql_buffer.h" />
+    <ClInclude Include="source\Database\MySQL++\sql_types.h" />
+    <ClInclude Include="source\Database\MySQL++\ssqls.h" />
+    <ClInclude Include="source\Database\MySQL++\ssqls2.h" />
+    <ClInclude Include="source\Database\MySQL++\stadapter.h" />
+    <ClInclude Include="source\Database\MySQL++\stream2string.h" />
+    <ClInclude Include="source\Database\MySQL++\tcp_connection.h" />
+    <ClInclude Include="source\Database\MySQL++\tiny_int.h" />
+    <ClInclude Include="source\Database\MySQL++\transaction.h" />
+    <ClInclude Include="source\Database\MySQL++\type_info.h" />
+    <ClInclude Include="source\Database\MySQL++\uds_connection.h" />
+    <ClInclude Include="source\Database\MySQL++\utility.h" />
+    <ClInclude Include="source\Database\MySQL++\vallist.h" />
+    <ClInclude Include="source\Database\MySQL++\wnp_connection.h" />
+    <ClInclude Include="source\Network\Protocol\login_client_2232.h" />
+    <ClInclude Include="source\Network\Protocol\protocol.h" />
+    <ClInclude Include="source\Utilities\utils.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
