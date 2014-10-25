@@ -97,8 +97,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libmysql.lib;mysqlcppconn.lib;mysqlpp_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(MSBuildStartupDirectory)\libs\32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libmysql.lib;mysqlcppconn.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\libs\32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -111,7 +111,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libmysql.lib;mysqlpp_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(MSBuildStartupDirectory)\libs\64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\libs\64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -141,7 +141,8 @@
     <ClCompile Include="source\Network\UdpServer.cpp" />
     <ClCompile Include="source\Database\Database.cpp" />
     <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\Utilities.cpp" />
+    <ClCompile Include="source\ThreadManager.cpp" />
+    <ClCompile Include="source\Utilities\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Account\Account.h" />
@@ -152,7 +153,7 @@
     <ClInclude Include="source\Network\PacketManager.h" />
     <ClInclude Include="source\Database\Database.h" />
     <ClInclude Include="source\Network\Protocol.h" />
-    <ClInclude Include="source\Utilities.h" />
+    <ClInclude Include="source\Utilities\Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -16,6 +16,10 @@ public:
 		DEPLOY_TYPE = 0;
 	}
 
+	~UdpServer(){
+		Log("Killing server with type " + std::to_string(DEPLOY_TYPE));
+	}
+
 	void start(const char* serverName){
 		_WORLD_DATA worldData;
 		g_WorldData[SERVER_INDEX] = worldData;
@@ -30,7 +34,7 @@ public:
 		ns_bind(&mgr, getBind("udp"), ev_handler);
 
 		WorldData()->m_bOpen = true;
-		printf("Starting server id %i on port %s\n", DEPLOY_TYPE, Port);
+		Log("Spawning server type " + std::to_string(DEPLOY_TYPE) + " (" + serverName + ") on port " + Port + "\n");
 
 		for (;;) {
 			ns_mgr_poll(&mgr, 1);
@@ -48,7 +52,7 @@ public:
 
 		switch (ev) {
 		case NS_ACCEPT:
-			new_connection(nc);
+			new_conn(nc);
 			break;
 		case NS_RECV:
 			{
@@ -58,25 +62,28 @@ public:
 			}
 			break;
 		case NS_CLOSE:
-			WorldData()->m_nUserNum--;
-			auto account = PacketManager::getAccount(nc);
-			Connections.erase(account->LocalId);
-			break;
-		default:
+			close_conn(nc);
 			break;
 		}
 	}
 
-	static void new_connection(struct ns_connection *nc){
+	static void new_conn(struct ns_connection *nc){
 		WorldData()->m_nUserNum++;
 		Connections[WorldData()->m_nUserNum] = CAccount::create(nc, WorldData()->m_nUserNum);
 		nc->user_data = &Connections[WorldData()->m_nUserNum];
+	}
+
+	static void close_conn(struct ns_connection *nc){
+		WorldData()->m_nUserNum--;
+		auto account = PacketManager::getAccount(nc);
+		Connections.erase(account->LocalId);
 	}
 
 	static std::map<int, CAccount> Connections;
 	static struct ns_mgr mgr;
 	static int SERVER_INDEX;
 
+	int thread_id;
 	const char* Address;
 	const char* Port;
 	bool debug;

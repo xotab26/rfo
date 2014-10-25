@@ -1,4 +1,7 @@
 #include "Utilities.h"
+#include <ctime>
+#include <iostream>
+#include <fstream>
 
 #ifdef _WIN32
 #include "winsock2.h"
@@ -11,6 +14,22 @@
 
 DWORD GetIPAddress(const char* ipAddress){
 	return inet_addr(ipAddress);
+}
+
+void Log(std::string _str){
+	time_t now = time(0);
+	tm *ltm = localtime(&now);
+
+	char date[256];
+	strftime(date, sizeof(date), "%m-%d-%Y %H:%M:%S", ltm);
+
+	char buf[4096];
+	strcpy(buf, _str.c_str());
+
+	std::stringstream ss;
+	ss << "[" << date << "] " << buf << '\n';
+	
+	std::cout << ss.str();
 }
 
 bool Config::DEBUG;

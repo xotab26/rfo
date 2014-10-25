@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include <stdexcept>
-#include "../Utilities.h"
+#include "../Utilities/Utilities.h"
 #include "3rdparty/net_skeleton.h"
 
 typedef unsigned char byte;
@@ -37,6 +37,10 @@ enum {
 	MAX_WORLD_PER_GLOBAL = 1,
 	MAX_RECEIVE_SIZE = 4096,
 	msg_header_num = 2
+};
+
+enum SERVER_DPLOY_TYPE {
+	Login, World, Zone
 };
 
 #pragma pack(push, 1)
@@ -109,7 +113,6 @@ struct _world
 		return sizeof(*this)-(33-byNameSize); 
 	}
 };
-
 
 #ifndef GLOBAL_H // header guards
 #define GLOBAL_H

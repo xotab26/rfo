@@ -16,6 +16,10 @@ typedef std::map<std::string, std::string> Option;
 typedef std::map<std::string, Option> ConfigContainer;
 
 
+DWORD GetIPAddress(const char* ipAddress);
+
+void Log(std::string text);
+
 class Config{
 public:
 	static ConfigContainer PreLoad(ConfigContainer map){
@@ -45,6 +49,7 @@ public:
 	}
 
 	static ConfigContainer ReadCfg(){
+		Log("Loading configuration...");
 		std::ifstream infile("./config.ini");
 		
 		std::string line;
@@ -164,5 +169,3 @@ public:
 		}
 	}
 };
-
-DWORD GetIPAddress(const char* ipAddress);

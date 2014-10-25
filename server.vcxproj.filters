@@ -50,11 +50,14 @@
     <ClCompile Include="source\Network\3rdparty\net_skeleton.c">
       <Filter>Source Files\Network\3rdparty</Filter>
     </ClCompile>
-    <ClCompile Include="source\Utilities.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="source\Network\Protocol.cpp">
       <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Utilities\Utilities.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,11 +82,11 @@
     <ClInclude Include="source\Network\3rdparty\net_skeleton.h">
       <Filter>Source Files\Network\3rdparty</Filter>
     </ClInclude>
-    <ClInclude Include="source\Utilities.h">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="source\Network\PacketManager.h">
       <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Utilities\Utilities.h">
+      <Filter>Source Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

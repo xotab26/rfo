@@ -93,7 +93,7 @@ private:
 		send.dwBillingType = 1;//Premium or not
 
 		time_t timer;
-		send.dwTime = time(&timer);
+		send.dwTime = (DWORD) time(&timer);
 
 		send.nNewAgree[0] = 0;
 		send.nNewAgree[1] = 0;
