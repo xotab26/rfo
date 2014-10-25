@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #endif
 
+
 DWORD GetIPAddress(const char* ipAddress){
 	return inet_addr(ipAddress);
 }

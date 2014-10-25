@@ -1,8 +1,8 @@
 #pragma once
 
+#include "../Network/Protocol.h"
 #include "../Character/Character.h"
 #include "../Database/Database.h"
-#include "../Network/Protocol.h"
 
 typedef unsigned int uint;
 
@@ -38,7 +38,7 @@ public:
 			query = std::string("SELECT * FROM Characters WHERE account='" + std::to_string(AccountId) + "'");
 			res = db.Select(query.c_str());
 			
-			for (int i = 0; i < res.size(); i++) {
+			for (size_t i = 0; i < res.size(); i++) {
 				Character[i].Set(res[i]);
 			}
 
@@ -72,14 +72,13 @@ public:
 	std::string Pass;
 	std::string Email;
 
+	CCharacter Character[3];
+
 	bool Accepted;
 	int nBillInform;
 
 	BYTE CryptPlus;
 	WORD CryptKey;
-
-	CCharacter Character[3];
-
 private:
 	struct ns_connection *conn;
 	db_row AccountRow;

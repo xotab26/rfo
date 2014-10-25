@@ -15,6 +15,7 @@ typedef unsigned char BYTE;
 typedef std::map<std::string, std::string> Option;
 typedef std::map<std::string, Option> ConfigContainer;
 
+
 class Config{
 public:
 	static ConfigContainer PreLoad(ConfigContainer map){
@@ -44,7 +45,7 @@ public:
 	}
 
 	static ConfigContainer ReadCfg(){
-		std::ifstream infile("config.ini");
+		std::ifstream infile("./config.ini");
 		
 		std::string line;
 		std::vector<std::string> tmp;
@@ -163,18 +164,5 @@ public:
 		}
 	}
 };
-
-class Net{
-public:
-	
-};
-
-static void LogMessage(char* text){
-
-}
-
-static void LogMessage(char* text, std::exception e){
-
-}
 
 DWORD GetIPAddress(const char* ipAddress);

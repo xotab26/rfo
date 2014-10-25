@@ -53,6 +53,9 @@
     <ClCompile Include="source\Utilities.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="source\Network\Protocol.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Network\UdpServer.h">

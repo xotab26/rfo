@@ -66,13 +66,10 @@ public:
 				printf("%s\n", mysql_error(conn));
 			}
 
-			if(res = mysql_store_result(conn)){
-
-				int num_fields = mysql_num_fields(res);
-
+			if((res = mysql_store_result(conn))){
+				std::vector<MYSQL_FIELD*> fields;
 				MYSQL_ROW row;
 				MYSQL_FIELD *field;
-				std::vector<MYSQL_FIELD*> fields;
 				char* field_name;
 
 				while ((row = mysql_fetch_row(res))) {
@@ -81,7 +78,7 @@ public:
 					db_row my_row;
 					for(int i = 0; i < num_fields; i++) {
 
-						while(field = mysql_fetch_field(res)) {
+						while((field = mysql_fetch_field(res))) {
 							fields.push_back(field);
 						}
 

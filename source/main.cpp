@@ -1,15 +1,19 @@
 #include <exception>
 #include <iostream>
-#include <pthread.h>
+//#include <pthread.h>
 #include "Network/UdpServer.h"
 
+
+extern int DEPLOY_TYPE;
+
+UdpServer server;
+UdpServer server2;
 
 int main(int argc, char* argv[])
 {
 	auto cfg = Config::ReadCfg();
 
-	UdpServer server;
-	UdpServer server2;
+	dwWorldNum = 1;
 
 	server.Address = Config::LoginIP.c_str();
 	server.Port = Config::LoginPort.c_str();
@@ -18,28 +22,33 @@ int main(int argc, char* argv[])
 	server2.Port = Config::WorldPort.c_str();
 
 	try{
-		for(int i = 0; i < argc; i++){
-			if(argv[i] == "debug"){
+		if(argc > 1){
+			int _type = 0;
+			int _port = 1;
+
+			//server.Port = argv[_port];
+
+			if(std::string(argv[_type]) == "debug"){
 				server.debug = true;
 			}
-			if(argv[i] == "world"){
+			if(std::string(argv[_type]) == "world"){
 				server.Address = Config::WorldIP.c_str();
 				server.Port = Config::WorldPort.c_str();
-				SERVER_DEPLOY_TYPE = 1;
+				DEPLOY_TYPE = 1;
 			}
-			if(argv[i] == "zone"){
+			if(std::string(argv[_type]) == "zone"){
 				server.Address = Config::ZoneIP.c_str();
 				server.Port = Config::ZonePort.c_str();
-				SERVER_DEPLOY_TYPE = 2;
+				DEPLOY_TYPE = 2;
 			}
-			if(argv[i] == "db"){
+			if(std::string(argv[_type]) == "db"){
 				server.Port = "45600";
-				SERVER_DEPLOY_TYPE = 3;
+				DEPLOY_TYPE = 3;
 			}
+
+			server.start(cfg["World"]["WorldName"].c_str());
+			server2.start(cfg["World"]["WorldName"].c_str());
 		}
-				
-		server.start(cfg["World"]["WorldName"].c_str());
-		server2.start(cfg["World"]["WorldName"].c_str());
 
 		printf("Stopping...");
 		std::cin.get();

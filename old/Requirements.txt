@@ -1,5 +1,0 @@
-Ubuntu 14
----------
-boost-1.54.0
-libmysql++-dev
-libmysqlclient-dev

@@ -2,12 +2,14 @@
 
 #include "Protocol/login_client_2232.h"
 #include "../Account/Account.h"
+#include "UdpServer.h"
 #include "Protocol.h"
+
 
 class PacketManager {
 public:
 	static void Process(struct ns_connection *nc, Packet p){	
-		switch(SERVER_DEPLOY_TYPE){
+		switch(DEPLOY_TYPE){
 		case 0:
 			Login(nc, p);
 			break;
@@ -28,6 +30,8 @@ public:
 			break;
 		}
 	}
+
+	static CAccount* getAccount(struct ns_connection* nc){ return (CAccount*) nc->user_data; }
 
 private:
 	static void _account_msg(struct ns_connection *nc, Packet p){
@@ -130,22 +134,22 @@ private:
 				WorldData.byNum = 0;
 				SSSend.byBillState[i] = (BYTE)a->nBillInform;
 			}
+
+			SSend.byServiceWorldNum = (BYTE) dwWorldNum;
+
+			Send.byRetCode = byRetCode;
+			Send.wDataSize = wDataSize+1;
+
+			memcpy(&Send.sListData, szData, wDataSize);
+			BYTE byType[msg_header_num] = {account_msg, world_list_result_locl};
+			send_data(nc, byType, &Send, Send.size());
+
+			BYTE byType2[msg_header_num] = {account_msg, world_user_inform_locl};
+			send_data(nc, byType2, &SSend, SSend.size());
+
+			BYTE byType3[msg_header_num] = {account_msg, billing_user_inform_locl};
+			send_data(nc, byType3, &SSSend, SSSend.size());
 		}
-
-		SSend.byServiceWorldNum = (BYTE)dwWorldNum;
-
-		Send.byRetCode = byRetCode;
-		Send.wDataSize = wDataSize+1;
-
-		memcpy(&Send.sListData, szData, wDataSize);
-		BYTE byType[msg_header_num] = {account_msg, world_list_result_locl};
-		send_data(nc, byType, &Send, Send.size());
-
-		BYTE byType2[msg_header_num] = {account_msg, world_user_inform_locl};
-		send_data(nc, byType2, &SSend, SSend.size());
-
-		BYTE byType3[msg_header_num] = {account_msg, billing_user_inform_locl};
-		send_data(nc, byType3, &SSSend, SSSend.size());
 	}
 
 	static void SelectWorldResult(struct ns_connection *nc, WORD worldIndex){
@@ -166,6 +170,4 @@ private:
 		BYTE byType[msg_header_num] = {account_msg, select_world_result_locl};
 		send_data(nc, byType, &send, send.size());
 	}
-
-	static CAccount* getAccount(struct ns_connection* nc){ return (CAccount*) nc->user_data; }
 };

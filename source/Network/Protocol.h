@@ -10,9 +10,11 @@ typedef unsigned long ulong;
 typedef unsigned short ushort;
 
 
-static int SERVER_DEPLOY_TYPE = 0; //0 login - 1 world - 2 zone - 3 db
-
-static int dwWorldNum = 1;
+/// <summary>
+/// Sends data through the specified ns_connection.
+/// </summary>
+/// <returns>bytes sent</returns>
+int send_data(struct ns_connection *nc, BYTE* pbyType, void* data, WORD len);
 
 struct Packet {
 	Packet(char* _buf, size_t _len){
@@ -48,24 +50,6 @@ struct _MSG_HEADER
 #pragma pack(pop)
 
 #define MSG_HEADER_SIZE sizeof(_MSG_HEADER)
-
-/// <summary>
-/// Sends data through the specified ns_connection.
-/// </summary>
-/// <returns>bytes sent</returns>
-static int send_data(struct ns_connection *nc, BYTE* pbyType, void* data, WORD len){
-	char buffer[MAX_RECEIVE_SIZE];
-	char* szMsg = (char*) data;
-
-	_MSG_HEADER header;
-	header.m_wSize = len + MSG_HEADER_SIZE;
-	*(WORD*)header.m_byType = *(WORD*)pbyType;
-
-	memcpy(&buffer[0], &header, MSG_HEADER_SIZE);
-	memcpy(&buffer[MSG_HEADER_SIZE], szMsg, len);
-
-	return ns_send(nc, buffer, header.m_wSize);
-}
 
 struct _WORLD_DATA
 {
@@ -126,7 +110,16 @@ struct _world
 	}
 };
 
-static _WORLD_DATA g_WorldData[2];
+
+#ifndef GLOBAL_H // header guards
+#define GLOBAL_H
+
+extern unsigned long dwWorldNum;
+extern int DEPLOY_TYPE; //0 login - 1 world - 2 zone - 3 db
+
+extern _WORLD_DATA g_WorldData[2];
+
+#endif
 
 #define	system_msg		1
 #define chat_msg		2

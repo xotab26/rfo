@@ -92,7 +92,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;MYSQLPP_NO_DLL;_WIN32_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;MYSQLPP_NO_DLL;_WIN32_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\includes\mysql-5.6.20-win32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Network\Protocol.cpp" />
     <ClCompile Include="source\Account\Account.cpp" />
     <ClCompile Include="source\Character\Character.cpp" />
     <ClCompile Include="source\Network\3rdparty\net_skeleton.c" />
