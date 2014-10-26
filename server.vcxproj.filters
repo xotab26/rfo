@@ -35,12 +35,6 @@
     <ClCompile Include="source\Account\Account.cpp">
       <Filter>Source Files\Account</Filter>
     </ClCompile>
-    <ClCompile Include="source\Network\UdpServer.cpp">
-      <Filter>Source Files\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="source\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\Character\Character.cpp">
       <Filter>Source Files\Character</Filter>
     </ClCompile>
@@ -59,11 +53,14 @@
     <ClCompile Include="source\ThreadManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\MainThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Network\Network.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Network\UdpServer.h">
-      <Filter>Source Files\Network</Filter>
-    </ClInclude>
     <ClInclude Include="source\Network\Protocol.h">
       <Filter>Source Files\Network</Filter>
     </ClInclude>
@@ -76,9 +73,6 @@
     <ClInclude Include="source\Database\Database.h">
       <Filter>Source Files\Database</Filter>
     </ClInclude>
-    <ClInclude Include="source\Network\Protocol\login_client_2232.h">
-      <Filter>Source Files\Network\Protocol</Filter>
-    </ClInclude>
     <ClInclude Include="source\Network\3rdparty\net_skeleton.h">
       <Filter>Source Files\Network\3rdparty</Filter>
     </ClInclude>
@@ -87,6 +81,12 @@
     </ClInclude>
     <ClInclude Include="source\Utilities\Utilities.h">
       <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\Network.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\Protocol\login_2232.h">
+      <Filter>Source Files\Network\Protocol</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

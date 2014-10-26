@@ -5,10 +5,10 @@
 #include "../Account/Account.h"
 
 
-class UdpServer : PacketManager
+class Network : PacketManager
 {
 public:
-	UdpServer(){
+	Network(){
 		debug = false;
 		Port = "10001";
 		Address = "0.0.0.0";
@@ -16,7 +16,7 @@ public:
 		DEPLOY_TYPE = 0;
 	}
 
-	~UdpServer(){
+	~Network(){
 		Log("Killing server with type " + std::to_string(DEPLOY_TYPE));
 	}
 
@@ -81,9 +81,9 @@ public:
 
 	static std::map<int, CAccount> Connections;
 	static struct ns_mgr mgr;
-	static int SERVER_INDEX;
 
 	int thread_id;
+	static int SERVER_INDEX;
 	const char* Address;
 	const char* Port;
 	bool debug;

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Protocol/login_client_2232.h"
+#include "Protocol/login_2232.h"
 #include "../Account/Account.h"
-#include "UdpServer.h"
 #include "Protocol.h"
 
 

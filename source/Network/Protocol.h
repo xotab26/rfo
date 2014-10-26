@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include <stdexcept>
-#include "../Utilities/Utilities.h"
 #include "3rdparty/net_skeleton.h"
+#include "../Utilities/Utilities.h"
 
 typedef unsigned char byte;
 typedef unsigned int uint;

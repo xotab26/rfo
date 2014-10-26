@@ -138,9 +138,9 @@
     <ClCompile Include="source\Account\Account.cpp" />
     <ClCompile Include="source\Character\Character.cpp" />
     <ClCompile Include="source\Network\3rdparty\net_skeleton.c" />
-    <ClCompile Include="source\Network\UdpServer.cpp" />
+    <ClCompile Include="source\Network\Network.cpp" />
     <ClCompile Include="source\Database\Database.cpp" />
-    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\MainThread.cpp" />
     <ClCompile Include="source\ThreadManager.cpp" />
     <ClCompile Include="source\Utilities\Utilities.cpp" />
   </ItemGroup>
@@ -148,8 +148,8 @@
     <ClInclude Include="source\Account\Account.h" />
     <ClInclude Include="source\Character\Character.h" />
     <ClInclude Include="source\Network\3rdparty\net_skeleton.h" />
-    <ClInclude Include="source\Network\Protocol\login_client_2232.h" />
-    <ClInclude Include="source\Network\UdpServer.h" />
+    <ClInclude Include="source\Network\Protocol\login_2232.h" />
+    <ClInclude Include="source\Network\Network.h" />
     <ClInclude Include="source\Network\PacketManager.h" />
     <ClInclude Include="source\Database\Database.h" />
     <ClInclude Include="source\Network\Protocol.h" />

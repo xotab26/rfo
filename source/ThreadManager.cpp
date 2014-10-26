@@ -11,9 +11,9 @@ protected:
 	public:
 		Thread(){}
 
-		Thread(int _id, void(*func)()) {
+		Thread(int _id, void(*func)(int)) {
 			Log("Spawning new thread (id " + std::to_string(id = _id) + ")");
-			auto _t = std::thread([func]{ (*func)(); });
+			auto _t = std::thread([func, _id]{ (*func)(_id); });
 			_thread = std::make_shared<std::thread>(std::move(_t));
 		}
 
@@ -27,12 +27,16 @@ protected:
 	};
 
 public:
+	ThreadManager(){
+		max_threads = std::thread::hardware_concurrency() * 2;
+	}
+
 	void start(){
-		Threads = new Thread[max_threads = std::thread::hardware_concurrency()];
+		Threads = new Thread[max_threads];
 		Log("Max usable threads " + std::to_string(max_threads));
 	}
 
-	int create(void(*func)()){
+	int create(void(*func)(int)){
 		int id = thread_count++;
 		Threads[id] = Thread(id, func);
 		return id;
