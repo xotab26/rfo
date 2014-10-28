@@ -8,12 +8,10 @@
 
 class LoginHandler {
 	typedef Session* session;
-	static Account* getAccount(session nc) { return (Account*) nc->user_data; }
+	static Account* getAccount(session nc) { return &nc->account; }
 
 public:
-	static void handle(void* c, Packet p) {
-		auto nc = (session) c;
-
+	static void handle(session nc, Packet p) {
 		switch (p.kind) {
 		case account_msg:
 			_account_msg(nc, p);
@@ -30,22 +28,22 @@ private:
 			CryptKeyResult(nc);
 		}
 		else if (id == login_account_request_cllo) {
-			_login_account_request_cllo* pRecv = (_login_account_request_cllo*) p.buf;
+			_login_account_request_cllo* pRecv = (_login_account_request_cllo*)p.buf;
 			Crypt::crypt_login(pRecv->szAccountID, p.len, a->CryptPlus, a->CryptKey);
 			if (a->Verify(pRecv->szAccountID, pRecv->szPassword)) LoginResult(nc);
 		}
 		else if (id == world_list_request_cllo) {
-			_world_list_request_cllo* pRecv = (_world_list_request_cllo*) p.buf;
+			_world_list_request_cllo* pRecv = (_world_list_request_cllo*)p.buf;
 			if (a->Accepted) WorldListResult(nc, pRecv->dwClientVersion);
 		}
 		else if (id == select_world_request_cllo) {
-			_select_world_request_cllo* recv = (_select_world_request_cllo*) p.buf;
+			_select_world_request_cllo* recv = (_select_world_request_cllo*)p.buf;
 			SelectWorldResult(nc, recv->wWorldIndex);
 		}
 	}
 
 	static void CryptKeyResult(session nc) {
-		Account* a = getAccount(nc);
+		auto a = getAccount(nc);
 
 		_crypty_key_inform_locl send;
 		send.byPlus = a->CryptPlus = ::rand() % 5;
@@ -69,7 +67,7 @@ private:
 		send.dwBillingType = 1;//Premium or not
 
 		time_t timer;
-		send.dwTime = (DWORD) time(&timer);
+		send.dwTime = (DWORD)time(&timer);
 
 		send.nNewAgree[0] = 0;
 		send.nNewAgree[1] = 0;
@@ -96,22 +94,22 @@ private:
 		else {
 			byRetCode = RET_CODE_SUCCESS;
 			_world WorldData;
-			WorldData.byNum = (BYTE) (dwWorldNum);
-			SSSend.byServiceWorldNum = (BYTE) (dwWorldNum);
+			WorldData.byNum = (BYTE)(dwWorldNum);
+			SSSend.byServiceWorldNum = (BYTE)(dwWorldNum);
 
 			for (DWORD i = 0; i < dwWorldNum; i++) {
 				WorldData.bOpen = g_WorldData[i].m_bOpen;
 				strcpy(WorldData.sName, g_WorldData[i].m_szWorldName);
-				WorldData.byNameSize = (BYTE) (strlen(WorldData.sName) + 1);
+				WorldData.byNameSize = (BYTE)(strlen(WorldData.sName) + 1);
 				memcpy(&szData[nPutPos], &WorldData, WorldData.Size());
 				SSend.wUserNum[i] = g_WorldData[i].m_nUserNum;
 				wDataSize += WorldData.Size();
 				nPutPos += WorldData.Size();
 				WorldData.byNum = 0;
-				SSSend.byBillState[i] = (BYTE) a->nBillInform;
+				SSSend.byBillState[i] = (BYTE)a->nBillInform;
 			}
 
-			SSend.byServiceWorldNum = (BYTE) dwWorldNum;
+			SSend.byServiceWorldNum = (BYTE)dwWorldNum;
 
 			Send.byRetCode = byRetCode;
 			Send.wDataSize = wDataSize + 1;
@@ -133,15 +131,14 @@ private:
 		auto worldData = &g_WorldData[worldIndex];
 
 		if (worldData->m_bOpen) {
-		send.bAllowAltTab = true;
-		send.byRetCode = RET_CODE_SUCCESS;
-		send.dwWorldGateIP = worldData->m_dwGateIP;
-		send.wWorldGatePort = worldData->m_wGatePort;
-		//send.dwWorldMasterKey = new DWORD;
-
+			send.bAllowAltTab = true;
+			send.byRetCode = RET_CODE_SUCCESS;
+			send.dwWorldGateIP = worldData->m_dwGateIP;
+			send.wWorldGatePort = worldData->m_wGatePort;
+			//send.dwWorldMasterKey = new DWORD;
 		}
 		else {
-		send.byRetCode = RET_CODE_CLOSE_WORLD;
+			send.byRetCode = RET_CODE_CLOSE_WORLD;
 		}
 
 		BYTE byType[msg_header_num] = { account_msg, select_world_result_locl };

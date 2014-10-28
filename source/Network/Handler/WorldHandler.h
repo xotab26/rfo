@@ -7,10 +7,9 @@
 
 class WorldHandler {
 	typedef Session* session;
-	static Account* getAccount(session nc) { return (Account*) nc->user_data; }
+	static Account* getAccount(session nc) { return &nc->account; }
 public:
-	static void handle(void* c, Packet p) {
-		auto nc = (session) c;
+	static void handle(session nc, Packet p) {
 
 		switch (p.kind) {
 		case account_msg:
