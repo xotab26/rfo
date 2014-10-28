@@ -1,87 +1,85 @@
+#include "Network/Server.h"
+#include "ThreadManager.cpp"
 #include <exception>
 #include <iostream>
-#include "Network/Network.h"
-#include "ThreadManager.cpp"
 
 
-Network* Server;
+byte dwWorldNum;
+_WORLD_DATA* g_WorldData;
+
+std::map<int, Server*> servers;
 ThreadManager TManager;
 
 const char* world_name;
 
 bool running;
 
-void login_srv(int i){
-	DEPLOY_TYPE = 0;
-	Server[i].Address = Config::LoginIP.c_str();
-	Server[i].Port = Config::LoginPort.c_str();
-	Server[i].start(world_name);
+int s_index = 0;
+asio::io_service* io_service;
+
+Server* run_server(int i, int port, int deploy_type) {
+	auto srv = Server(io_service[i], port);	
+	servers[i] = std::move(&srv);
+	servers[i]->Address = Config::LoginIP.c_str();
+	servers[i]->setWorldName(world_name);
+	servers[i]->DEPLOY_TYPE = deploy_type;
+	servers[i]->start(i);	
+	return servers[i];
 }
 
-void world_srv(int i){
-	DEPLOY_TYPE = 1;
-	Server[i].Address = Config::WorldIP.c_str();
-	Server[i].Port = Config::WorldPort.c_str();
-	Server[i].start(world_name);
+void server_thread(int id, int port, int deploy_type) {
+	TManager.create(std::thread([id, port, deploy_type] {
+		run_server(id, port, deploy_type);
+	}));
 }
 
-void zone_srv(int i){
-	DEPLOY_TYPE = 2;
-	Server[i].Address = Config::ZoneIP.c_str();
-	Server[i].Port = Config::ZonePort.c_str();
-	Server[i].start(world_name);
+int getType(const char* v) {
+	if (std::string(v) == "login") return 0;
+	if (std::string(v) == "world") return 1;
+	if (std::string(v) == "zone") return 2;
+	return -1;
 }
 
-int run_thread(void(*func)(int)){
-	int id = TManager.create(func);
-	return Server[id].thread_id = id;
-}
+int server_index = 0;
 
 int main(int argc, char* argv[])
 {
 	Log("[[[[[[[[[[Developed By Suspicioso]]]]]]]]]]\n");
-
-	Server = new Network[TManager.max_threads];
+		
 	TManager.start();
+
+	dwWorldNum = 0;
+	g_WorldData = new _WORLD_DATA[TManager.max_threads];
+	io_service = new asio::io_service[TManager.max_threads];
 
 	auto cfg = Config::ReadCfg();
 	world_name = cfg["World"]["WorldName"].c_str();
-	dwWorldNum = 1;
-
+	
 	try{
 		if (argc > 1){
-			int _type = atoi(argv[0]);
-			int _port = atoi(argv[1]);
+			int _type = getType(argv[1]);
 			
 			switch (_type){
 			case 0:
-				Server[0].thread_id = TManager.create(login_srv);
+				server_thread(server_index++, atoi(Config::LoginPort.c_str()), 0);
 				break;
 				
 			case 1:
-				Server[1].thread_id = TManager.create(world_srv);
+				server_thread(server_index++, atoi(Config::WorldPort.c_str()), 1);
+				dwWorldNum++;
 				break;
 				
 			case 2:
-				Server[2].thread_id = TManager.create(zone_srv);
+				server_thread(server_index++, atoi(Config::ZonePort.c_str()), 2);
 				break;
 			}
 		}
 		else{
-			if (Config::DEBUG){
-				run_thread(login_srv);
-				run_thread(world_srv);
-				run_thread(zone_srv);
+			if (Config::DEBUG) {
+				server_thread(server_index++, atoi(Config::LoginPort.c_str()), 0);
+				server_thread(server_index++, atoi(Config::WorldPort.c_str()), 1);
+				server_thread(server_index++, atoi(Config::ZonePort.c_str()), 2);
 			}
-		}
-
-		switch (TManager.max_threads){
-		case 1:
-			for (int i = 0; i < TManager.thread_count; i++){
-				auto _thread = TManager.Threads[i];
-				_thread.join();
-			}
-			break;
 		}
 		
 		running = true;

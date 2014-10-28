@@ -1,19 +1,13 @@
 #pragma once
 
-#include "../Network/Protocol.h"
 #include "../Character/Character.h"
 #include "../Database/Database.h"
 
-typedef unsigned int uint;
 
-class CAccount{
+class Account{
 public:
-	CAccount(){	}
-	~CAccount(){ }
-	
-	ns_connection *getConn(){
-		return conn;
-	}
+	Account(){ }
+	~Account(){ }
 	
 	/// <summary>
 	/// Verifies the specified account identifier.
@@ -53,11 +47,10 @@ public:
 	}
 
 	/// <summary>
-	/// Creates a new CAccount instance.
+	/// Creates a new Account instance.
 	/// </summary>
-	static CAccount create(struct ns_connection *nc, u_int localId){
-		CAccount a;
-		a.conn = nc;
+	static Account create(u_int localId){
+		Account a;
 		a.nBillInform = 0;
 		a.Accepted = false;
 		a.LocalId = localId;
@@ -80,6 +73,5 @@ public:
 	BYTE CryptPlus;
 	WORD CryptKey;
 private:
-	struct ns_connection *conn;
 	db_row AccountRow;
 };

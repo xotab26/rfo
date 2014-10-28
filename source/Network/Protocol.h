@@ -1,20 +1,16 @@
 ﻿#pragma once
 
-#include <stdexcept>
-#include "3rdparty/net_skeleton.h"
+#ifndef HAS_ASIO
+#define HAS_ASIO
+#include "asio.hpp"
 #include "../Utilities/Utilities.h"
+#endif
+
 
 typedef unsigned char byte;
 typedef unsigned int uint;
 typedef unsigned long ulong;
 typedef unsigned short ushort;
-
-
-/// <summary>
-/// Sends data through the specified ns_connection.
-/// </summary>
-/// <returns>bytes sent</returns>
-int send_data(struct ns_connection *nc, BYTE* pbyType, void* data, WORD len);
 
 struct Packet {
 	Packet(char* _buf, size_t _len){
@@ -117,12 +113,17 @@ struct _world
 #ifndef GLOBAL_H // header guards
 #define GLOBAL_H
 
-extern unsigned long dwWorldNum;
-extern int DEPLOY_TYPE; //0 login - 1 world - 2 zone - 3 db
+extern byte dwWorldNum;
+extern _WORLD_DATA* g_WorldData;
 
-extern _WORLD_DATA g_WorldData[2];
-
-#endif
+#define max_id_len					12	
+#define max_pw_len					12	
+#define max_name_len				16	
+#define max_world_name_len			32	
+#define max_map_name_len			20	
+#define class_code_len				4	
+#define max_message_size			255	
+#define max_error_code_size			64	
 
 #define	system_msg		1
 #define chat_msg		2
@@ -154,15 +155,6 @@ extern _WORLD_DATA g_WorldData[2];
 #define secure_msg		102
 #define real_msg		222
 
-
-#define max_id_len					12	
-#define max_pw_len					12	
-#define max_name_len				16	
-#define max_world_name_len			32	
-#define max_map_name_len			20	
-#define class_code_len				4	
-#define max_message_size			255	
-#define max_error_code_size			64	
 
 #define RET_CODE_SUCCESS			0	
 #define RET_CODE_ASYNC_ERR			1	
@@ -218,3 +210,5 @@ extern _WORLD_DATA g_WorldData[2];
 #define RET_CODE_INTERNAL_ERROR		100	
 #define RET_CODE_NET_PROCESS_ERROR	200	
 #define RET_CODE_PROGRAM_EXIT		0xFF
+
+#endif

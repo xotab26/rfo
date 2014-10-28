@@ -6,10 +6,15 @@
 
 
 class ThreadManager {
-protected:
+public:
 	class Thread {
 	public:
 		Thread(){}
+
+		Thread(int _id, std::thread _t) {
+			Log("Spawning new thread (id " + std::to_string(id = _id) + ")");
+			_thread = std::make_shared<std::thread>(std::move(_t));
+		}
 
 		Thread(int _id, void(*func)(int)) {
 			Log("Spawning new thread (id " + std::to_string(id = _id) + ")");
@@ -26,14 +31,19 @@ protected:
 		std::shared_ptr<std::thread> _thread;
 	};
 
-public:
 	ThreadManager(){
 		max_threads = std::thread::hardware_concurrency() * 2;
 	}
 
 	void start(){
 		Threads = new Thread[max_threads];
-		Log("Max usable threads " + std::to_string(max_threads));
+		if(Config::DEBUG) Log("Max Threads " + std::to_string(max_threads));
+	}
+
+	int create(std::thread _t) {
+		int id = thread_count++;
+		Threads[id] = Thread(id, std::move(_t));
+		return id;
 	}
 
 	int create(void(*func)(int)){

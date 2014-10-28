@@ -1,4 +1,7 @@
-﻿#include "../Protocol.h"
+﻿
+
+#ifndef GLOBAL_H2 // header guards
+#define GLOBAL_H2
 
 #pragma pack(push, 1)
 
@@ -147,3 +150,5 @@ struct _crypty_key_inform_locl
 };
 
 #pragma pack(pop)
+
+#endif

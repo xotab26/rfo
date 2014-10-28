@@ -30,22 +30,13 @@
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{ce925d47-93dd-429d-a1bb-f7cd2db8ac29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Network\Handler">
+      <UniqueIdentifier>{81f2efd1-5a85-4f64-88b4-572ecc138f2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Account\Account.cpp">
-      <Filter>Source Files\Account</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Character\Character.cpp">
-      <Filter>Source Files\Character</Filter>
-    </ClCompile>
     <ClCompile Include="source\Database\Database.cpp">
       <Filter>Source Files\Database</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Network\3rdparty\net_skeleton.c">
-      <Filter>Source Files\Network\3rdparty</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Network\Protocol.cpp">
-      <Filter>Source Files\Network</Filter>
     </ClCompile>
     <ClCompile Include="source\Utilities\Utilities.cpp">
       <Filter>Source Files\Utilities</Filter>
@@ -56,7 +47,13 @@
     <ClCompile Include="source\MainThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Network\Network.cpp">
+    <ClCompile Include="source\Network\Handler\WorldHandler.h">
+      <Filter>Source Files\Network\Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Network\Handler\LoginHandler.h">
+      <Filter>Source Files\Network\Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Network\Session.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
   </ItemGroup>
@@ -73,20 +70,17 @@
     <ClInclude Include="source\Database\Database.h">
       <Filter>Source Files\Database</Filter>
     </ClInclude>
-    <ClInclude Include="source\Network\3rdparty\net_skeleton.h">
-      <Filter>Source Files\Network\3rdparty</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Network\PacketManager.h">
-      <Filter>Source Files\Network</Filter>
-    </ClInclude>
     <ClInclude Include="source\Utilities\Utilities.h">
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="source\Network\Network.h">
-      <Filter>Source Files\Network</Filter>
-    </ClInclude>
     <ClInclude Include="source\Network\Protocol\login_2232.h">
       <Filter>Source Files\Network\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\Session.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\Server.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -92,8 +92,8 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;MYSQLPP_NO_DLL;_WIN32_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\includes\mysql-5.6.20-win32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_WIN32_WINDOWS;_CRT_SECURE_NO_WARNINGS;ASIO_STANDALONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\includes\mysql-5.6.20-win32\include;C:\includes\asio-1.10.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -105,8 +105,8 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;MYSQLPP_NO_DLL;_WIN32_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\includes\mysql-5.6.20-winx64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_WIN32_WINDOWS;_CRT_SECURE_NO_WARNINGS;ASIO_STANDALONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\includes\mysql-5.6.20-winx64\include;C:\includes\asio-1.10.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -134,25 +134,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\Network\Protocol.cpp" />
-    <ClCompile Include="source\Account\Account.cpp" />
-    <ClCompile Include="source\Character\Character.cpp" />
-    <ClCompile Include="source\Network\3rdparty\net_skeleton.c" />
-    <ClCompile Include="source\Network\Network.cpp" />
+    <ClCompile Include="source\Network\Handler\LoginHandler.h" />
+    <ClCompile Include="source\Network\Handler\WorldHandler.h" />
     <ClCompile Include="source\Database\Database.cpp" />
     <ClCompile Include="source\MainThread.cpp" />
+    <ClCompile Include="source\Network\Session.cpp" />
     <ClCompile Include="source\ThreadManager.cpp" />
     <ClCompile Include="source\Utilities\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Account\Account.h" />
     <ClInclude Include="source\Character\Character.h" />
-    <ClInclude Include="source\Network\3rdparty\net_skeleton.h" />
     <ClInclude Include="source\Network\Protocol\login_2232.h" />
-    <ClInclude Include="source\Network\Network.h" />
-    <ClInclude Include="source\Network\PacketManager.h" />
     <ClInclude Include="source\Database\Database.h" />
     <ClInclude Include="source\Network\Protocol.h" />
+    <ClInclude Include="source\Network\Server.h" />
+    <ClInclude Include="source\Network\Session.h" />
     <ClInclude Include="source\Utilities\Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
