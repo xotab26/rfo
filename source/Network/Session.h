@@ -8,7 +8,7 @@ using asio::ip::tcp;
 
 class Session {
 public:
-	Session(tcp::socket& socket, int conn_type);
+	Session(tcp::socket& socket);
 	~Session();
 
 	size_t send_data(BYTE* _type, void* data, WORD len);
@@ -20,6 +20,8 @@ public:
 	int connection_type;
 private:
 	void Process(void* con, Packet p, int conn_type);
+
+	void disconnect(std::error_code ec);
 
 	void do_read();
 

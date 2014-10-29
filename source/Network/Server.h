@@ -8,10 +8,10 @@ using asio::ip::tcp;
 class Server {
 public:
 	Server(asio::io_service& io_service, short port)
-		: acceptor_(io_service, tcp::endpoint(tcp::v4(), port)),
-		socket_(io_service) {
-		Port = new char[2];
-		strcpy(Port, std::to_string(port).c_str());
+		: acceptor_(io_service, tcp::endpoint(tcp::v4(), port)), socket_(io_service) {
+		connection_count = 0;
+		//Port = new char[2];
+		strcpy(Port = new char[2], std::to_string(port).c_str());
 		Address = "0.0.0.0";
 		SERVER_INDEX = 0;
 		DEPLOY_TYPE = 0;
@@ -26,9 +26,11 @@ public:
 		acceptor_.async_accept(socket_, [this](std::error_code ec) {
 			if (!ec) {
 				int id = connection_count++;
-				Connections[id] = std::make_shared<Session>(std::move(socket_), DEPLOY_TYPE);
-				Connections[id]->id = connection_count;
+				Connections[id] = std::make_shared<Session>(std::move(socket_));
+				Connections[id]->connection_type = DEPLOY_TYPE;
 				Connections[id]->server = this;
+				Connections[id]->id = id;
+				SetTitle((int)Connections.size());
 			}
 
 			do_accept();
@@ -49,6 +51,10 @@ public:
 		
 		Log("Spawning server type " + std::to_string(DEPLOY_TYPE) + " (" + World_Data.m_szWorldName + ") on port " + Port + "\n");
 		socket_.get_io_service().run();
+	}
+
+	void SetTitle(int count){
+		setTitle(std::string(" - Connections: " + std::to_string(count)).c_str());
 	}
 
 	std::map<int, std::shared_ptr<Session>> Connections;

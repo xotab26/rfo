@@ -1,13 +1,13 @@
 #pragma once
 
+#include "Server.h"
 #include "Session.h"
 #include "Handler/LoginHandler.h"
 #include "Handler/WorldHandler.h"
 
 
-Session::Session(tcp::socket& socket, int conn_type)
+Session::Session(tcp::socket& socket)
 	: socket_(std::move(socket)) {
-	connection_type = conn_type;
 	do_read();
 }
 
@@ -53,6 +53,20 @@ void Session::do_read() {
 			Packet p(&data[0], len);
 			Process(this, p, connection_type);
 		}
+		else{
+			disconnect(ec);
+		}
 		do_read();
 	});
+}
+
+void Session::disconnect(std::error_code ec){
+	Server* srv = (Server*)server;
+	srv->Connections.erase(id);
+	size_t count = srv->Connections.size();
+	std::string str(std::string(" - Connections: "));
+	setTitle(str.append(std::to_string(count)));
+	
+	std::string er("Connection Id " + std::to_string(id) + ". " + ec.message());
+	Print::Error(ec.value(), er.c_str());
 }

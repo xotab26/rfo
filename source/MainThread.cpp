@@ -14,7 +14,8 @@ const char* world_name;
 
 bool running;
 
-int s_index = 0;
+int server_index = 0;
+
 asio::io_service* io_service;
 
 Server* run_server(int i, int port, int deploy_type) {
@@ -40,12 +41,11 @@ int getType(const char* v) {
 	return -1;
 }
 
-int server_index = 0;
-
 int main(int argc, char* argv[])
 {
 	Log("[[[[[[[[[[Developed By Suspicioso]]]]]]]]]]\n");
-		
+	setTitle(std::string(" - Connections: 0").c_str());
+
 	TManager.start();
 
 	dwWorldNum = 0;

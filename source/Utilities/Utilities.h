@@ -16,6 +16,8 @@ typedef std::map<std::string, std::string> Option;
 typedef std::map<std::string, Option> ConfigContainer;
 
 
+int setTitle(std::string titleMsg);
+
 DWORD GetIPAddress(const char* ipAddress);
 
 void Log(std::string text);
