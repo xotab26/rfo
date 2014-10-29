@@ -88,7 +88,7 @@ private:
 		char szData[0x0FFF];
 		int nPutPos = 0;
 
-		if (dwWorldNum < 1) {
+		if (g_WorldData.size() < 1) {
 			byRetCode = RET_CODE_BEFORE_WORLD_LIST;
 		}
 		else {
@@ -135,7 +135,9 @@ private:
 			send.byRetCode = RET_CODE_SUCCESS;
 			send.dwWorldGateIP = worldData->m_dwGateIP;
 			send.wWorldGatePort = worldData->m_wGatePort;
-			//send.dwWorldMasterKey = new DWORD;
+			for (size_t i = 0; i < 18; i++)	{
+				send.dwWorldMasterKey[i] = 0;
+			}
 		}
 		else {
 			send.byRetCode = RET_CODE_CLOSE_WORLD;

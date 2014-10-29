@@ -5,7 +5,7 @@
 
 
 byte dwWorldNum;
-_WORLD_DATA* g_WorldData;
+std::map<int, _WORLD_DATA> g_WorldData;
 
 std::map<int, Server*> servers;
 ThreadManager TManager;
@@ -18,20 +18,32 @@ int server_index = 0;
 
 asio::io_service* io_service;
 
-Server* run_server(int i, int port, int deploy_type) {
+void run_server(int i, int port, int deploy_type) {
 	auto srv = Server(io_service[i], port);	
 	servers[i] = std::move(&srv);
 	servers[i]->Address = Config::LoginIP.c_str();
-	servers[i]->setWorldName(world_name);
 	servers[i]->DEPLOY_TYPE = deploy_type;
-	servers[i]->start(i);	
-	return servers[i];
+	servers[i]->start(i);
 }
 
-void server_thread(int id, int port, int deploy_type) {
+int server_thread(int id, int port, int deploy_type) {
 	TManager.create(std::thread([id, port, deploy_type] {
 		run_server(id, port, deploy_type);
 	}));
+	return id;
+}
+
+void create_world(char* worldName){
+	int id = server_thread(server_index++, atoi(Config::WorldPort.c_str()), 1);
+	Server* srv = servers[id];
+
+	_WORLD_DATA worldData;
+	g_WorldData[dwWorldNum] = worldData;
+	g_WorldData[dwWorldNum].OpenWorld(0, atoi(Config::WorldPort.c_str()));
+	g_WorldData[dwWorldNum].SetWorld(worldName, 0, true, id);
+	srv->WorldData = &g_WorldData[dwWorldNum];
+	srv->WorldNum = id;
+	dwWorldNum++;
 }
 
 int getType(const char* v) {
@@ -47,9 +59,8 @@ int main(int argc, char* argv[])
 	setTitle(std::string(" - Connections: 0").c_str());
 
 	TManager.start();
-
 	dwWorldNum = 0;
-	g_WorldData = new _WORLD_DATA[TManager.max_threads];
+
 	io_service = new asio::io_service[TManager.max_threads];
 
 	auto cfg = Config::ReadCfg();
@@ -65,8 +76,7 @@ int main(int argc, char* argv[])
 				break;
 				
 			case 1:
-				server_thread(server_index++, atoi(Config::WorldPort.c_str()), 1);
-				dwWorldNum++;
+				create_world("RFTest01");
 				break;
 				
 			case 2:
@@ -77,8 +87,8 @@ int main(int argc, char* argv[])
 		else{
 			if (Config::DEBUG) {
 				server_thread(server_index++, atoi(Config::LoginPort.c_str()), 0);
-				server_thread(server_index++, atoi(Config::WorldPort.c_str()), 1);
 				server_thread(server_index++, atoi(Config::ZonePort.c_str()), 2);
+				create_world("RFTest01");
 			}
 		}
 		

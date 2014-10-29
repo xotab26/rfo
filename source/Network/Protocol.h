@@ -13,13 +13,22 @@ typedef unsigned long ulong;
 typedef unsigned short ushort;
 
 struct Packet {
-	Packet(char* _buf, size_t _len){
-		buf = _buf;
-		len = _len;
+	Packet(std::vector<char> _buf, size_t _len){
+		buf = new char[len = _len];
+		for (size_t i = 0; i < len; i++)
+			buf[i] = _buf[i];
 		kind = buf[2];
 		id = buf[3];
 
-		buf = &_buf[4];//remove header
+		buf = &buf[4];//remove header
+	}
+
+	Packet(char* _buf, size_t _len){
+		buf = _buf;
+		kind = buf[2];
+		id = buf[3];
+
+		buf = &buf[4];//remove header
 	}
 
 	char* buf;
@@ -114,7 +123,7 @@ struct _world
 #define GLOBAL_H
 
 extern byte dwWorldNum;
-extern _WORLD_DATA* g_WorldData;
+extern std::map<int, _WORLD_DATA> g_WorldData;
 
 #define max_id_len					12	
 #define max_pw_len					12	

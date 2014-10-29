@@ -10,7 +10,6 @@ public:
 	Server(asio::io_service& io_service, short port)
 		: acceptor_(io_service, tcp::endpoint(tcp::v4(), port)), socket_(io_service) {
 		connection_count = 0;
-		//Port = new char[2];
 		strcpy(Port = new char[2], std::to_string(port).c_str());
 		Address = "0.0.0.0";
 		SERVER_INDEX = 0;
@@ -37,19 +36,9 @@ public:
 		});
 	}
 
-	void setWorldName(const char* serverName) {
-		strcpy(World_Data.m_szWorldName, serverName);
-	}
-
 	void start(int i) {
 		thread_id = i;
-		World_Data.m_dwGateIP = GetIPAddress(Address);
-		World_Data.m_wGatePort = (WORD) atoi(Port);
-		World_Data.m_bOpen = true;
-		World_Data.m_nUserNum++;
-		dwWorldNum = 0;
-		
-		Log("Spawning server type " + std::to_string(DEPLOY_TYPE) + " (" + World_Data.m_szWorldName + ") on port " + Port + "\n");
+		Log("Spawning server type " + std::to_string(DEPLOY_TYPE) + " on port " + Port + "\n");
 		socket_.get_io_service().run();
 	}
 
@@ -66,8 +55,8 @@ public:
 	const char* Address;
 	char* Port;
 
-	unsigned long dwWorldNum;
-	_WORLD_DATA World_Data;
+	unsigned long WorldNum;
+	_WORLD_DATA* WorldData;
 private:
 	tcp::acceptor acceptor_;
 	tcp::socket socket_;
