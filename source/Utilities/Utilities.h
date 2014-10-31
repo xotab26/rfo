@@ -51,7 +51,7 @@ public:
 	}
 
 	static ConfigContainer ReadCfg(){
-		Log("Loading configuration...\n");
+		if(DEBUG) Log("Loading configuration...\n");
 		std::ifstream infile("./config.ini");
 		
 		std::string line;

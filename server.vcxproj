@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Account\Account.cpp" />
     <ClCompile Include="source\Network\Handler\LoginHandler.h" />
     <ClCompile Include="source\Network\Handler\WorldHandler.h" />
     <ClCompile Include="source\Database\Database.cpp" />

@@ -13,7 +13,6 @@ typedef std::vector<db_row> db_rows;
 class CDatabase
 {
 public:
-
 	CDatabase(){
 		auto cfg = Config::ReadCfg();
 		Host = cfg["MySQL"]["DbHost"];
@@ -30,6 +29,7 @@ public:
 
 	bool Connect(){
 		try {
+			Log("Connecting to database...");
 			const char *server = Host.c_str();
 			const char *user = User.c_str();
 			const char *password = Pass.c_str();
@@ -114,9 +114,10 @@ public:
 	}
 
 	bool IsOpen(){
-		if(conn != NULL){
+		if (conn != NULL){
 			return bIsConnected = true;
-		}else{
+		}
+		else{
 			return bIsConnected = false;
 		}
 	}
@@ -129,7 +130,6 @@ public:
 	static std::string Host;
 	static std::string User;
 	static std::string Pass;
-
 private:
 	MYSQL* conn;
 	std::string SqlError;

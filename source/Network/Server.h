@@ -9,11 +9,12 @@ class Server {
 public:
 	Server(asio::io_service& io_service, short port)
 		: acceptor_(io_service, tcp::endpoint(tcp::v4(), port)), socket_(io_service) {
-		connection_count = 0;
 		strcpy(Port = new char[2], std::to_string(port).c_str());
+		connection_count = 0;
 		Address = "0.0.0.0";
 		SERVER_INDEX = 0;
 		DEPLOY_TYPE = 0;
+		database.Connect();
 		do_accept();
 	}
 
@@ -27,6 +28,7 @@ public:
 				int id = connection_count++;
 				Connections[id] = std::make_shared<Session>(std::move(socket_));
 				Connections[id]->connection_type = DEPLOY_TYPE;
+				Connections[id]->account.db = &database;
 				Connections[id]->server = this;
 				Connections[id]->id = id;
 				SetTitle((int)Connections.size());
@@ -39,6 +41,7 @@ public:
 	void start(int i) {
 		thread_id = i;
 		Log("Spawning server type " + std::to_string(DEPLOY_TYPE) + " on port " + Port + "\n");
+		running = true;
 		socket_.get_io_service().run();
 	}
 
@@ -48,6 +51,7 @@ public:
 
 	std::map<int, std::shared_ptr<Session>> Connections;
 
+	bool running;
 	int thread_id;
 	int DEPLOY_TYPE; //0 login - 1 world - 2 zone - 3 db
 	int SERVER_INDEX;
@@ -57,6 +61,8 @@ public:
 
 	unsigned long WorldNum;
 	_WORLD_DATA* WorldData;
+
+	CDatabase database;
 private:
 	tcp::acceptor acceptor_;
 	tcp::socket socket_;

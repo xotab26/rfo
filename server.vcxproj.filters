@@ -24,9 +24,6 @@
     <Filter Include="Source Files\Network\Protocol">
       <UniqueIdentifier>{e3391b44-e9fe-4de4-84a8-c28879fcadc4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Network\3rdparty">
-      <UniqueIdentifier>{f3c097b7-0914-4cb9-a243-4bd3bd199400}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{ce925d47-93dd-429d-a1bb-f7cd2db8ac29}</UniqueIdentifier>
     </Filter>
@@ -56,6 +53,9 @@
     <ClCompile Include="source\Network\Session.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
+    <ClCompile Include="source\Account\Account.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Network\Protocol.h">
@@ -76,11 +76,11 @@
     <ClInclude Include="source\Network\Protocol\login_2232.h">
       <Filter>Source Files\Network\Protocol</Filter>
     </ClInclude>
-    <ClInclude Include="source\Network\Session.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\Network\Server.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\Session.h">
+      <Filter>Source Files\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

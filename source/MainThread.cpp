@@ -6,43 +6,38 @@
 
 byte dwWorldNum;
 std::map<int, _WORLD_DATA> g_WorldData;
-
+asio::io_service* io_service;
 std::map<int, Server*> servers;
 ThreadManager TManager;
 
+bool running;
+int server_index = 0;
 const char* world_name;
 
-bool running;
 
-int server_index = 0;
-
-asio::io_service* io_service;
-
-void run_server(int i, int port, int deploy_type) {
-	auto srv = Server(io_service[i], port);	
-	servers[i] = std::move(&srv);
-	servers[i]->Address = Config::LoginIP.c_str();
-	servers[i]->DEPLOY_TYPE = deploy_type;
-	servers[i]->start(i);
+int run_server(int id, int port, int deploy_type) {
+	auto srv = Server(io_service[id], port);
+	servers[id] = std::move(&srv);
+	servers[id]->Address = Config::LoginIP.c_str();
+	servers[id]->DEPLOY_TYPE = deploy_type;
+	servers[id]->start(id);
+	return id;
 }
 
 int server_thread(int id, int port, int deploy_type) {
 	TManager.create(std::thread([id, port, deploy_type] {
 		run_server(id, port, deploy_type);
-	}));
+	})); 
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	return id;
 }
 
 void create_world(char* worldName){
 	int id = server_thread(server_index++, atoi(Config::WorldPort.c_str()), 1);
-	Server* srv = servers[id];
-
-	_WORLD_DATA worldData;
-	g_WorldData[dwWorldNum] = worldData;
 	g_WorldData[dwWorldNum].OpenWorld(0, atoi(Config::WorldPort.c_str()));
 	g_WorldData[dwWorldNum].SetWorld(worldName, 0, true, id);
-	srv->WorldData = &g_WorldData[dwWorldNum];
-	srv->WorldNum = id;
+	servers[id]->WorldData = &g_WorldData[dwWorldNum];
+	servers[id]->WorldNum = id;
 	dwWorldNum++;
 }
 
@@ -87,8 +82,8 @@ int main(int argc, char* argv[])
 		else{
 			if (Config::DEBUG) {
 				server_thread(server_index++, atoi(Config::LoginPort.c_str()), 0);
-				server_thread(server_index++, atoi(Config::ZonePort.c_str()), 2);
-				create_world("RFTest01");
+				//create_world("RFTest01");
+				//server_thread(server_index++, atoi(Config::ZonePort.c_str()), 2);
 			}
 		}
 		

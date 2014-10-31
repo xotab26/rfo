@@ -1,12 +1,13 @@
 #pragma once
 
-#include "../Character/Character.h"
 #include "../Database/Database.h"
+#include "../Character/Character.h"
 
 
 class Account{
 public:
 	Account(){ }
+
 	~Account(){ }
 	
 	/// <summary>
@@ -17,10 +18,9 @@ public:
 	/// <returns>True if check passes, otherwise false.</returns>
 	bool Verify(char* nick, char* pass){
 		std::string query("SELECT * FROM Accounts WHERE nick='" + std::string(nick) + "' AND pass='" + pass + "'");
-		CDatabase db;
 
-		if (db.Connect()) {
-			auto res = db.Select(query.c_str());
+		if (db->Connect()) {
+			auto res = db->Select(query.c_str());
 			if (!res.empty()) AccountRow = res[0];
 
 			AccountId = (u_int) atol(AccountRow["id"].c_str());
@@ -30,7 +30,7 @@ public:
 			Email = AccountRow["email"];
 			
 			query = std::string("SELECT * FROM Characters WHERE account='" + std::to_string(AccountId) + "'");
-			res = db.Select(query.c_str());
+			res = db->Select(query.c_str());
 			
 			for (size_t i = 0; i < res.size(); i++) {
 				Character[i].Set(res[i]);
@@ -58,20 +58,19 @@ public:
 		return a;
 	}
 
+	bool Accepted;
+	int nBillInform;
 	short Type;
 	u_int LocalId;
 	u_int AccountId;
 	std::string Nick;
 	std::string Pass;
 	std::string Email;
-
-	CCharacter Character[3];
-
-	bool Accepted;
-	int nBillInform;
-
 	BYTE CryptPlus;
 	WORD CryptKey;
+	CCharacter Character[3];
+
+	CDatabase* db;
 private:
 	db_row AccountRow;
 };

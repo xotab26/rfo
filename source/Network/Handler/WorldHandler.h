@@ -10,7 +10,6 @@ class WorldHandler {
 	static Account* getAccount(session nc) { return &nc->account; }
 public:
 	static void handle(session nc, Packet p) {
-
 		switch (p.kind) {
 		case account_msg:
 			_account_msg(nc, p);
