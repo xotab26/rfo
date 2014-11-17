@@ -14,7 +14,7 @@
 
 int setTitle(std::string titleMsg)
 {
-#ifdef _WIN32_WINDOWS
+#ifdef _WIN32
 #include <windows.h>
 #ifdef _UNICODE
 	LPCWSTR str;
@@ -31,7 +31,7 @@ int setTitle(std::string titleMsg)
 #else
 	char esc_start[] = { 0x1b, ']', '0', ';', 0 };
 	char esc_end[] = { 0x07, 0 };
-	cout << esc_start << titleMsg << esc_end;
+	std::cout << esc_start << titleMsg << esc_end;
 #endif
 }
 
