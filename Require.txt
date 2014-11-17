@@ -1,4 +1,4 @@
 Ubuntu 14.04 (64bit)
 ---------
-apt-get install build-essential libmysqlclient-dev -y
+apt-get install build-essential libmysqlclient-dev libasio-dev -y
 --------
