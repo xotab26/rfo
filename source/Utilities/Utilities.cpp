@@ -2,6 +2,7 @@
 #include <ctime>
 #include <iostream>
 #include <fstream>
+#include <string.h>
 
 #ifdef _WIN32
 #include "winsock2.h"
@@ -49,7 +50,7 @@ void Log(std::string _str){
 	strftime(date, sizeof(date), "%m-%d-%Y %H:%M:%S", ltm);
 
 	char buf[4096];
-	std::strcpy(buf, _str.c_str());
+	strcpy(buf, _str.c_str());
 
 	std::stringstream ss;
 	ss << "[" << date << "] " << buf << '\n';
