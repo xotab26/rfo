@@ -49,7 +49,7 @@ void Log(std::string _str){
 	strftime(date, sizeof(date), "%m-%d-%Y %H:%M:%S", ltm);
 
 	char buf[4096];
-	strcpy(buf, _str.c_str());
+	std::strcpy(buf, _str.c_str());
 
 	std::stringstream ss;
 	ss << "[" << date << "] " << buf << '\n';
