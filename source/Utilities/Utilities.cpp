@@ -34,6 +34,7 @@ int setTitle(std::string titleMsg)
 	std::cout << esc_start << titleMsg << esc_end;
 	return 1;
 #endif
+	return 0;
 }
 
 DWORD GetIPAddress(const char* ipAddress){
