@@ -32,6 +32,7 @@ int setTitle(std::string titleMsg)
 	char esc_start[] = { 0x1b, ']', '0', ';', 0 };
 	char esc_end[] = { 0x07, 0 };
 	std::cout << esc_start << titleMsg << esc_end;
+	return 1;
 #endif
 }
 
