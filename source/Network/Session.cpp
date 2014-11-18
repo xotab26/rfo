@@ -6,15 +6,6 @@
 #include "Handler/WorldHandler.h"
 
 
-Session::Session(tcp::socket& socket)
-	: socket_(std::move(socket)) {
-	do_read();
-}
-
-Session::~Session(){
-
-}
-
 void Session::Process(void* con, Packet p, int conn_type) {
 	switch (conn_type) {
 	case 0:

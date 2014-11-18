@@ -16,10 +16,10 @@ const char* world_name;
 
 
 int run_server(int id, int port, int deploy_type) {
-	auto srv = Server(io_service[id], port);
+	Server srv(io_service[id], port);
 	servers[id] = std::move(&srv);
-	servers[id]->Address = Config::LoginIP.c_str();
 	servers[id]->DEPLOY_TYPE = deploy_type;
+	servers[id]->SERVER_INDEX = 0;
 	servers[id]->start(id);
 	return id;
 }
@@ -50,7 +50,7 @@ int getType(const char* v) {
 
 int main(int argc, char* argv[])
 {
-	Log("[[[[[[[[[[Developed By Suspicioso]]]]]]]]]]\n");
+	Log("[[[[[[[[[[Developed By Tsume]]]]]]]]]]\n");
 	setTitle(std::string(" - Connections: 0").c_str());
 
 	TManager.start();

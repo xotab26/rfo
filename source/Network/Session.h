@@ -6,10 +6,32 @@
 using asio::ip::tcp;
 
 
-class Session {
+class Session : public std::enable_shared_from_this<Session>
+{
 public:
-	Session(tcp::socket& socket);
-	~Session();
+	typedef std::shared_ptr<Session> pointer;
+
+	static pointer create(asio::io_service& io_service) {
+		return pointer(new Session(io_service));
+	}
+
+	tcp::socket& socket() {
+		return socket_;
+	}
+
+	Session(asio::io_service& io_service)
+		: socket_(io_service) {
+	}
+
+	Session(tcp::socket& socket)
+		: socket_(std::move(socket)) {
+	}
+
+	~Session(){	}
+
+	void start(){
+		do_read();
+	}
 
 	size_t send_data(BYTE* _type, void* data, WORD len);
 

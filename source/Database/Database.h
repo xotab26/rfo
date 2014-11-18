@@ -29,7 +29,7 @@ public:
 
 	bool Connect(){
 		try {
-			Log("Connecting to database...");
+			if(Config::DEBUG) Log("Connecting to database...");
 			const char *server = Host.c_str();
 			const char *user = User.c_str();
 			const char *password = Pass.c_str();
