@@ -48,8 +48,7 @@ int getType(const char* v) {
 	return -1;
 }
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
 	Log("[[[[[[[[[[Developed By Tsume]]]]]]]]]]\n");
 	setTitle(std::string(" - Connections: 0").c_str());
 
@@ -62,7 +61,7 @@ int main(int argc, char* argv[])
 	world_name = cfg["World"]["WorldName"].c_str();
 	
 	try{
-		if (argc > 1){
+		if (argc > 1) {
 			int _type = getType(argv[1]);
 			
 			switch (_type){
@@ -100,7 +99,7 @@ int main(int argc, char* argv[])
 
 		Log("Stopping...");
 	}
-	catch (std::exception& e){
+	catch (std::exception& e) {
 		std::cerr << "Exception: " << e.what() << "\n";
 	}
 

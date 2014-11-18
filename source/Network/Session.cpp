@@ -30,8 +30,12 @@ void Session::do_read() {
 				std::vector<char> data(data_, data_ + len);
 				Packet p(data, len);
 				Process(this, p, connection_type);
+			}			
+			else if (ec.value() == 9) {
+				disconnect(ec);
+				delete this;
 			}
-			else{
+			else {
 				disconnect(ec);
 			}
 			do_read();
@@ -58,11 +62,12 @@ size_t Session::send_data(BYTE* _type, void* data, WORD len) {
 
 void Session::disconnect(std::error_code ec){
 	Server* srv = (Server*)server;
-	srv->Connections.erase(id);
 	size_t count = srv->Connections.size();
 	std::string str(std::string(" - Connections: "));
 	setTitle(str.append(std::to_string(count)));
 	
-	std::string er("Connection Id " + std::to_string(id) + ". " + ec.message());
+	std::string er(". " + ec.message() + " | Connection Id " + std::to_string(id));
 	Print::Error(ec.value(), er.c_str());
+
+	srv->Connections.erase(id);
 }
