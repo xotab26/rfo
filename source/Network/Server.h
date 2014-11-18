@@ -41,7 +41,7 @@ public:
 
 	void start(int threadId) {
 		thread_id = threadId;
-		if (running = database.Connect()){
+		if ((running = database.Connect())){
 			char* p = new char[2];
 			strcpy(p = new char[2], std::to_string(Port).c_str());
 			Log("Spawning server type " + std::to_string(DEPLOY_TYPE) + " on port " + p + "\n");

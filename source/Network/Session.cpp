@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Server.h"
 #include "Session.h"
 #include "Handler/LoginHandler.h"
@@ -32,6 +30,10 @@ void Session::do_read() {
 				Process(this, p, connection_type);
 			}			
 			else if (ec.value() == 9) {
+				disconnect(ec);
+				delete this;
+			}
+			else if (ec.value() == 104){
 				disconnect(ec);
 				delete this;
 			}

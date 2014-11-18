@@ -19,7 +19,7 @@ public:
 
 private:
 	static void _account_msg(session nc, Packet p) {
-		auto a = getAccount(nc);
+		//auto a = getAccount(nc);
 		int id = p.id;
 
 		if (id == 0) {
