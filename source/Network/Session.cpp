@@ -19,57 +19,18 @@ void Session::Process(void* con, Packet p, int conn_type) {
 	}
 }
 
-void Session::do_read() {
-	try{
-		char* data_;
-		data_ = new char[MAX_RECEIVE_SIZE];
-		socket_.async_receive(asio::buffer(data_, MAX_RECEIVE_SIZE), [this, data_](std::error_code ec, size_t len) {
-			if (!ec) {
-				std::vector<char> data(data_, data_ + len);
-				Packet p(data, len);
-				Process(this, p, connection_type);
-			}			
-			else if (ec.value() == 9) {
-				disconnect(ec);
-				delete this;
-			}
-			else if (ec.value() == 104){
-				disconnect(ec);
-				delete this;
-			}
-			else {
-				disconnect(ec);
-			}
-			do_read();
-		});
-	}
-	catch (std::exception e){
-		Print::Error(-1, e.what());
-	}
-}
-
-size_t Session::send_data(BYTE* _type, void* data, WORD len) {
-	char buffer[MAX_RECEIVE_SIZE];
-	char* szMsg = (char*)data;
-
-	_MSG_HEADER header;
-	header.m_wSize = len + MSG_HEADER_SIZE;
-	*(WORD*)header.m_byType = *(WORD*)_type;
-
-	memcpy(&buffer[0], &header, MSG_HEADER_SIZE);
-	memcpy(&buffer[MSG_HEADER_SIZE], szMsg, len);
-
-	return asio::write(socket_, asio::buffer(buffer, header.m_wSize));
-}
-
 void Session::disconnect(std::error_code ec){
 	Server* srv = (Server*)server;
+
+	auto s = std::move(srv->Connections[id]);
+	srv->Connections.erase(id);
+
 	size_t count = srv->Connections.size();
 	std::string str(std::string(" - Connections: "));
 	setTitle(str.append(std::to_string(count)));
-	
-	std::string er(". " + ec.message() + " | Connection Id " + std::to_string(id));
-	Print::Error(ec.value(), er.c_str());
 
-	srv->Connections.erase(id);
+	std::string er(". " + ec.message() + " | Connection Id " + std::to_string(id));
+	if (Config::DEBUG) Print::Error(ec.value(), er.c_str());
+
+	active = false;
 }

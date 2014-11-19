@@ -12,12 +12,12 @@ public:
 		Thread(){}
 
 		Thread(int _id, std::thread _t) {
-			Log("Spawning new thread (id " + std::to_string(id = _id) + ")");
+			if (Config::DEBUG) Log("Spawning new thread (id " + std::to_string(id = _id) + ")");
 			_thread = std::make_shared<std::thread>(std::move(_t));
 		}
 
 		Thread(int _id, void(*func)(int)) {
-			Log("Spawning new thread (id " + std::to_string(id = _id) + ")");
+			if (Config::DEBUG) Log("Spawning new thread (id " + std::to_string(id = _id) + ")");
 			auto _t = std::thread([func, _id]{ (*func)(_id); });
 			_thread = std::make_shared<std::thread>(std::move(_t));
 		}

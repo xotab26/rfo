@@ -17,6 +17,7 @@ const char* world_name;
 
 int run_server(int id, int port, int deploy_type) {
 	Server srv(io_service[id], port);
+
 	servers[id] = std::move(&srv);
 	servers[id]->DEPLOY_TYPE = deploy_type;
 	servers[id]->SERVER_INDEX = 0;
@@ -36,8 +37,9 @@ void create_world(char* worldName){
 	int id = server_thread(server_index++, atoi(Config::WorldPort.c_str()), 1);
 	g_WorldData[dwWorldNum].OpenWorld(0, atoi(Config::WorldPort.c_str()));
 	g_WorldData[dwWorldNum].SetWorld(worldName, 0, true, id);
-	servers[id]->WorldData = &g_WorldData[dwWorldNum];
-	servers[id]->WorldNum = id;
+	WorldServer* ws = ((WorldServer*)servers[id]);
+	ws->WorldData = &g_WorldData[dwWorldNum];
+	ws->WorldNum = id;
 	dwWorldNum++;
 }
 
@@ -81,7 +83,7 @@ int main(int argc, char* argv[]) {
 		else{
 			if (Config::DEBUG) {
 				server_thread(server_index++, atoi(Config::LoginPort.c_str()), 0);
-				//create_world("RFTest01");
+				create_world("RFTest01");
 				//server_thread(server_index++, atoi(Config::ZonePort.c_str()), 2);
 			}
 		}

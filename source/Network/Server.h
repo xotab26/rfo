@@ -8,12 +8,14 @@
 
 using asio::ip::tcp;
 
+
 class Server {
 public:
 	Server(asio::io_service& io_service_, short port)
 		: acceptor(io_service_, tcp::endpoint(tcp::v4(), setPort(port))) {
 		io_service = &io_service_;
-		running = false;		
+		running = false;	
+		connection_count = 0;
 	}
 
 	~Server() {
@@ -67,13 +69,24 @@ public:
 	int SERVER_INDEX;
 	int connection_count;
 	short Port;
-
-	unsigned long WorldNum;
-	_WORLD_DATA* WorldData;
 	
 	CDatabase database;
 
 	asio::io_service* io_service;
 	tcp::acceptor acceptor;
 private:
+};
+
+class LoginServer : public Server {
+public:
+};
+
+class WorldServer : public Server {
+public:
+	unsigned long WorldNum;
+	_WORLD_DATA* WorldData;
+};
+
+class ZoneServer : public Server {
+public:
 };
