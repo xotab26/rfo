@@ -14,8 +14,8 @@ public:
 	Server(asio::io_service& io_service_, short port)
 		: acceptor(io_service_, tcp::endpoint(tcp::v4(), setPort(port))) {
 		io_service = &io_service_;
-		running = false;	
-		connection_count = 0;
+		connection_count = 1;
+		running = false;
 	}
 
 	~Server() {
@@ -30,6 +30,7 @@ public:
 	void handle_accept(Session::pointer session, const std::error_code& error) {
 		if (!error) {
 			int id = connection_count++;
+			Log("new connection. cid = " + std::to_string(id));
 			Connections[id] = session;
 			Connections[id]->connection_type = DEPLOY_TYPE;
 			Connections[id]->account.db = &database;
