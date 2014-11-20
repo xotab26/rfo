@@ -15,6 +15,7 @@
 
 int setTitle(std::string titleMsg)
 {
+	std::string title = "[RFO Emulator] ";
 #ifdef _WIN32
 #include <windows.h>
 #ifdef _UNICODE
@@ -22,7 +23,6 @@ int setTitle(std::string titleMsg)
 #else
 	LPCSTR str;
 #endif
-	std::string title = "[RFO Emulator] ";
 	title.append(titleMsg);
 	
 	const char* cs = title.c_str();
@@ -32,7 +32,7 @@ int setTitle(std::string titleMsg)
 #else
 	char esc_start[] = { 0x1b, ']', '0', ';', 0 };
 	char esc_end[] = { 0x07, 0 };
-	std::cout << esc_start << titleMsg << esc_end;
+	std::cout << esc_start << title << titleMsg << esc_end;
 	return 1;
 #endif
 	return 0;

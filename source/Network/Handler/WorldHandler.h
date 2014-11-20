@@ -8,6 +8,7 @@
 class WorldHandler {
 	typedef Session* session;
 	static Account* getAccount(session nc) { return &nc->account; }
+
 public:
 	static void handle(session nc, Packet p) {
 		switch (p.kind) {

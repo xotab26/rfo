@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Network/Protocol.h"
 #include "../Database/Database.h"
 #include "../Character/Character.h"
 
@@ -69,6 +70,8 @@ public:
 	BYTE CryptPlus;
 	WORD CryptKey;
 	CCharacter Character[3];
+
+	DWORD m_dwMasterKey[CHECK_KEY_NUM];
 
 	CDatabase* db;
 private:

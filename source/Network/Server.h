@@ -31,6 +31,7 @@ public:
 		if (!error) {
 			int id = connection_count++;
 			Log("new connection. cid = " + std::to_string(id));
+			memcpy(session->account.m_dwMasterKey, m_dwMasterKey, sizeof(DWORD)*CHECK_KEY_NUM);
 			Connections[id] = session;
 			Connections[id]->connection_type = DEPLOY_TYPE;
 			Connections[id]->account.db = &database;
@@ -43,6 +44,7 @@ public:
 	}
 
 	void start(int threadId) {
+		GenerateMasterKey();
 		thread_id = threadId;
 		if ((running = database.Connect())){
 			char* p = new char[2];
@@ -62,6 +64,13 @@ public:
 		setTitle(std::string(" - Connections: " + std::to_string(count)).c_str());
 	}
 
+	void GenerateMasterKey() {
+		for (int i = 0; i < CHECK_KEY_NUM; i++) {
+			DWORD dwR1 = ::rand();
+			m_dwMasterKey[i] = (dwR1 << 16) + ::rand();
+		}
+	}
+
 	std::map<int, Session::pointer> Connections;
 
 	bool running;
@@ -70,6 +79,8 @@ public:
 	int SERVER_INDEX;
 	int connection_count;
 	short Port;
+
+	DWORD m_dwMasterKey[CHECK_KEY_NUM];
 	
 	CDatabase database;
 

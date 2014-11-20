@@ -119,25 +119,24 @@ private:
 			nc->send_data(byType, &Send, Send.size());
 
 			BYTE byType2[msg_header_num] = { account_msg, world_user_inform_locl };
-			nc->send_data(byType2, &SSend, SSend.size());
+			//nc->send_data(byType2, &SSend, SSend.size());
 
 			BYTE byType3[msg_header_num] = { account_msg, billing_user_inform_locl };
-			nc->send_data(byType3, &SSSend, SSSend.size());
+			//nc->send_data(byType3, &SSSend, SSSend.size());
 		}
 	}
 
 	static void SelectWorldResult(session nc, WORD worldIndex) {
 		_select_world_result_locl send;
 		auto worldData = &g_WorldData[worldIndex];
+		auto a = getAccount(nc);
 
 		if (worldData->m_bOpen) {
 			send.bAllowAltTab = true;
 			send.byRetCode = RET_CODE_SUCCESS;
 			send.dwWorldGateIP = worldData->m_dwGateIP;
 			send.wWorldGatePort = worldData->m_wGatePort;
-			for (size_t i = 0; i < 18; i++)	{
-				send.dwWorldMasterKey[i] = 0;
-			}
+			memcpy(send.dwWorldMasterKey, a->m_dwMasterKey, sizeof(DWORD)*CHECK_KEY_NUM);
 		}
 		else {
 			send.byRetCode = RET_CODE_CLOSE_WORLD;

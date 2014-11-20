@@ -60,8 +60,7 @@ struct _MSG_HEADER
 
 #define MSG_HEADER_SIZE sizeof(_MSG_HEADER)
 
-struct _WORLD_DATA
-{
+struct _WORLD_DATA {
 	bool m_bOpen;
 	char m_szWorldName[33];
 	DWORD m_dwGateIP;
@@ -72,36 +71,31 @@ struct _WORLD_DATA
 	int m_nWorldKey;
 	int m_nNetIndex;
 
-	_WORLD_DATA()
-	{
+	_WORLD_DATA() {
 		m_bOpen = false;
 		m_bFreeServer = false;
 		m_nNetIndex = -1;
 	}
 
-	void SetWorld(char *szWorldName, BYTE byType, bool bFree,int nNetIndex)
-	{
-		strcpy(m_szWorldName,szWorldName);
+	void SetWorld(char *szWorldName, BYTE byType, bool bFree,int nNetIndex) {
+		strcpy(m_szWorldName, szWorldName);
 		m_byType = byType;
 		m_bFreeServer = bFree;
 		m_nNetIndex = nNetIndex;
 	}
 
-	void OpenWorld(DWORD dwGateIP, WORD wGatePort)
-	{
+	void OpenWorld(DWORD dwGateIP, WORD wGatePort) {
 		m_bOpen = true;
-		//m_dwGateIP = dwGateIP;
+		m_dwGateIP = dwGateIP;
 		m_wGatePort = wGatePort;
 		m_nUserNum = 0;
 	}
 
-	void CloseWorld()
-	{
+	void CloseWorld() {
 		m_bOpen = false;
 	}
 
-	void SetUserNum(int nUserNum)
-	{
+	void SetUserNum(int nUserNum) {
 		m_nUserNum = nUserNum;
 	}
 };
