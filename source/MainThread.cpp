@@ -53,6 +53,22 @@ int getType(const char* v) {
 	return -1;
 }
 
+void run(int type_){
+	switch (type_){
+	case 0:
+		server_thread(server_index++, atoi(Config::LoginPort.c_str()), 0);
+		break;
+
+	case 1:
+		create_world("RFTest01");
+		break;
+
+	case 2:
+		server_thread(server_index++, atoi(Config::ZonePort.c_str()), 2);
+		break;
+	}
+}
+
 int main(int argc, char* argv[]) {
 	Log("[[[[[[[[[[Developed By Tsume]]]]]]]]]]\n");
 	setTitle(std::string(" - Connections: 0").c_str());
@@ -68,19 +84,16 @@ int main(int argc, char* argv[]) {
 	try{
 		if (argc > 1) {
 			int _type = getType(argv[1]);
-			
-			switch (_type){
-			case 0:
-				server_thread(server_index++, atoi(Config::LoginPort.c_str()), 0);
-				break;
-				
-			case 1:
-				create_world("RFTest01");
-				break;
-				
-			case 2:
-				server_thread(server_index++, atoi(Config::ZonePort.c_str()), 2);
-				break;
+			run(_type);
+
+			if (argc > 2){
+				_type = getType(argv[2]);
+				run(_type);
+			}
+
+			if (argc > 3){
+				_type = getType(argv[3]);
+				run(_type);
 			}
 		}
 		else{
