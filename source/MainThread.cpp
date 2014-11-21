@@ -31,7 +31,7 @@ int server_thread(int id, int port, int deploy_type) {
 	return id;
 }
 
-void create_world(char* worldName){
+void create_world(const char* worldName){
 	int port = atoi(Config::WorldPort.c_str());
 	DWORD ipAddr = GetIPAddress(Config::WorldIP.c_str());
 	int id = server_thread(server_index++, port, 1);
@@ -51,14 +51,14 @@ int getType(const char* v) {
 	return -1;
 }
 
-void run(int type_){
+void new_server(int type_){
 	switch (type_){
 	case 0:
 		server_thread(server_index++, atoi(Config::LoginPort.c_str()), 0);
 		break;
 
 	case 1:
-		create_world("RFTest01");
+		create_world(Config::ReadCfg()["World"]["WorldName"].c_str());
 		break;
 
 	case 2:
@@ -81,24 +81,21 @@ int main(int argc, char* argv[]) {
 	
 	try{
 		if (argc > 1) {
-			int _type = getType(argv[1]);
-			run(_type);
+			new_server(getType(argv[1]));
 
 			if (argc > 2){
-				_type = getType(argv[2]);
-				run(_type);
+				new_server(getType(argv[2]));
 			}
 
 			if (argc > 3){
-				_type = getType(argv[3]);
-				run(_type);
+				new_server(getType(argv[3]));
 			}
 		}
 		else{
 			if (Config::DEBUG) {
-				server_thread(server_index++, atoi(Config::LoginPort.c_str()), 0);
-				create_world("RFTest01");
-				server_thread(server_index++, atoi(Config::ZonePort.c_str()), 2);
+				new_server(0);
+				new_server(1);
+				new_server(2);
 			}
 		}
 		

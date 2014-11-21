@@ -78,7 +78,7 @@ struct _WORLD_DATA {
 		m_nNetIndex = -1;
 	}
 
-	void SetWorld(char *szWorldName, BYTE byType, bool bFree,int nNetIndex) {
+	void SetWorld(const char *szWorldName, BYTE byType, bool bFree,int nNetIndex) {
 		strcpy(m_szWorldName, szWorldName);
 		m_byType = byType;
 		m_bFreeServer = bFree;
@@ -90,10 +90,12 @@ struct _WORLD_DATA {
 		m_dwGateIP = dwGateIP;
 		m_wGatePort = wGatePort;
 		m_nUserNum = 0;
+		Log(std::string("World ").append(m_szWorldName).append(" opened."));
 	}
 
 	void CloseWorld() {
 		m_bOpen = false;
+		Log(std::string("World ").append(m_szWorldName).append(" closed."));
 	}
 
 	void SetUserNum(int nUserNum) {
