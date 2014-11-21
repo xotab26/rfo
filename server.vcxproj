@@ -36,7 +36,6 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -90,10 +89,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WIN32_WINDOWS;_CRT_SECURE_NO_WARNINGS;ASIO_STANDALONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>D:\includes\mysql-5.6.20-win32\include;D:\includes\asio-1.10.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -135,8 +134,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\Account\Account.cpp" />
-    <ClCompile Include="source\Network\Handler\LoginHandler.h" />
-    <ClCompile Include="source\Network\Handler\WorldHandler.h" />
+    <ClCompile Include="source\Network\Handler\LoginHandler.cpp" />
+    <ClCompile Include="source\Network\Handler\WorldHandler.cpp" />
     <ClCompile Include="source\Database\Database.cpp" />
     <ClCompile Include="source\MainThread.cpp" />
     <ClCompile Include="source\Network\Session.cpp" />

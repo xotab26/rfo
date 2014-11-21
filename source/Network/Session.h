@@ -51,6 +51,25 @@ public:
 		return asio::write(socket_, asio::buffer(buffer, header.m_wSize));
 	}
 
+	size_t send_data_v2(BYTE* _type, void* data, WORD len) {
+		char buffer[MAX_RECEIVE_SIZE];
+		char* szMsg = (char*)data;
+
+		_MSG_HEADERv2 header;
+		header.m_wSize = len;
+		header.m_wPsize = len + MSG_HEADER_v2_SIZE;
+		header.m_wPsize += MSG_FOOTER_SIZE;
+		*(WORD*)header.m_byType = *(WORD*)_type;
+
+		memcpy(&buffer[0], &header, MSG_HEADER_v2_SIZE);
+		memcpy(&buffer[MSG_HEADER_v2_SIZE], szMsg, len);
+
+		_MSG_FOOTER ft; ft._c = 0; ft._t = 4;
+		memcpy(&buffer[len + MSG_HEADER_v2_SIZE], &ft, MSG_FOOTER_SIZE);
+
+		return asio::write(socket_, asio::buffer(buffer, header.m_wPsize));
+	}
+
 	void DisposeObject() {
 		delete this;
 	}
@@ -83,7 +102,9 @@ private:
 
 	void call_error(std::error_code ec){
 		switch (ec.value()){
-		case 1:
+		case 2://end of file
+			Log("End of file. cid: " + std::to_string(id));
+			break;
 		default:
 			disconnect(ec);
 		}

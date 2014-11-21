@@ -44,17 +44,17 @@
     <ClCompile Include="source\MainThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Network\Handler\WorldHandler.h">
-      <Filter>Source Files\Network\Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Network\Handler\LoginHandler.h">
-      <Filter>Source Files\Network\Handler</Filter>
-    </ClCompile>
     <ClCompile Include="source\Network\Session.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
     <ClCompile Include="source\Account\Account.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Network\Handler\WorldHandler.cpp">
+      <Filter>Source Files\Network\Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Network\Handler\LoginHandler.cpp">
+      <Filter>Source Files\Network\Handler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,9 +63,6 @@
     </ClInclude>
     <ClInclude Include="source\Account\Account.h">
       <Filter>Source Files\Account</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Character\Character.h">
-      <Filter>Source Files\Character</Filter>
     </ClInclude>
     <ClInclude Include="source\Database\Database.h">
       <Filter>Source Files\Database</Filter>
@@ -84,5 +81,8 @@
     </ClInclude>
     <ClInclude Include="source\Network\Protocol\zone_2232.h" />
     <ClInclude Include="source\Network\BaseHandler.h" />
+    <ClInclude Include="source\Character\Character.h">
+      <Filter>Source Files\Character</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

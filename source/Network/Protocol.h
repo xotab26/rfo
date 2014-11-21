@@ -42,6 +42,7 @@ enum {
 	CHECK_KEY_NUM = 4,
 	MAX_WORLD_PER_GLOBAL = 1,
 	MAX_RECEIVE_SIZE = 4096,
+	MAX_CHAR_PER_WORLDUSER = 3,
 	msg_header_num = 2
 };
 
@@ -51,15 +52,27 @@ enum SERVER_DPLOY_TYPE {
 
 #pragma pack(push, 1)
 
-struct _MSG_HEADER
-{
+struct _MSG_HEADER{
 	WORD m_wSize;
 	BYTE m_byType[msg_header_num];	
+};
+
+struct _MSG_HEADERv2{
+	WORD m_wPsize;
+	WORD m_wSize;
+	BYTE m_byType[msg_header_num];
+};
+
+struct _MSG_FOOTER{
+	char _c;
+	int _t;
 };
 
 #pragma pack(pop)
 
 #define MSG_HEADER_SIZE sizeof(_MSG_HEADER)
+#define MSG_HEADER_v2_SIZE sizeof(_MSG_HEADERv2)
+#define MSG_FOOTER_SIZE sizeof(_MSG_FOOTER)
 
 struct _WORLD_DATA {
 	bool m_bOpen;
@@ -218,3 +231,43 @@ extern std::map<int, _WORLD_DATA> g_WorldData;
 #define RET_CODE_PROGRAM_EXIT		0xFF
 
 #endif
+
+#pragma region CharacterData
+#define equip_fix_num	8
+
+struct _EQUIPKEY
+{
+	short zItemIndex;
+
+	bool IsFilled()		{ if (zItemIndex == -1) return false;	return true; }
+	void SetRelease()	{ zItemIndex = -1; }
+	short CovDBKey()	{ return zItemIndex; }
+	void  LoadDBKey(short pl_zKey)	{ zItemIndex = pl_zKey; }
+};
+
+struct _REGED_AVATOR_DB
+{
+	char		m_szAvatorName[max_name_len + 1];
+	DWORD		m_dwRecordNum;
+	BYTE		m_byRaceSexCode;
+	BYTE		m_bySlotIndex;
+	char		m_szClassCode[class_code_len + 1];
+	BYTE		m_byLevel;
+	DWORD		m_dwDalant;
+	DWORD		m_dwGold;
+	DWORD		m_dwBaseShape;
+	_EQUIPKEY	m_EquipKey[equip_fix_num];
+	BYTE		m_byEquipLv[equip_fix_num];
+	DWORD		m_dwLastConnTime;
+
+	_REGED_AVATOR_DB(){ Init(); }
+
+	void Init(){
+		memset(this, 0, sizeof(*this));
+		m_bySlotIndex = 0xFF;
+		m_dwRecordNum = 0xFFFFFFFF;
+		for (int i = 0; i < equip_fix_num; i++)
+			m_EquipKey[i].SetRelease();
+	}
+};
+#pragma endregion

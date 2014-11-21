@@ -39,7 +39,7 @@ public:
 			}
 
 			AccountId = (u_int)atol(AccountRow["id"].c_str());
-			UserGrade = (short)atoi(AccountRow["type"].c_str());
+			UserGrade = (BYTE)atoi(AccountRow["type"].c_str());
 			Nick = AccountRow["nick"];
 			Pass = AccountRow["pass"];
 			Email = AccountRow["email"];
@@ -47,8 +47,10 @@ public:
 			query = std::string("SELECT * FROM Characters WHERE account='" + std::to_string(AccountId) + "'");
 			res = db->Select(query.c_str());
 
-			for (size_t i = 0; i < res.size(); i++) {
-				Character[i].Set(res[i]);
+			CharNum = res.size();
+
+			for (size_t i = 0; i < CharNum; i++) {
+				character[i].Set(res[i]);
 			}
 
 			return true;
@@ -66,6 +68,7 @@ public:
 	/// </summary>
 	static Account create(u_int localId){
 		Account a;
+		a.CharNum = 0;
 		a.nBillInform = 0;
 		a.Accepted = false;
 		a.LocalId = localId;
@@ -75,7 +78,8 @@ public:
 
 	bool Accepted;
 	int nBillInform;
-	short UserGrade;
+	short CharNum;
+	BYTE UserGrade;
 	u_int LocalId;
 	u_int AccountId;
 	std::string Nick;
@@ -83,7 +87,7 @@ public:
 	std::string Email;
 	BYTE CryptPlus;
 	WORD CryptKey;
-	CCharacter Character[3];
+	Character character[3];
 
 	DWORD m_dwMasterKey[CHECK_KEY_NUM];
 
