@@ -17,7 +17,6 @@ const char* world_name;
 
 int run_server(int id, int port, int deploy_type) {
 	Server srv(io_service[id], port);
-
 	servers[id] = std::move(&srv);
 	servers[id]->DEPLOY_TYPE = deploy_type;
 	servers[id]->SERVER_INDEX = 0;
@@ -26,9 +25,9 @@ int run_server(int id, int port, int deploy_type) {
 }
 
 int server_thread(int id, int port, int deploy_type) {
-	int tid = TManager.create(std::thread([id, port, deploy_type] { run_server(id, port, deploy_type); }));
+	int _id = TManager.create(std::thread([id, port, deploy_type] { run_server(id, port, deploy_type); }));
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	return id;
+	return _id;
 }
 
 void create_world(const char* worldName){

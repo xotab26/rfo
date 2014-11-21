@@ -29,19 +29,26 @@ public:
 		std::shared_ptr<std::thread> _thread;
 	};
 
-	ThreadManager(){
+	ThreadManager() {
 		max_threads = std::thread::hardware_concurrency() * 2;
 	}
 
 	void start(){
 		Threads = new Thread[max_threads];
-		if(Config::DEBUG) Log("Max Threads " + std::to_string(max_threads));
+		if (Config::DEBUG)
+			Log("Maximum allowed threads = " + std::to_string(max_threads));
 	}
 
 	int create(std::thread _t) {
 		int id = thread_count++;
-		Threads[id] = Thread(id, std::move(_t));
-		return id;
+		if (id < max_threads){
+			Threads[id] = Thread(id, std::move(_t));
+			return id;
+		}
+		else{
+			Print::Error(-1, "You've reached the soft limit for concurrent threads!!");
+			return -1;
+		}
 	}
 
 	int create(void(*func)(int)){
