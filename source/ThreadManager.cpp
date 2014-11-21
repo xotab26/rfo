@@ -24,6 +24,10 @@ public:
 			_thread->join();
 		}
 
+		void detach(){
+			_thread->detach();
+		}
+
 		int id;
 	private:
 		std::shared_ptr<std::thread> _thread;
@@ -49,6 +53,10 @@ public:
 			Print::Error(-1, "You've reached the soft limit for concurrent threads!!");
 			return -1;
 		}
+	}
+
+	void join_thread(int thread_id){
+		Threads[thread_id].join();
 	}
 
 	int create(void(*func)(int)){

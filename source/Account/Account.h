@@ -19,25 +19,39 @@ public:
 	/// <returns>True if check passes, otherwise false.</returns>
 	bool Verify(char* nick, char* pass){
 		std::string query("SELECT * FROM Accounts WHERE nick='" + std::string(nick) + "' AND pass='" + pass + "'");
+		return Accepted = Load(query);
+	}
 
+
+	bool Load(u_int aid) {
+		std::string query("SELECT * FROM Accounts WHERE id='" + std::to_string(aid) + "'");
+		return Load(query);
+	}
+
+	bool Load(std::string query){
 		if (db->Connect()) {
 			auto res = db->Select(query.c_str());
-			if (!res.empty()) AccountRow = res[0];
+			if (!res.empty()) {
+				AccountRow = res[0];
+				if (AccountRow.size() <= 1){
+					return false;
+				}
+			}
 
-			AccountId = (u_int) atol(AccountRow["id"].c_str());
-			Type = (short) atoi(AccountRow["type"].c_str());
+			AccountId = (u_int)atol(AccountRow["id"].c_str());
+			UserGrade = (short)atoi(AccountRow["type"].c_str());
 			Nick = AccountRow["nick"];
 			Pass = AccountRow["pass"];
 			Email = AccountRow["email"];
-			
+
 			query = std::string("SELECT * FROM Characters WHERE account='" + std::to_string(AccountId) + "'");
 			res = db->Select(query.c_str());
-			
+
 			for (size_t i = 0; i < res.size(); i++) {
 				Character[i].Set(res[i]);
 			}
 
-			return Accepted = true;
+			return true;
 		}
 
 		return false;
@@ -61,7 +75,7 @@ public:
 
 	bool Accepted;
 	int nBillInform;
-	short Type;
+	short UserGrade;
 	u_int LocalId;
 	u_int AccountId;
 	std::string Nick;

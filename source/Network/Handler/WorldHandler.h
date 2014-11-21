@@ -31,14 +31,12 @@ private:
 
 	static void EnterWorldRequestZone(session nc, Packet p) {//TODO: doesn't return the correct AccountSerial
 		_enter_world_request_zone* pRecv = (_enter_world_request_zone*)p.buf;
-		auto db = getDB(nc);
-
-		auto query = std::string("SELECT * FROM Accounts WHERE id=");
-		query.append(std::to_string(pRecv->dwAccountSerial));
-		auto row = db->Select(query.c_str());
+		Account* a = getAccount(nc);		
+		a->Load(pRecv->dwAccountSerial);
 
 		_enter_world_result_zone send;
-		auto a = getAccount(nc);
+		send.byResult = RET_CODE_SUCCESS;
+		send.byUserGrade = a->UserGrade;
 
 		BYTE byType[msg_header_num] = { system_msg, enter_world_request_zone };
 		nc->send_data(byType, &send, send.size());

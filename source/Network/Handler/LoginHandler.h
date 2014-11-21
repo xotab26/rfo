@@ -41,8 +41,10 @@ private:
 		auto a = getAccount(nc);
 
 		_crypty_key_inform_locl send;
-		send.byPlus = a->CryptPlus = ::rand() % 5;
-		send.wKey = a->CryptKey = ::rand() % 1024;
+		//send.byPlus = a->CryptPlus = ::rand() % 5;
+		//send.wKey = a->CryptKey = ::rand() % 254;
+		send.byPlus = a->CryptPlus = 0;
+		send.wKey = a->CryptKey = 228;
 
 		BYTE byType[msg_header_num] = { account_msg, crypty_key_inform_locl };
 		nc->send_data(byType, &send, send.size());

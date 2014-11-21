@@ -69,13 +69,13 @@ void new_server(int type_){
 int main(int argc, char* argv[]) {
 	Log("[[[[[[[[[[Developed By Tsume]]]]]]]]]]\n");
 	setTitle(std::string(" - Connections: 0").c_str());
+	auto cfg = Config::ReadCfg();
 
 	TManager.start();
 	dwWorldNum = 0;
 
 	io_service = new asio::io_service[TManager.max_threads];
 
-	auto cfg = Config::ReadCfg();
 	world_name = cfg["World"]["WorldName"].c_str();
 	
 	try{
@@ -99,6 +99,8 @@ int main(int argc, char* argv[]) {
 		}
 		
 		running = true;
+
+		TManager.join_thread(0);
 
 		while (running){
 			char line[256];
