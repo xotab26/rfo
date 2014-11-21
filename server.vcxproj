@@ -144,8 +144,10 @@
     <ClCompile Include="source\Utilities\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Network\Protocol\zone_2232.h" />
     <ClInclude Include="source\Account\Account.h" />
     <ClInclude Include="source\Character\Character.h" />
+    <ClInclude Include="source\Network\BaseHandler.h" />
     <ClInclude Include="source\Network\Protocol\login_2232.h" />
     <ClInclude Include="source\Database\Database.h" />
     <ClInclude Include="source\Network\Protocol.h" />

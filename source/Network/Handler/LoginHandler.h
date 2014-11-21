@@ -1,15 +1,10 @@
 #pragma once
 
-#include "../Session.h"
-#include "../Protocol.h"
-#include "../../Account/Account.h"
+#include "../BaseHandler.h"
 #include "../Protocol/login_2232.h"
 #include <time.h> 
 
-class LoginHandler {
-	typedef Session* session;
-	static Account* getAccount(session nc) { return &nc->account; }
-
+class LoginHandler : public BaseHandler {
 public:
 	static void handle(session nc, Packet p) {
 		switch (p.kind) {

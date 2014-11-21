@@ -14,21 +14,22 @@ typedef unsigned short ushort;
 
 struct Packet {
 	Packet(std::vector<char> _buf, size_t _len){
+		int size1 = Convert::ToShort(&_buf[0]) - 6;
+		int size2 = Convert::ToShort(&_buf[2]);
+
+		int h_size = 4;
+		if (size1 == size2){
+			h_size = 6;
+		}
+
 		buf = new char[len = _len];
 		for (size_t i = 0; i < len; i++)
 			buf[i] = _buf[i];
-		kind = buf[2];
-		id = buf[3];
 
-		buf = &buf[4];//remove header
-	}
+		kind = buf[h_size - 2];
+		id = buf[h_size - 1];
 
-	Packet(char* _buf, size_t _len){
-		buf = _buf;
-		kind = buf[2];
-		id = buf[3];
-
-		buf = &buf[4];//remove header
+		buf = &buf[h_size];//remove header
 	}
 
 	char* buf;
@@ -38,7 +39,7 @@ struct Packet {
 };
 
 enum {
-	CHECK_KEY_NUM = 18,
+	CHECK_KEY_NUM = 4,
 	MAX_WORLD_PER_GLOBAL = 1,
 	MAX_RECEIVE_SIZE = 4096,
 	msg_header_num = 2

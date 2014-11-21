@@ -55,6 +55,7 @@ public:
 		delete this;
 	}
 
+	CDatabase* db;
 	Account account;
 	void* server;
 
@@ -76,19 +77,16 @@ private:
 				Process(this, Packet(data, len), connection_type);
 				start_read();
 			}
-			else if (ec.value() == 9) {
-				disconnect(ec);
-			}
-			else if (ec.value() == 104){
-				disconnect(ec);
-			}
-			else if (ec.value() == 10054){
-				disconnect(ec);
-			}
-			else {
-				disconnect(ec);
-			}
+			else call_error(ec);
 		});
+	}
+
+	void call_error(std::error_code ec){
+		switch (ec.value()){
+		case 1:
+		default:
+			disconnect(ec);
+		}
 	}
 
 	void disconnect(std::error_code ec);

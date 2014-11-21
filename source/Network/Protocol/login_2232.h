@@ -1,6 +1,4 @@
-﻿
-
-#ifndef GLOBAL_H2 // header guards
+﻿#ifndef GLOBAL_H2 // header guards
 #define GLOBAL_H2
 
 #pragma pack(push, 1)

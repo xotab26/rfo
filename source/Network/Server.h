@@ -35,6 +35,7 @@ public:
 			Connections[id] = session;
 			Connections[id]->connection_type = DEPLOY_TYPE;
 			Connections[id]->account.db = &database;
+			Connections[id]->db = &database;
 			Connections[id]->server = this;
 			Connections[id]->id = id;
 			Connections[id]->start();

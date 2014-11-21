@@ -82,5 +82,7 @@
     <ClInclude Include="source\Network\Session.h">
       <Filter>Source Files\Network</Filter>
     </ClInclude>
+    <ClInclude Include="source\Network\Protocol\zone_2232.h" />
+    <ClInclude Include="source\Network\BaseHandler.h" />
   </ItemGroup>
 </Project>
