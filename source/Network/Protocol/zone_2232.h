@@ -1,68 +1,88 @@
 ﻿#pragma pack(push, 1)
 
 //system_msg	1
-#define enter_world_request_zone 1 //Require user authentication	
-struct _enter_world_request_zone {
-
-	DWORD	dwAccountSerial;
-	DWORD	dwMasterKey[CHECK_KEY_NUM];
-	bool	bFullMode;	//full mode true, window mode.. false
+#define enter_world_request_clzo 1	
+struct _enter_world_request_clzo
+{
+	DWORD dwAccountSerial;
+	DWORD dwMasterKey[CHECK_KEY_NUM];
+	bool  bFullMode;
+	DWORD dwProtocolVer;
+	char  szClientVerCheckKey[33];
 
 	int size()	{ return sizeof(*this); }
 };
 
-#define enter_world_result_zone 2 //Results of user authentication
-struct _enter_world_result_zone {
-	//#define USER_DEGREE_STD			0 //General
-	//#define USER_DEGREE_GID			1 //Guide
-	//#define USER_DEGREE_MGR			2 //Operator
-	//#define USER_DEGREE_DEV			3 //Developer
-
+#define enter_world_result_zocl 2
+struct _enter_world_result_zocl
+{
 	BYTE	byResult;
 	BYTE	byUserGrade;
+	BYTE	bySvrType;
 
 	int size()	{ return sizeof(*this); }
 };
 
-#define reged_char_request_zone 8
-struct _reged_char_request_zone {
-
-	int size() { return 0; }
+#define reged_char_request_clwr 8
+struct _reged_char_request_clwr
+{
+	char dummy[1];
+	int size()	{ return sizeof(*this); }
 };
 
 #define reged_char_result_zone 9
-struct _reged_char_result_zone {
+struct _reged_char_result_wrcl
+{
+	char byRetCode;
+	char byCharNum;
+	int iLockType[3];
+	_REGED_AVATOR_DB RegedList[3];
+
+	enum LOCK_TYPE
+	{
+		LT_NONE = 0x0,
+		LT_REQUEST_MOVE_CHARACTER = 0x1,
+		LT_TOURNAMENT_CHARACTER = 0x2,
+	};
+	int size()	{ return (sizeof(*this) - sizeof(_REGED_AVATOR_DB)*(3 - byCharNum)); }
+};
+
+#define uilock_init_request_clwr 127
+struct _uilock_init_request_clwr {
+	char uszUILockPW[13];
+	char uszUILockPW_Confirm[13];
+	BYTE byUILock_HintIndex;
+	char uszUILock_HintAnswer[17];
+	int size() { return sizeof(*this); }
+};
+
+#define uilock_fg_auth_req_clwr 129
+struct _uilock_fg_auth_req_clwr {
+	char szPW[17];
+	int size() { return sizeof(*this); }
+};
+
+#define uilock_fg_auth_req_wrcl 130
+struct _uilock_fg_auth_req_wrcl {
+	BYTE byRetCode;
+	int size() { return sizeof(*this); }
+};
+
+#define del_char_request_clwr 12
+struct _del_char_request_clwr {
+
+	BYTE bySlotIndex;
+
+	int size()	{ return sizeof(*this); }
+};
+
+#define del_char_result_wrcl 13
+struct _del_char_result_wrcl {
 
 	BYTE	byRetCode;
-	BYTE	byCharNum;
+	BYTE	bySlotIndex;
+	DWORD	dwWorldSerial;
 
-	int	dum1;
-	int	dum2;
-	int	dum3;
-
-	_REGED_AVATOR_DB RegedList[MAX_CHAR_PER_WORLDUSER];
-
-	_reged_char_result_zone(){
-		byCharNum = 0;
-	}
-
-	int size(){
-		return sizeof(*this) - sizeof(_REGED_AVATOR_DB)*(MAX_CHAR_PER_WORLDUSER - byCharNum);
-	}
+	int size()	{ return sizeof(*this); }
 };
-
-#define fireguard_request_zone 127
-struct _fireguard_request_zone {
-
-	int size() { return 0; }
-};
-
-#define fireguard_result_zone 130
-struct _fireguard_result_zone {
-
-	bool enabled;
-
-	int size() { enabled = false; return 0; }
-};
-
 #pragma pack(pop)
