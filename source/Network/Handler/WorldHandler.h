@@ -27,8 +27,8 @@ private:
 			EnterWorldRequestZone(nc, p);
 			break;
 
-		case reged_char_result_zone:
-			EnterWorldRequestZone(nc, p);
+		case reged_char_request_zone:
+			RegedCharResultZone(nc, p);
 			break;
 		}
 	}
@@ -53,9 +53,20 @@ private:
 		send.byRetCode = RET_CODE_SUCCESS;
 		send.byCharNum = a->CharNum;
 
+		send.dum1 = 2;
+		send.dum2 = 3435973836;
+		send.dum3 = 2;
 
-		BYTE byType[msg_header_num] = { system_msg, enter_world_result_zone };
+		for (size_t i = 0; i < MAX_CHAR_PER_WORLDUSER; i++) {
+			send.RegedList[i] = (_REGED_AVATOR_DB)a->character[i];
+		}
+
+		BYTE byType[msg_header_num] = { system_msg, reged_char_result_zone };
 		nc->send_data_v2(byType, &send, send.size());
+
+		_fireguard_result_zone ssend; //disable fireguard
+		BYTE byType2[msg_header_num] = { ui_msg, fireguard_result_zone };
+		nc->send_data_v2(byType2, &ssend, ssend.size());
 	}
 
 	static void _account_msg(session nc, Packet p) {

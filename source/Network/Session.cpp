@@ -1,7 +1,7 @@
 #include "Server.h"
 #include "Session.h"
-#include "Handler/LoginHandler.cpp"
-#include "Handler/WorldHandler.cpp"
+#include "Handler/LoginHandler.h"
+#include "Handler/WorldHandler.h"
 
 
 void Session::Process(void* con, Packet p, int conn_type) {

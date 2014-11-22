@@ -134,8 +134,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\Account\Account.cpp" />
-    <ClCompile Include="source\Network\Handler\LoginHandler.cpp" />
-    <ClCompile Include="source\Network\Handler\WorldHandler.cpp" />
+    <ClCompile Include="source\Network\Handler\LoginHandler.h" />
+    <ClCompile Include="source\Network\Handler\WorldHandler.h" />
     <ClCompile Include="source\Database\Database.cpp" />
     <ClCompile Include="source\MainThread.cpp" />
     <ClCompile Include="source\Network\Session.cpp" />
@@ -143,6 +143,7 @@
     <ClCompile Include="source\Utilities\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Character\CharacterHeaders.h" />
     <ClInclude Include="source\Network\Protocol\zone_2232.h" />
     <ClInclude Include="source\Account\Account.h" />
     <ClInclude Include="source\Character\Character.h" />

@@ -50,10 +50,10 @@
     <ClCompile Include="source\Account\Account.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Network\Handler\WorldHandler.cpp">
+    <ClCompile Include="source\Network\Handler\WorldHandler.h">
       <Filter>Source Files\Network\Handler</Filter>
     </ClCompile>
-    <ClCompile Include="source\Network\Handler\LoginHandler.cpp">
+    <ClCompile Include="source\Network\Handler\LoginHandler.h">
       <Filter>Source Files\Network\Handler</Filter>
     </ClCompile>
   </ItemGroup>
@@ -84,5 +84,6 @@
     <ClInclude Include="source\Character\Character.h">
       <Filter>Source Files\Character</Filter>
     </ClInclude>
+    <ClInclude Include="source\Character\CharacterHeaders.h" />
   </ItemGroup>
 </Project>

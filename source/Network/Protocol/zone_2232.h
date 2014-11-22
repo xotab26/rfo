@@ -24,17 +24,21 @@ struct _enter_world_result_zone {
 	int size()	{ return sizeof(*this); }
 };
 
-#define reged_char_request_zone 7
+#define reged_char_request_zone 8
 struct _reged_char_request_zone {
 
 	int size() { return 0; }
 };
 
-#define reged_char_result_zone 8
+#define reged_char_result_zone 9
 struct _reged_char_result_zone {
 
 	BYTE	byRetCode;
 	BYTE	byCharNum;
+
+	int	dum1;
+	int	dum2;
+	int	dum3;
 
 	_REGED_AVATOR_DB RegedList[MAX_CHAR_PER_WORLDUSER];
 
@@ -45,6 +49,20 @@ struct _reged_char_result_zone {
 	int size(){
 		return sizeof(*this) - sizeof(_REGED_AVATOR_DB)*(MAX_CHAR_PER_WORLDUSER - byCharNum);
 	}
+};
+
+#define fireguard_request_zone 127
+struct _fireguard_request_zone {
+
+	int size() { return 0; }
+};
+
+#define fireguard_result_zone 130
+struct _fireguard_result_zone {
+
+	bool enabled;
+
+	int size() { enabled = false; return 0; }
 };
 
 #pragma pack(pop)
