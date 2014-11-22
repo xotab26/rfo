@@ -13,42 +13,45 @@ public:
 			break;
 
 		case account_msg:
-			_account_msg(nc, p);
 			break;
 		}
 	}
 
 private:
 	static void _system_msg(session nc, Packet p) {
+		auto a = getAccount(nc);
 		int id = p.id;
 
 		switch (id) {
 		case enter_world_request_clzo:
-			_enter_world_result_zocl_(nc, p);
+			_enter_world_result_zocl_(nc, p, a);
 			break;
 
 		case reged_char_request_clwr:
-			_reged_char_result_wrcl_(nc, p);
+			_reged_char_result_wrcl_(nc, p, a);
 			break;
 
 		case uilock_init_request_clwr:
-			_uilock_fg_auth_req_wrcl_(nc, p);
+			_uilock_fg_auth_req_wrcl_(nc, p, a);
 			break;
 
 		case uilock_fg_auth_req_clwr:
-			_uilock_fg_auth_req_wrcl_(nc, p);
+			_uilock_fg_auth_req_wrcl_(nc, p, a);
+			break;
+
+		case add_char_request_clwr:
+			_add_char_result_zocl_(nc, p, a);
 			break;
 
 		case del_char_request_clwr:
-			_del_char_request_clwr_(nc, p);
+			_del_char_request_clwr_(nc, p, a);
 			break;
 		}
 	}
 
 #pragma region World Handlers
-	static void _enter_world_result_zocl_(session nc, Packet p) {
+	static void _enter_world_result_zocl_(session nc, Packet p, Account* a) {
 		_enter_world_request_clzo* pRecv = (_enter_world_request_clzo*)p.buf;
-		Account* a = getAccount(nc);
 		a->Load(pRecv->dwAccountSerial);
 
 		_enter_world_result_zocl send;
@@ -60,9 +63,7 @@ private:
 		nc->send_data_v2(byType, &send, send.size());
 	}
 
-	static void _reged_char_result_wrcl_(session nc, Packet p) {
-		Account* a = getAccount(nc);
-
+	static void _reged_char_result_wrcl_(session nc, Packet p, Account* a) {
 		_reged_char_result_wrcl send;
 		if (a->CharNum > 0)
 		{
@@ -82,13 +83,12 @@ private:
 
 		BYTE byType[msg_header_num] = { system_msg, reged_char_result_zone };
 		nc->send_data_v2(byType, &send, send.size());
-		_uilock_fg_auth_req_wrcl_(nc, p);
+		_uilock_fg_auth_req_wrcl_(nc, p, a);
 	}
 
-	static void _uilock_fg_auth_req_wrcl_(session nc, Packet p) {
+	static void _uilock_fg_auth_req_wrcl_(session nc, Packet p, Account* a) {
 		_uilock_init_request_clwr* pRecv = (_uilock_init_request_clwr*)p.buf;
 		_uilock_fg_auth_req_clwr* pRecv2 = (_uilock_fg_auth_req_clwr*)p.buf;
-		Account* a = getAccount(nc);
 
 		_uilock_fg_auth_req_wrcl send;
 		send.byRetCode = RET_CODE_SUCCESS;
@@ -97,12 +97,21 @@ private:
 		nc->send_data_v2(byType, &send, send.size());
 	}
 
-	static void _del_char_request_clwr_(session nc, Packet p){
+	static void _add_char_result_zocl_(session nc, Packet p, Account* a){
+		_add_char_request_clwr* pRecv = (_add_char_request_clwr*)p.buf;
+
+		_add_char_result_zocl send;
+		send.byRetCode = a->createChar(pRecv->byRaceSexCode, pRecv->bySlotIndex, pRecv->dwBaseShape, pRecv->szClassCode, pRecv->wszCharName);
+		send.byAddSlotIndex = pRecv->bySlotIndex;
+		
+		BYTE byType[msg_header_num] = { system_msg, add_char_result_zocl };
+		nc->send_data_v2(byType, &send, send.size());
+	}
+
+	static void _del_char_request_clwr_(session nc, Packet p, Account* a){
 		_del_char_request_clwr* pRecv = (_del_char_request_clwr*)p.buf;
-		Account* a = getAccount(nc);
-		
-		_del_char_result_wrcl send;
-		
+
+		_del_char_result_wrcl send;		
 		if (a->character[pRecv->bySlotIndex].del()){
 			send.byRetCode = RET_CODE_SUCCESS;
 			send.bySlotIndex = pRecv->bySlotIndex;
@@ -115,15 +124,6 @@ private:
 		BYTE byType[msg_header_num] = { system_msg, del_char_result_wrcl };
 		nc->send_data_v2(byType, &send, send.size());
 	}
+	
 #pragma endregion
-
-
-	static void _account_msg(session nc, Packet p) {
-		//auto a = getAccount(nc);
-		int id = p.id;
-
-		if (id == 0) {
-
-		}
-	}
 };

@@ -11,18 +11,11 @@ public:
 
 	~Account(){ }
 	
-	/// <summary>
-	/// Verifies the specified account identifier.
-	/// </summary>
-	/// <param name="accountId">The account identifier.</param>
-	/// <param name="accountPass">The account pass.</param>
-	/// <returns>True if check passes, otherwise false.</returns>
 	bool Verify(char* nick, char* pass){
 		std::string query("SELECT * FROM Accounts WHERE nick='" + std::string(nick) + "' AND pass='" + pass + "'");
 		return Accepted = Load(query);
 	}
-
-
+	
 	bool Load(u_int aid) {
 		std::string query("SELECT * FROM Accounts WHERE id='" + std::to_string(aid) + "'");
 		return Load(query);
@@ -63,10 +56,60 @@ public:
 		return AccountRow["lock_reason"].c_str();
 	}
 
-	/// <summary>
-	/// Creates a new Account instance.
-	/// </summary>
-	static Account create(u_int localId){
+	BYTE createChar(BYTE byRaceSexCode, BYTE bySlotIndex, DWORD dwBaseShape, char* classCode, char* charName){
+		if (CharNum >= 3) return RET_CODE_SLOT_ERR;
+		if (bySlotIndex > 3) return RET_CODE_SLOT_ERR;
+		if (!Accepted) return RET_CODE_NOT_AUTHORIZED;
+		if (byRaceSexCode > 5) return RET_CODE_SLOT_ERR;
+
+		BYTE byMapCode = 0;
+		float fPos[3];
+		switch (byRaceSexCode)
+		{
+		case 0: //Bellato
+		case 1:
+			byMapCode = 0;
+			fPos[0] = -5260.735352f;
+			fPos[1] = 550.996521f;
+			fPos[2] = 5244.625000f;
+			break;
+		case 2: //Cora
+		case 3:
+			byMapCode = 1;
+			fPos[0] = 7381.450684f;
+			fPos[1] = -155.090607f;
+			fPos[2] = 1410.891113f;
+			break;
+		case 4: //Acretia
+			byMapCode = 3;
+			fPos[0] = -6416.386719f;
+			fPos[1] = 1060.225098f;
+			fPos[2] = -5491.602051f;
+			break;
+		}
+
+		char position[256];
+		sprintf(position, "%f,%f,%f,%f", byMapCode, fPos[0], fPos[1], fPos[2]);
+
+		char sQuery[512];
+		sprintf(sQuery, "insert into tbl_Avator (id,name,race,slot,class,base_shape,mapCode,posX,posY,posZ) values (%d,'%s',%d,%d,'%s',%d,%f,%f,%f);",
+			AccountId,
+			charName,
+			byRaceSexCode,
+			bySlotIndex,
+			classCode,
+			dwBaseShape,
+			byMapCode, fPos[0], fPos[1], fPos[2]
+			);
+
+		if (db->Query(sQuery)){
+			return RET_CODE_SUCCESS;
+		}
+
+		return RET_CODE_SLOT_ERR;
+	}
+
+	static Account create(u_long localId){
 		Account a;
 		a.CharNum = 0;
 		a.nBillInform = 0;
@@ -80,8 +123,8 @@ public:
 	int nBillInform;
 	short CharNum;
 	BYTE UserGrade;
-	u_int LocalId;
-	u_int AccountId;
+	u_long LocalId;
+	u_long AccountId;
 	std::string Nick;
 	std::string Pass;
 	std::string Email;

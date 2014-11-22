@@ -68,6 +68,25 @@ struct _uilock_fg_auth_req_wrcl {
 	int size() { return sizeof(*this); }
 };
 
+#define add_char_request_clwr 10
+struct _add_char_request_clwr
+{
+	BYTE bySlotIndex;
+	char wszCharName[max_name_len + 1];
+	BYTE byRaceSexCode;
+	char szClassCode[class_code_len + 1];
+	DWORD dwBaseShape;
+	int size()	{ return sizeof(*this); }
+};
+
+#define add_char_result_zocl 11
+struct _add_char_result_zocl
+{
+	BYTE byRetCode;
+	BYTE byAddSlotIndex;
+	int size()	{ return sizeof(*this); }
+};
+
 #define del_char_request_clwr 12
 struct _del_char_request_clwr {
 

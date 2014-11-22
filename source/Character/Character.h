@@ -100,7 +100,7 @@ public:
 
 		memcpy(avatar.m_szAvatorName, row["name"].c_str(), max_name_len + 1);
 		avatar.m_dwRecordNum = atol(row["id"].c_str());
-		avatar.m_byRaceSexCode = (BYTE)atoi(row["race_sex"].c_str());
+		avatar.m_byRaceSexCode = (BYTE)atoi(row["race"].c_str());
 		avatar.m_bySlotIndex = (BYTE)atoi(row["slot"].c_str());
 		memcpy(avatar.m_szClassCode, row["class"].c_str(), class_code_len + 1);
 		avatar.m_byLevel = (BYTE)atoi(row["level"].c_str());
