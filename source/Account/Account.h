@@ -136,6 +136,8 @@ public:
 	WORD CryptKey;
 	bool UILockAuthorized;
 	Character character[3];
+	_AVATOR_DATA* m_pAvatar;
+	short CharIndex;
 
 	DWORD m_dwMasterKey[CHECK_KEY_NUM];
 

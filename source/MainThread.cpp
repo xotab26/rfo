@@ -114,7 +114,7 @@ int main(int argc, char* argv[]) {
 					break;
 				}
 				
-				sleep(60000);
+				sleep(120000);
 			}
 		}
 

@@ -92,8 +92,17 @@ private:
 		data_ = new char[MAX_RECEIVE_SIZE];
 		socket_.async_receive(asio::buffer(data_, MAX_RECEIVE_SIZE), [this, data_](std::error_code ec, size_t len) {
 			if (!ec) {
-				std::vector<char> data(data_, data_ + len);
-				Process(this, Packet(data, len), connection_type);
+				int totalSize = 0;
+				while (totalSize < len){
+					std::vector<char> data;
+					short curSize = Convert::ToShort(&data_[totalSize]);
+					for (size_t i = 0; i < curSize; i++){
+						data.push_back(data_[i + totalSize]);
+					}
+					totalSize += curSize;
+					Process(this, Packet(data, curSize), connection_type);
+				}
+
 				start_read();
 			}
 			else call_error(ec);

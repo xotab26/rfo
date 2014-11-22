@@ -1,6 +1,6 @@
 ﻿#pragma pack(push, 1)
 
-//system_msg	1
+#pragma region system_msg 01
 #define enter_world_request_clzo 1	
 struct _enter_world_request_clzo
 {
@@ -123,4 +123,148 @@ struct _sel_char_result_wrcl
 
 	int size()	{ return sizeof(*this); }
 };
+#pragma endregion
+
+#pragma region chat_msg 02
+#define chat_map_recv_yesorno_clwr 10
+struct _chat_map_recv_yesorno_clwr
+{
+	BYTE byRecv;
+	int size()	{ return sizeof(*this); }
+};
+#pragma endregion
+
+#pragma region init_msg 03
+#define base_download_request_clwr 3
+struct _base_download_request_clwr {
+	char sDum[1];
+	int size()	{ return sizeof(*this); }
+};
+
+#define base_download_result_wrcl 4
+struct _base_download_result_wrcl {
+	struct _list_equip
+	{
+		char sTableCode;
+		WORD wItemIndex;
+		DWORD dwUptInfo;
+		BYTE byCsMethod;
+		DWORD dwT;
+	};
+
+	struct _list_embellish
+	{
+		char sTableCode;
+		WORD wItemIndex;
+		WORD wNum;
+		char sClientIndex;
+		BYTE byCsMethod;
+		DWORD dwT;
+	};
+
+	BYTE byRetCode;
+	WORD wZoneIndex;
+	DWORD dwExpRate;
+	WORD wClassHistory[3];
+	WORD wHP;
+	WORD wSP;
+	WORD wFP;
+	long double dPvpPoint;
+	long double dPvpCashBag;
+	long double dPvpTempCash;
+	DWORD dwPvpRank;
+	BYTE byPvpClass;
+	BYTE byPlusKey;
+	WORD wXorKey;
+	WORD wMaxHP;
+	WORD wMaxSP;
+	WORD wMaxFP;
+	WORD wMapIndex;
+	float fPos[3];
+	_list_equip EquipList[8];
+	_list_embellish EmbellishList[6];
+	BYTE byHolyMasterState;
+	DWORD dwGuildSerial;
+	BYTE byGuildGrade;
+	BYTE byEffectValue[2];
+	BYTE byUseTrunkSlotNum;
+	WORD wMaxDP;
+	WORD wDP;
+	BYTE byHonorGuildRank;
+
+	int size()	{ return sizeof(*this); }
+};
+
+#define inven_download_request_clwr 5
+struct _inven_download_request_clwr
+{
+	char dummy[1];
+	int size()	{ return sizeof(*this); }
+};
+
+#define inven_download_result_wrcl 6
+struct _inven_download_result_wrcl
+{
+	struct _list
+	{
+		BYTE byTableCode;
+		WORD wItemIndex;
+		QWORD dwDurPoint;
+		char sClientIndex;
+		DWORD dwUptInfo;
+		BYTE byCsMethod;
+		DWORD dwT;
+	};
+	BYTE byRetCode;
+	BYTE byBagNum;
+	BYTE bySlotNum;
+	_list ItemSlotInfo[100];
+	int size()	{ return (sizeof(*this) - sizeof(_list)*(100 - bySlotNum)); }
+};
+
+#define cum_download_request_clwr 7
+#define cum_download_result_wrcl 8
+struct _cum_download_result_wrcl
+{
+	BYTE byRetCode;
+	_STAT_DB_BASE Stat;
+	BYTE byLeftCuttingResNum;
+	WORD wleftResList[20];
+	int size() { return sizeof(*this); }
+};
+
+#define force_download_request_clwr 9
+#define force_download_result_wrcl 10
+struct _force_download_result_wrcl
+{
+	struct _list
+	{
+		WORD wItemIndex;
+		DWORD dwCum;
+		BYTE byCsMethod;
+		DWORD dwT;
+	};
+	BYTE byRetCode;
+	BYTE bySlotNum;
+	_list ItemSlotInfo[88];
+	int size()	{ return (sizeof(*this) - sizeof(_list)*(88 - bySlotNum)); }
+};
+
+#define quest_download_request_clwr 11
+#define quest_download_result_wrcl 12
+struct _quest_download_result_wrcl
+{
+	struct __list
+	{
+		BYTE byDBSlotIndex;
+		_QUEST_DB_BASE::_LIST cont;
+	};
+
+	BYTE byRetCode;
+	BYTE bySlotNum;
+	__list SlotInfo[30];
+	int size() { return sizeof(*this) - sizeof(__list) * (30 - bySlotNum); }
+};
+#pragma endregion
+
 #pragma pack(pop)

@@ -11,14 +11,15 @@ typedef unsigned char byte;
 typedef unsigned int uint;
 typedef unsigned long ulong;
 typedef unsigned short ushort;
+typedef unsigned __int64 QWORD;
 
 struct Packet {
-	Packet(std::vector<char> _buf, size_t _len){
-		int size1 = Convert::ToShort(&_buf[0]) - 6;
+	Packet(std::vector<char> _buf, short _len){
+		int size1 = Convert::ToShort(&_buf[0]);
 		int size2 = Convert::ToShort(&_buf[2]);
 
 		int h_size = 4;
-		if (size1 == size2){
+		if ((size1 - 6) == size2){
 			h_size = 6;
 		}
 
