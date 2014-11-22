@@ -50,7 +50,7 @@ public:
 			CharNum = res.size();
 
 			for (size_t i = 0; i < CharNum; i++) {
-				character[i].Set(res[i]);
+				character[i].Set(db, res[i]);
 			}
 
 			return true;

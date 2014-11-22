@@ -102,8 +102,15 @@ private:
 		Account* a = getAccount(nc);
 		
 		_del_char_result_wrcl send;
-		send.byRetCode = RET_CODE_SUCCESS;
-
+		
+		if (a->character[pRecv->bySlotIndex].del()){
+			send.byRetCode = RET_CODE_SUCCESS;
+			send.bySlotIndex = pRecv->bySlotIndex;
+			send.dwWorldSerial = 0;
+		}
+		else{
+			send.byRetCode = RET_CODE_SLOT_ERR;
+		}
 
 		BYTE byType[msg_header_num] = { system_msg, del_char_result_wrcl };
 		nc->send_data_v2(byType, &send, send.size());

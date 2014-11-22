@@ -95,7 +95,9 @@ public:
 
 	~Character(){ }
 
-	bool Set(db_row row) { //TODO: Needs to be finished
+	bool Set(CDatabase* _db, db_row row) { //TODO: Needs to be finished
+		db = _db;
+
 		memcpy(avatar.m_szAvatorName, row["name"].c_str(), max_name_len + 1);
 		avatar.m_dwRecordNum = atol(row["id"].c_str());
 		avatar.m_byRaceSexCode = (BYTE)atoi(row["race_sex"].c_str());
@@ -125,6 +127,18 @@ public:
 		return (raw_data_row = row).size() == 0;
 	}
 
+	bool del(){
+		auto q = std::string("DELETE FROM Characters WHERE id='");
+		q.append(std::to_string(avatar.m_dwRecordNum) + "'");
+		
+		if (db->Query(q.c_str())){
+			return true;
+		}
+
+		return false;
+	}
+
+	CDatabase* db;
 	_REGED_AVATOR_DB avatar;
 	db_row raw_data_row;
 };
