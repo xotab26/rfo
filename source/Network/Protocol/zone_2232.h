@@ -104,4 +104,23 @@ struct _del_char_result_wrcl {
 
 	int size()	{ return sizeof(*this); }
 };
+
+#define sel_char_request_clwr 14
+struct _sel_char_request_clwr
+{
+	char bySlotIndex;
+	int size()	{ return sizeof(*this); }
+};
+
+#define sel_char_result_wrcl 15
+struct _sel_char_result_wrcl
+{
+	BYTE byRetCode;
+	BYTE bySlotIndex;
+	DWORD dwWorldSerial;
+	DWORD dwDalant;
+	DWORD dwGold;
+
+	int size()	{ return sizeof(*this); }
+};
 #pragma pack(pop)

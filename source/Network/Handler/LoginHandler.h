@@ -125,8 +125,9 @@ private:
 
 	static void SelectWorldResult(session nc, WORD worldIndex) {
 		_select_world_result_locl send;
-		auto worldData = &g_WorldData[worldIndex];
 		auto a = getAccount(nc);
+
+		auto worldData = &g_WorldData[a->WorldIndex = worldIndex];
 
 		if (worldData->m_bOpen) {
 			send.bAllowAltTab = true;

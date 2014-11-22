@@ -2,7 +2,8 @@
 #include "ThreadManager.cpp"
 #include <exception>
 #include <iostream>
-
+#include <iomanip>
+#include <chrono>
 
 byte dwWorldNum;
 std::map<int, _WORLD_DATA> g_WorldData;
@@ -10,13 +11,17 @@ asio::io_service* io_service;
 std::map<int, Server*> servers;
 ThreadManager TManager;
 
-bool running;
+CDatabase db;
+
 int server_index = 0;
 const char* world_name;
 
+void sleep(int ms){
+	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+}
 
 int run_server(int id, int port, int deploy_type) {
-	Server srv(io_service[id], port);
+	Server srv(io_service[id], port, &db);
 	servers[id] = std::move(&srv);
 	servers[id]->DEPLOY_TYPE = deploy_type;
 	servers[id]->SERVER_INDEX = 0;
@@ -73,41 +78,43 @@ int main(int argc, char* argv[]) {
 
 	TManager.start();
 	dwWorldNum = 0;
-
+	
 	io_service = new asio::io_service[TManager.max_threads];
 
 	world_name = cfg["World"]["WorldName"].c_str();
-	
+
 	try{
-		if (argc > 1) {
-			new_server(getType(argv[1]));
+		if (db.Connect())
+		{
+			if (argc > 1) {
+				new_server(getType(argv[1]));
 
-			if (argc > 2){
-				new_server(getType(argv[2]));
+				if (argc > 2){
+					new_server(getType(argv[2]));
+				}
+
+				if (argc > 3){
+					new_server(getType(argv[3]));
+				}
 			}
+			else{
+				if (Config::DEBUG) {
+					new_server(0);
+					new_server(1);
+					new_server(2);
+				}
+			}		
 
-			if (argc > 3){
-				new_server(getType(argv[3]));
-			}
-		}
-		else{
-			if (Config::DEBUG) {
-				new_server(0);
-				new_server(1);
-				new_server(2);
-			}
-		}
-		
-		running = true;
+			while (servers[0]->running)
+			{
+				if(Config::DEBUG) Log("Pinging SQL server to keep connection alive...");
 
-		TManager.join_thread(0);
-
-		while (running){
-			char line[256];
-			std::cin.get(line, 256);
-
-			if (std::string(line) == ""){
-
+				if (!db.ConnectionAlive()){
+					Log("Connection to database lost!!");
+					break;
+				}
+				
+				sleep(60000);
 			}
 		}
 

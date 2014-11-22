@@ -11,10 +11,11 @@ using asio::ip::tcp;
 
 class Server {
 public:
-	Server(asio::io_service& io_service_, short port)
+	Server(asio::io_service& io_service_, short port, CDatabase* db)
 		: acceptor(io_service_, tcp::endpoint(tcp::v4(), setPort(port))) {
 		io_service = &io_service_;
 		connection_count = 1;
+		database = db;
 		running = false;
 	}
 
@@ -34,8 +35,8 @@ public:
 			memcpy(session->account.m_dwMasterKey, m_dwMasterKey, sizeof(DWORD)*CHECK_KEY_NUM);
 			Connections[id] = session;
 			Connections[id]->connection_type = DEPLOY_TYPE;
-			Connections[id]->account.db = &database;
-			Connections[id]->db = &database;
+			Connections[id]->account.db = database;
+			Connections[id]->db = database;
 			Connections[id]->server = this;
 			Connections[id]->id = id;
 			Connections[id]->start();
@@ -47,7 +48,7 @@ public:
 	void start(int threadId) {
 		GenerateMasterKey();
 		thread_id = threadId;
-		if ((running = database.Connect())){
+		if ((running = database->Connect())){
 			char* p = new char[2];
 			strcpy(p = new char[2], std::to_string(Port).c_str());
 			Log("Spawning server type " + std::to_string(DEPLOY_TYPE) + " on port " + p + "\n");
@@ -83,7 +84,7 @@ public:
 
 	DWORD m_dwMasterKey[CHECK_KEY_NUM];
 	
-	CDatabase database;
+	CDatabase* database;
 
 	asio::io_service* io_service;
 	tcp::acceptor acceptor;

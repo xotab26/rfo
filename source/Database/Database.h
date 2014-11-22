@@ -29,16 +29,9 @@ public:
 
 	bool Connect(){
 		try {
-			if(Config::DEBUG) Log("Connecting to database...");
-			const char *server = Host.c_str();
-			const char *user = User.c_str();
-			const char *password = Pass.c_str();
-			const char *database = Name.c_str();
-
+			if (Config::DEBUG) Log("Connecting to database...");
 			conn = mysql_init(NULL);
-			if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
-				printf("%s\n", mysql_error(conn));
-			}
+			ConnectionAlive();
 			return bIsConnected = true;
 		}
 		catch (std::exception &e) {
@@ -52,6 +45,24 @@ public:
 			mysql_close(conn);
 			bIsConnected = false;
 		}
+		return true;
+	}
+
+	bool ConnectionAlive(){
+		const char *server = Host.c_str();
+		const char *user = User.c_str();
+		const char *password = Pass.c_str();
+		const char *database = Name.c_str();
+
+		mysql_init(conn);
+		if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
+			printf("%s\n", mysql_error(conn));
+			return false;
+		}
+		else{
+			mysql_ping(conn);
+		}
+
 		return true;
 	}
 

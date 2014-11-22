@@ -46,12 +46,16 @@ private:
 		case del_char_request_clwr:
 			_del_char_request_clwr_(nc, p, a);
 			break;
+
+		case sel_char_request_clwr:
+			_sel_char_result_wrcl_(nc, p, a);
+			break;
 		}
 	}
 
 #pragma region World Handlers
 	static void _enter_world_result_zocl_(session nc, Packet p, Account* a) {
-		_enter_world_request_clzo* pRecv = (_enter_world_request_clzo*)p.buf;
+		auto pRecv = (_enter_world_request_clzo*)p.buf;
 		a->Load(pRecv->dwAccountSerial);
 
 		_enter_world_result_zocl send;
@@ -87,8 +91,10 @@ private:
 	}
 
 	static void _uilock_fg_auth_req_wrcl_(session nc, Packet p, Account* a) {
-		_uilock_init_request_clwr* pRecv = (_uilock_init_request_clwr*)p.buf;
-		_uilock_fg_auth_req_clwr* pRecv2 = (_uilock_fg_auth_req_clwr*)p.buf;
+		auto pRecv = (_uilock_init_request_clwr*)p.buf;
+		auto pRecv2 = (_uilock_fg_auth_req_clwr*)p.buf;
+
+		a->UILockAuthorized = true;
 
 		_uilock_fg_auth_req_wrcl send;
 		send.byRetCode = RET_CODE_SUCCESS;
@@ -98,7 +104,7 @@ private:
 	}
 
 	static void _add_char_result_zocl_(session nc, Packet p, Account* a){
-		_add_char_request_clwr* pRecv = (_add_char_request_clwr*)p.buf;
+		auto pRecv = (_add_char_request_clwr*)p.buf;
 
 		_add_char_result_zocl send;
 		send.byRetCode = a->createChar(pRecv->byRaceSexCode, pRecv->bySlotIndex, pRecv->dwBaseShape, pRecv->szClassCode, pRecv->wszCharName);
@@ -109,21 +115,34 @@ private:
 	}
 
 	static void _del_char_request_clwr_(session nc, Packet p, Account* a){
-		_del_char_request_clwr* pRecv = (_del_char_request_clwr*)p.buf;
+		auto pRecv = (_del_char_request_clwr*)p.buf;
 
 		_del_char_result_wrcl send;		
 		if (a->character[pRecv->bySlotIndex].del()){
 			send.byRetCode = RET_CODE_SUCCESS;
 			send.bySlotIndex = pRecv->bySlotIndex;
-			send.dwWorldSerial = 0;
+			send.dwWorldSerial = a->WorldIndex;
 		}
-		else{
+		else {
 			send.byRetCode = RET_CODE_SLOT_ERR;
 		}
 
 		BYTE byType[msg_header_num] = { system_msg, del_char_result_wrcl };
 		nc->send_data_v2(byType, &send, send.size());
 	}
-	
+
+	static void _sel_char_result_wrcl_(session nc, Packet p, Account* a){
+		auto pRecv = (_sel_char_request_clwr*)p.buf;
+
+		_sel_char_result_wrcl send;
+		send.byRetCode = RET_CODE_SUCCESS;
+		send.bySlotIndex = pRecv->bySlotIndex;
+		send.dwDalant = a->character[pRecv->bySlotIndex].avatar.m_dwDalant;
+		send.dwGold = a->character[pRecv->bySlotIndex].avatar.m_dwGold;
+		send.dwWorldSerial = 0;
+
+		BYTE byType[msg_header_num] = { system_msg, sel_char_result_wrcl };
+		nc->send_data_v2(byType, &send, send.size());
+	}
 #pragma endregion
 };

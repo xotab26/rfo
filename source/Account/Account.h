@@ -7,7 +7,21 @@
 
 class Account{
 public:
-	Account(){ }
+	Account(){
+		Accepted = false;
+		nBillInform = 0;
+		CharNum = 0;
+		UserGrade = 0;
+		LocalId = 0;
+		AccountId = 0;
+		Nick = "";
+		Pass = "";
+		Email = "";
+		WorldIndex = 0;
+		CryptPlus = 0;
+		CryptKey = 228;
+		UILockAuthorized = false;
+	}
 
 	~Account(){ }
 	
@@ -57,10 +71,9 @@ public:
 	}
 
 	BYTE createChar(BYTE byRaceSexCode, BYTE bySlotIndex, DWORD dwBaseShape, char* classCode, char* charName){
-		if (CharNum >= 3) return RET_CODE_SLOT_ERR;
 		if (bySlotIndex > 3) return RET_CODE_SLOT_ERR;
-		if (!Accepted) return RET_CODE_NOT_AUTHORIZED;
 		if (byRaceSexCode > 5) return RET_CODE_SLOT_ERR;
+		if (!UILockAuthorized) return RET_CODE_NOT_AUTHORIZED;
 
 		BYTE byMapCode = 0;
 		float fPos[3];
@@ -88,19 +101,9 @@ public:
 			break;
 		}
 
-		char position[256];
-		sprintf(position, "%f,%f,%f,%f", byMapCode, fPos[0], fPos[1], fPos[2]);
-
 		char sQuery[512];
-		sprintf(sQuery, "insert into tbl_Avator (id,name,race,slot,class,base_shape,mapCode,posX,posY,posZ) values (%d,'%s',%d,%d,'%s',%d,%f,%f,%f);",
-			AccountId,
-			charName,
-			byRaceSexCode,
-			bySlotIndex,
-			classCode,
-			dwBaseShape,
-			byMapCode, fPos[0], fPos[1], fPos[2]
-			);
+		sprintf(sQuery, "INSERT INTO Characters (account,name,race,slot,class,base_shape,mapCode,posX,posY,posZ) values (%d,'%s',%d,%d,'%s',%d,%d,%f,%f,%f);",
+			AccountId, charName, byRaceSexCode, bySlotIndex, classCode, dwBaseShape, byMapCode, fPos[0], fPos[1], fPos[2]);
 
 		if (db->Query(sQuery)){
 			return RET_CODE_SUCCESS;
@@ -128,8 +131,10 @@ public:
 	std::string Nick;
 	std::string Pass;
 	std::string Email;
+	WORD WorldIndex;
 	BYTE CryptPlus;
 	WORD CryptKey;
+	bool UILockAuthorized;
 	Character character[3];
 
 	DWORD m_dwMasterKey[CHECK_KEY_NUM];

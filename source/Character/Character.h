@@ -128,10 +128,10 @@ public:
 	}
 
 	bool del(){
-		auto q = std::string("DELETE FROM Characters WHERE id='");
-		q.append(std::to_string(avatar.m_dwRecordNum) + "'");
+		char sQuery[256];
+		sprintf(sQuery, "DELETE FROM Characters WHERE id='%d';", avatar.m_dwRecordNum);
 		
-		if (db->Query(q.c_str())){
+		if (db->Query(sQuery)){
 			return true;
 		}
 

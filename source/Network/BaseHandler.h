@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Server.h"
 #include "Session.h"
 #include "Protocol.h"
 #include "../Account/Account.h"
@@ -15,5 +16,9 @@ public:
 
 	static CDatabase* getDB(session nc){
 		return nc->db;
+	}
+
+	static Server* getServer(session nc){
+		return (Server*)nc->server;
 	}
 };
