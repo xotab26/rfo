@@ -8,44 +8,72 @@
 #include <iostream>
 #include <exception>
 
+#define MAX_KEY_VALUES 50
+
 typedef unsigned short WORD;
 typedef unsigned long DWORD;
 typedef unsigned char BYTE;
 
-typedef std::map<std::string, std::string> Option;
-typedef std::map<std::string, Option> ConfigContainer;
+struct Key_Value{
+	operator std::string() const { return Value; }
+	std::string operator=(std::string value){
+		return Value = value;
+	}
+	std::string Key;
+	std::string Value;
+};
 
+struct KeyValue_Pairs{
+	KeyValue_Pairs(){ clear(); }
+	Key_Value* operator[](std::string key){
+		for (short i = 0; i < kv_count; i++){
+			if (_kv[i].Key == key){
+				return &_kv[i];
+			}
+		}
+		_kv[kv_count].Key = key;
+		return &_kv[kv_count++];
+	}
+	void clear(){
+		kv_count = 0;
+		_kv = new Key_Value[MAX_KEY_VALUES];
+	}
+private:
+	short kv_count;
+	Key_Value* _kv;
+};
+
+typedef KeyValue_Pairs Option;
+typedef std::map<std::string, Option> ConfigContainer;
 
 int setTitle(std::string titleMsg);
 
 DWORD GetIPAddress(const char* ipAddress);
 
-void Log(std::string text);
+void Log(const std::string fmt, ...);
 
 class Config{
 public:
+	Config(){ ReadCfg(); }
+
 	static void PreLoad(ConfigContainer map){
-		if (!map.empty()){
-			LogLevel = map["General"]["LogLevel"];
-			DbType = map["General"]["DbType"];
+		LogLevel = map["General"]["LogLevel"]->Value;
+		DbType = map["General"]["DbType"]->Value;
 
-			LoginIP = map["Login"]["Address"];
-			LoginPort = map["Login"]["Port"];
+		LoginIP = map["Login"]["Address"]->Value;
+		LoginPort = map["Login"]["Port"]->Value;
 
-			WorldIP = map["World"]["Address"];
-			WorldPort = map["World"]["Port"];
+		WorldIP = map["World"]["Address"]->Value;
+		WorldPort = map["World"]["Port"]->Value;
+		WorldName = map["World"]["Name"]->Value;
 
-			ZoneIP = map["Zone"]["Address"];
-			ZonePort = map["Zone"]["Port"];
+		ZoneIP = map["Zone"]["Address"]->Value;
+		ZonePort = map["Zone"]["Port"]->Value;
 
-			DbHost = map["MySQL"]["DbHost"];
-			DbName = map["MySQL"]["DbName"];
-			DbUser = map["MySQL"]["DbUser"];
-			DbPass = map["MySQL"]["DbPass"];
-		}
-		else{
-			Log("Configuration failed to load!!");
-		}
+		DbHost = map["MySQL"]["DbHost"]->Value;
+		DbName = map["MySQL"]["DbName"]->Value;
+		DbUser = map["MySQL"]["DbUser"]->Value;
+		DbPass = map["MySQL"]["DbPass"]->Value;
 	}
 
 	static ConfigContainer ReadCfg(){
@@ -78,10 +106,10 @@ public:
 				std::string value = str.substr(i + 2, str.length() - i - 2);
 
 				while(key.front() == ' ' || key.front() == '\t' || key.back() == ' ' || key.back() == '\t'){
-					key.erase(key.length()-1);
+					key.erase(key.length() - 1);
 				}
-				
-				temp[key] = value;
+
+				temp[key]->Value = value;
 				map[section] = temp;
 			}else{
 				temp.clear();
@@ -90,7 +118,6 @@ public:
 
 		infile.close();
 		PreLoad(map);
-
 		return map;
 	}
 
@@ -104,6 +131,7 @@ public:
 
 	static std::string WorldIP;
 	static std::string WorldPort;
+	static std::string WorldName;
 
 	static std::string ZoneIP;
 	static std::string ZonePort;
@@ -112,7 +140,6 @@ public:
 	static std::string DbName;
 	static std::string DbUser;
 	static std::string DbPass;
-private:
 };
 
 class Print{

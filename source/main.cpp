@@ -3,6 +3,7 @@
 #include <exception>
 
 
+Config cfg;
 CDatabase db;
 asio::io_service* io_service;
 std::map<int, Server*> servers;
@@ -52,7 +53,7 @@ void new_server(int type_){
 		break;
 
 	case 1:
-		create_world(Config::ReadCfg()["World"]["WorldName"].c_str());
+		create_world(Config::WorldName.c_str());
 		break;
 
 	case 2:

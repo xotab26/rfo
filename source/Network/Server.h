@@ -89,6 +89,7 @@ public:
 	asio::io_service* io_service;
 	tcp::acceptor acceptor;
 private:
+	Config cfg;
 };
 
 class LoginServer : public Server {

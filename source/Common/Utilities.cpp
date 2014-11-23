@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include <stdarg.h>
 
 #ifdef _WIN32
 #include "winsock2.h"
@@ -41,20 +42,34 @@ DWORD GetIPAddress(const char* ipAddress){
 	return inet_addr(ipAddress);
 }
 
-void Log(std::string _str){
+void Log(const std::string fmt, ...) {
 	time_t now = time(0);
 	tm *ltm = localtime(&now);
 
 	char date[256];
 	strftime(date, sizeof(date), "%m-%d-%Y %H:%M:%S", ltm);
 
-	char buf[4096];
-	strcpy(buf, _str.c_str());
+	int size = ((int)fmt.size()) * 2 + 50;
+	std::string str;
+	va_list ap;
+	while (1) {
+		str.resize(size);
+		va_start(ap, fmt);
+		int n = vsnprintf((char *)str.data(), size, fmt.c_str(), ap);
+		va_end(ap);
+		if (n > -1 && n < size) {
+			str.resize(n);
+			break;
+		}
+		if (n > -1)
+			size = n + 1;
+		else
+			size *= 2; 
+	}
 
 	std::stringstream ss;
-	ss << "[" << date << "] " << buf << '\n';
-	
-	std::cout << ss.str();
+	ss << "[" << date << "] " << str << '\n';
+	printf(ss.str().c_str());
 }
 
 bool Config::DEBUG;
@@ -67,6 +82,7 @@ std::string Config::LoginPort;
 
 std::string Config::WorldIP;
 std::string Config::WorldPort;
+std::string Config::WorldName;
 
 std::string Config::ZoneIP;
 std::string Config::ZonePort;

@@ -6,7 +6,6 @@
 #include "../Common/Utilities.h"
 #endif
 
-
 typedef unsigned char byte;
 typedef unsigned int uint;
 typedef unsigned short ushort;
@@ -103,12 +102,12 @@ struct _WORLD_DATA {
 		m_dwGateIP = dwGateIP;
 		m_wGatePort = wGatePort;
 		m_nUserNum = 0;
-		Log(std::string("World ").append(m_szWorldName).append(" opened."));
+		Log("World %s is now open!", m_szWorldName);
 	}
 
 	void CloseWorld() {
 		m_bOpen = false;
-		Log(std::string("World ").append(m_szWorldName).append(" closed."));
+		Log("World %s is now closed!", m_szWorldName);
 	}
 
 	void SetUserNum(int nUserNum) {
