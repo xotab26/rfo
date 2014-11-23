@@ -54,7 +54,7 @@ public:
 			query = std::string("SELECT * FROM Characters WHERE account='" + std::to_string(AccountId) + "'");
 			res = db->Select(query.c_str());
 
-			CharNum = res.size();
+			CharNum = (short)res.size();
 
 			for (short i = 0; i < CharNum; i++) {
 				character[i].Set(db, res[i]);

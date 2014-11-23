@@ -25,9 +25,9 @@ public:
 		m_pAvatar.dbAvatar.m_dwDalant = atoi(row["currency1"].c_str());
 		m_pAvatar.dbAvatar.m_dwGold = atoi(row["currency2"].c_str());
 		m_pAvatar.dbAvatar.m_byMapCode = atoi(row["mapCode"].c_str());
-		m_pAvatar.dbAvatar.m_fStartPos[0] = atof(row["posX"].c_str());
-		m_pAvatar.dbAvatar.m_fStartPos[1] = atof(row["posY"].c_str());
-		m_pAvatar.dbAvatar.m_fStartPos[2] = atof(row["posZ"].c_str());
+		m_pAvatar.dbAvatar.m_fStartPos[0] = (float)atof(row["posX"].c_str());
+		m_pAvatar.dbAvatar.m_fStartPos[1] = (float)atof(row["posY"].c_str());
+		m_pAvatar.dbAvatar.m_fStartPos[2] = (float)atof(row["posZ"].c_str());
 		m_pAvatar.dbAvatar.m_dwBaseShape = atoi(row["base_shape"].c_str());
 		m_pAvatar.dbAvatar.m_dwLastConnTime = atoi(row["lastConnect"].c_str());
 

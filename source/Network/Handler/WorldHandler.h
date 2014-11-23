@@ -112,7 +112,7 @@ private:
 		if (a->CharNum > 0)
 		{
 			send.byRetCode = RET_CODE_SUCCESS;
-			send.byCharNum = a->CharNum;
+			send.byCharNum = (char)a->CharNum;
 			for (size_t i = 0; i < MAX_CHAR_PER_WORLDUSER; i++) {
 				memcpy(&send.RegedList[i], &a->character[i].m_pAvatar.dbAvatar, sizeof(_REGED_AVATOR_DB));
 			}
