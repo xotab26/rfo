@@ -2,7 +2,7 @@ OS = Linux
 
 VERSION = 0.1.0
 CC      = g++
-CFLAGS  = -g3 -Wall -Wno-unknown-pragmas -DUNIX_BUILD -DMYSQLPP_MYSQL_HEADERS_BURIED -DMYSQLPP_NO_DLL -DVERSION=\"$(VERSION)\" -std=c++11
+CFLAGS  = -g -g3 -Wall -Wno-unknown-pragmas -DUNIX_BUILD -DMYSQLPP_MYSQL_HEADERS_BURIED -DMYSQLPP_NO_DLL -DVERSION=\"$(VERSION)\" -std=c++11
 CXXFLAGS= 
 LDFLAGS = -lpthread -ldl -lmysqlclient -lnsl -lz -lm -I/usr/include/cppconn -I/usr/include -L/usr/lib -I/usr/include/mysql -L/usr/lib/mysql
 

@@ -14,12 +14,12 @@ class CDatabase
 {
 public:
 	CDatabase(){
+		Log("Loading database class...");
 		auto cfg = Config::ReadCfg();
 		Host = cfg["MySQL"]["DbHost"];
 		Name = cfg["MySQL"]["DbName"];
 		User = cfg["MySQL"]["DbUser"];
 		Pass = cfg["MySQL"]["DbPass"];
-
 		bIsConnected = false;
 	}
 

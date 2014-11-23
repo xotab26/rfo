@@ -3,11 +3,6 @@
 #include <exception>
 
 
-
-void sleep(int secs){
-	std::this_thread::sleep_for(std::chrono::seconds(secs));
-}
-
 CDatabase db;
 asio::io_service* io_service;
 std::map<int, Server*> servers;
@@ -68,7 +63,7 @@ void new_server(int type_){
 
 int main(int argc, char* argv[]) {
 	Log("[[[[[[[[[[Developed By Tsume]]]]]]]]]]\n");
-	//setTitle(std::string(" - Connections: 0").c_str());
+	setTitle(std::string(" - Connections: 0").c_str());
 	auto cfg = Config::ReadCfg();
 
 	TManager.start();
@@ -97,7 +92,6 @@ int main(int argc, char* argv[]) {
 				}
 			}		
 
-			sleep(1);
 			while (servers[0]->running)
 			{
 				if(Config::DEBUG) Log("Pinging SQL server to keep connection alive...");
@@ -106,8 +100,7 @@ int main(int argc, char* argv[]) {
 					Log("Connection to database lost!!");
 					break;
 				}
-				
-				sleep(120);
+				std::this_thread::sleep_for(std::chrono::minutes(2));
 			}
 		}
 

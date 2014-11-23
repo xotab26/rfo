@@ -13,6 +13,7 @@ class Server {
 public:
 	Server(asio::io_service& io_service_, short port, CDatabase* db)
 		: acceptor(io_service_, tcp::endpoint(tcp::v4(), setPort(port))) {
+		Log("Starting server on port " + std::to_string(port) + "");
 		io_service = &io_service_;
 		connection_count = 1;
 		database = db;
@@ -51,7 +52,6 @@ public:
 		if ((running = database->Connect())){
 			char* p = new char[2];
 			strcpy(p = new char[2], std::to_string(Port).c_str());
-			Log("Spawning server type " + std::to_string(DEPLOY_TYPE) + " on port " + p + "\n");
 
 			start_accept();
 			io_service->run();
