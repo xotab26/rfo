@@ -25,11 +25,6 @@ void Log(std::string text);
 class Config{
 public:
 	static void PreLoad(ConfigContainer map){
-#ifdef _DEBUG
-		Config::DEBUG = true;
-#else
-		Config::DEBUG = false;
-#endif
 		if (!map.empty()){
 			LogLevel = map["General"]["LogLevel"];
 			DbType = map["General"]["DbType"];

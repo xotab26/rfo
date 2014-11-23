@@ -62,9 +62,14 @@ void new_server(int type_){
 }
 
 int main(int argc, char* argv[]) {
+#ifdef _DEBUG
+	Config::DEBUG = true;
+#else
+	Config::DEBUG = false;
+#endif
+
 	Log("[[[[[[[[[[Developed By Tsume]]]]]]]]]]\n");
 	setTitle(std::string(" - Connections: 0").c_str());
-	auto cfg = Config::ReadCfg();
 
 	TManager.start();
 	
@@ -88,6 +93,7 @@ int main(int argc, char* argv[]) {
 				new_server(0);
 				new_server(1);
 				new_server(2);
+				Config::DEBUG = true;
 			}		
 
 			while (servers[0]->running)
