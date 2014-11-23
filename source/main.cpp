@@ -2,21 +2,15 @@
 #include "Common/Thread.h"
 #include <exception>
 
-byte dwWorldNum;
-std::map<int, _WORLD_DATA> g_WorldData;
-asio::io_service* io_service;
-std::map<int, Server*> servers;
-ThreadManager TManager;
 
-CDatabase db;
 
-int server_index = 0;
-const char* world_name;
-
-void sleep(int ms){
-	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+void sleep(int secs){
+	std::this_thread::sleep_for(std::chrono::seconds(secs));
 }
 
+CDatabase db;
+asio::io_service* io_service;
+std::map<int, Server*> servers;
 int run_server(int id, int port, int deploy_type) {
 	Server srv(io_service[id], port, &db);
 	servers[id] = std::move(&srv);
@@ -26,12 +20,16 @@ int run_server(int id, int port, int deploy_type) {
 	return id;
 }
 
+ThreadManager TManager;
 int server_thread(int id, int port, int deploy_type) {
 	int _id = TManager.create(std::thread([id, port, deploy_type] { run_server(id, port, deploy_type); }));
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	return _id;
 }
 
+byte dwWorldNum = 0;
+int server_index = 0;
+std::map<int, _WORLD_DATA> g_WorldData;
 void create_world(const char* worldName){
 	int port = atoi(Config::WorldPort.c_str());
 	DWORD ipAddr = GetIPAddress(Config::WorldIP.c_str());
@@ -70,16 +68,13 @@ void new_server(int type_){
 
 int main(int argc, char* argv[]) {
 	Log("[[[[[[[[[[Developed By Tsume]]]]]]]]]]\n");
-	setTitle(std::string(" - Connections: 0").c_str());
+	//setTitle(std::string(" - Connections: 0").c_str());
 	auto cfg = Config::ReadCfg();
 
 	TManager.start();
-	dwWorldNum = 0;
 	
 	io_service = new asio::io_service[TManager.max_threads];
-
-	world_name = cfg["World"]["WorldName"].c_str();
-
+	
 	try{
 		if (db.Connect())
 		{
@@ -102,7 +97,7 @@ int main(int argc, char* argv[]) {
 				}
 			}		
 
-			sleep(250);
+			sleep(1);
 			while (servers[0]->running)
 			{
 				if(Config::DEBUG) Log("Pinging SQL server to keep connection alive...");
@@ -112,7 +107,7 @@ int main(int argc, char* argv[]) {
 					break;
 				}
 				
-				sleep(120000);
+				sleep(120);
 			}
 		}
 
