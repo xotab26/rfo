@@ -85,11 +85,9 @@ int main(int argc, char* argv[]) {
 				}
 			}
 			else{
-				if (Config::DEBUG) {
-					new_server(0);
-					new_server(1);
-					new_server(2);
-				}
+				new_server(0);
+				new_server(1);
+				new_server(2);
 			}		
 
 			while (servers[0]->running)
