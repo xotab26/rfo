@@ -514,6 +514,16 @@ struct _CUTTING_DB_BASE
 
 struct _START_NPC_QUEST_HISTORY
 {
+	typedef struct _SYSTEMTIME {
+		WORD wYear;
+		WORD wMonth;
+		WORD wDayOfWeek;
+		WORD wDay;
+		WORD wHour;
+		WORD wMinute;
+		WORD wSecond;
+		WORD wMilliseconds;
+	};
 	char szQuestCode[64];
 	BYTE byLevel;
 	_SYSTEMTIME tmStartTime;
