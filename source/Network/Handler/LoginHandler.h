@@ -28,8 +28,7 @@ private:
 			if (a->Verify(pRecv->szAccountID, pRecv->szPassword)) LoginResult(nc);
 		}
 		else if (id == world_list_request_cllo) {
-			_world_list_request_cllo* pRecv = (_world_list_request_cllo*)p.buf;
-			if (a->Accepted) WorldListResult(nc, pRecv->dwClientVersion);
+			if (a->Accepted) WorldListResult(nc, p);
 		}
 		else if (id == select_world_request_cllo) {
 			_select_world_request_cllo* recv = (_select_world_request_cllo*)p.buf;
@@ -74,7 +73,11 @@ private:
 		nc->send_data(byType, &send, send.size());
 	}
 
-	static void WorldListResult(session nc, int clientVersion) {
+	static void WorldListResult(session nc, Packet p) {
+		auto pRecv = (_world_list_request_cllo*)p.buf;
+
+		if (pRecv->dwClientVersion < 0) return; //TODO: Only allow 2232(disconnect others)
+
 		_world_list_result_locl Send;
 		BYTE byRetCode = RET_CODE_SUCCESS;
 		WORD wDataSize = 0;

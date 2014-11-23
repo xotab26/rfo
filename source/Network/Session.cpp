@@ -52,7 +52,7 @@ void Session::start_read() {
 					data.push_back(data_[i + totalSize]);
 				}
 				totalSize += curSize;
-				Process(this, Packet(data, curSize), connection_type);
+				Process(Packet(data, curSize), connection_type);
 			}
 
 			start_read();
@@ -71,7 +71,7 @@ void Session::call_error(std::error_code ec){
 	}
 }
 
-void Session::Process(void* con, Packet p, int conn_type) {
+void Session::Process(Packet p, int conn_type) {
 	switch (conn_type) {
 	case 0:
 		LoginHandler::handle(this, p);

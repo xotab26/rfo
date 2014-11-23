@@ -66,19 +66,19 @@ private:
 			break;
 
 		case inven_download_request_clwr:
-			_inven_download_result_wrcl_(nc, p, a);
+			_inven_download_result_wrcl_(nc, a);
 			break;
 
 		case cum_download_request_clwr:
-			_cum_download_result_wrcl_(nc, p, a);
+			_cum_download_result_wrcl_(nc, a);
 			break;
 
 		case force_download_request_clwr:
-			_force_download_result_wrcl_(nc, p, a);
+			_force_download_result_wrcl_(nc, a);
 			break;
 
 		case quest_download_request_clwr:
-			_quest_download_result_wrcl_(nc, p, a);
+			_quest_download_result_wrcl_(nc, a);
 			break;
 		}
 	}
@@ -88,7 +88,7 @@ private:
 		switch (id)
 		{
 		case chat_map_recv_yesorno_clwr:
-			_chat_map_recv_yesorno_clwr_(nc, p, a);
+			//_chat_map_recv_yesorno_clwr_(nc, p, a);
 			break;
 		}
 	}
@@ -132,7 +132,11 @@ private:
 
 	static void _uilock_fg_auth_req_wrcl_(session nc, Packet p, Account* a) {
 		//auto pRecv = (_uilock_init_request_clwr*)p.buf;
-		//auto pRecv2 = (_uilock_fg_auth_req_clwr*)p.buf;
+		auto pRecv2 = (_uilock_fg_auth_req_clwr*)p.buf;
+		
+		if (strcmp(pRecv2->szPW, "test")){
+
+		}
 
 		a->UILockAuthorized = true;
 
@@ -190,10 +194,6 @@ private:
 #pragma endregion
 
 #pragma region chat_msg
-	static void _chat_map_recv_yesorno_clwr_(session nc, Packet p, Account* a){
-		//auto pRecv = (_chat_map_recv_yesorno_clwr*)p.buf;
-
-	}
 #pragma endregion
 
 #pragma region init_msg
@@ -255,7 +255,7 @@ private:
 		nc->send_data_v2(byType, &Send, Send.size());
 	}
 
-	static void _inven_download_result_wrcl_(session nc, Packet p, Account* a){
+	static void _inven_download_result_wrcl_(session nc, Account* a){
 		_inven_download_result_wrcl send;
 		send.byRetCode = RET_CODE_SUCCESS;
 		send.bySlotNum = 0;//TODO: HARDCODED
@@ -275,7 +275,7 @@ private:
 		nc->send_data_v2(byType, &send, send.size());//TODO: returns incorrect size;
 	}
 
-	static void _cum_download_result_wrcl_(session nc, Packet p, Account* a){
+	static void _cum_download_result_wrcl_(session nc, Account* a){
 		_cum_download_result_wrcl send;
 		send.byRetCode = RET_CODE_SUCCESS;
 		send.Stat = a->m_pAvatar->dbStat;
@@ -289,7 +289,7 @@ private:
 		nc->send_data_v2(byType, &send, send.size());
 	}
 
-	static void _force_download_result_wrcl_(session nc, Packet p, Account* a){
+	static void _force_download_result_wrcl_(session nc, Account* a){
 		_force_download_result_wrcl send;
 		send.byRetCode = RET_CODE_SUCCESS;
 		send.bySlotNum = 0;//TODO: HARDCODED
@@ -303,7 +303,7 @@ private:
 		nc->send_data_v2(byType, &send, send.size());
 	}
 
-	static void _quest_download_result_wrcl_(session nc, Packet p, Account* a){
+	static void _quest_download_result_wrcl_(session nc, Account* a){
 		_quest_download_result_wrcl send;
 		send.byRetCode = RET_CODE_SUCCESS;
 		// TODO: HARDCODED

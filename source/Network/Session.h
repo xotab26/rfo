@@ -51,7 +51,7 @@ public:
 
 private:
 	void start_read();
-	void Process(void* con, Packet p, int conn_type);
+	void Process(Packet p, int conn_type);
 	void call_error(std::error_code ec);
 	void disconnect(std::error_code ec);
 
