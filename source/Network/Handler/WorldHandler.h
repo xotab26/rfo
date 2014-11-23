@@ -62,7 +62,7 @@ private:
 		switch (id)
 		{
 		case base_download_request_clwr:
-			_base_download_result_wrcl_(nc, p, a);
+			_base_download_result_wrcl_(nc, a);
 			break;
 
 		case inven_download_request_clwr:
@@ -85,11 +85,14 @@ private:
 
 	static void _chat_msg(session nc, Packet p, Account* a) {
 		int id = p.id;
-		switch (id)
+		if (nc->active && a->Accepted)
 		{
-		case chat_map_recv_yesorno_clwr:
-			//_chat_map_recv_yesorno_clwr_(nc, p, a);
-			break;
+			switch (id)
+			{
+			case chat_map_recv_yesorno_clwr:
+				//_chat_map_recv_yesorno_clwr_(nc, p, a);
+				break;
+			}
 		}
 	}
 
@@ -197,7 +200,7 @@ private:
 #pragma endregion
 
 #pragma region init_msg
-	static void _base_download_result_wrcl_(session nc, Packet p, Account* a){
+	static void _base_download_result_wrcl_(session nc, Account* a){
 		auto m_pAvatar = &a->character[a->CharIndex].m_pAvatar;
 		auto dbAvatar = a->character[a->CharIndex].raw_data_row;
 

@@ -76,7 +76,7 @@ private:
 	static void WorldListResult(session nc, Packet p) {
 		auto pRecv = (_world_list_request_cllo*)p.buf;
 
-		if (pRecv->dwClientVersion < 0) return; //TODO: Only allow 2232(disconnect others)
+		if (pRecv->dwClientVersion < (DWORD)0) return; //TODO: Only allow 2232(disconnect others)
 
 		_world_list_result_locl Send;
 		BYTE byRetCode = RET_CODE_SUCCESS;
