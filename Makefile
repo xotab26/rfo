@@ -2,7 +2,7 @@ OS = Linux
 
 VERSION = 0.1.0
 CC      = g++
-CFLAGS  = -fsanitize=undefined -g3 -Wall -Werror -pedantic -Wextra -Wno-unknown-pragmas -D_DEBUG -DUNIX_BUILD -DMYSQLPP_MYSQL_HEADERS_BURIED -DMYSQLPP_NO_DLL -DVERSION=\"$(VERSION)\" -std=c++11
+CFLAGS  = -fsanitize -g3 -Wall -Werror -pedantic -Wextra -Wno-unknown-pragmas -D_DEBUG -DUNIX_BUILD -DMYSQLPP_MYSQL_HEADERS_BURIED -DMYSQLPP_NO_DLL -DVERSION=\"$(VERSION)\" -std=c++11
 CXXFLAGS= 
 LDFLAGS = -lpthread -ldl -lmysqlclient -lnsl -lz -lm -I/usr/include/cppconn -I/usr/include -L/usr/lib -I/usr/include/mysql -L/usr/lib/mysql
 
