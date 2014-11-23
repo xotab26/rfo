@@ -9,9 +9,8 @@
 
 typedef unsigned char byte;
 typedef unsigned int uint;
-typedef unsigned long ulong;
 typedef unsigned short ushort;
-typedef UINT64 QWORD;
+typedef unsigned long ulong, QWORD;
 
 struct Packet {
 	Packet(std::vector<char> _buf, short _len){
