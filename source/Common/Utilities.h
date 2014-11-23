@@ -24,13 +24,12 @@ void Log(std::string text);
 
 class Config{
 public:
-	static ConfigContainer PreLoad(ConfigContainer map){
+	static void PreLoad(ConfigContainer map){
 #ifdef _DEBUG
 		Config::DEBUG = true;
 #else
 		Config::DEBUG = false;
 #endif
-
 		if (!map.empty()){
 			LogLevel = map["General"]["LogLevel"];
 			DbType = map["General"]["DbType"];
@@ -52,8 +51,6 @@ public:
 		else{
 			Log("Configuration failed to load!!");
 		}
-
-		return map;
 	}
 
 	static ConfigContainer ReadCfg(){
@@ -96,8 +93,10 @@ public:
 			}
 		}
 
-		infile.close();		
-		return PreLoad(std::move(map));
+		infile.close();
+		PreLoad(map);
+
+		return map;
 	}
 
 	static bool DEBUG;
