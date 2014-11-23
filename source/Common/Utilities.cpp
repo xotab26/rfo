@@ -69,7 +69,7 @@ void Log(const std::string fmt, ...) {
 
 	std::stringstream ss;
 	ss << "[" << date << "] " << str << '\n';
-	printf(ss.str().c_str());
+	std::cout << ss.str().c_str();
 }
 
 bool Config::DEBUG;
