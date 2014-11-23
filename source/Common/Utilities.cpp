@@ -23,8 +23,7 @@ int setTitle(std::string titleMsg)
 #else
 	LPCSTR str;
 #endif
-	title.append(titleMsg);
-	
+	title.append(titleMsg);	
 	const char* cs = title.c_str();
 	wchar_t filename[4096] = { 0 };
 	MultiByteToWideChar(0, 0, cs, (int)strlen(cs), filename, (int)strlen(cs));

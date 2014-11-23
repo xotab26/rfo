@@ -27,10 +27,9 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -68,7 +67,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
@@ -91,13 +89,12 @@
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;_WIN32_WINDOWS;_CRT_SECURE_NO_WARNINGS;ASIO_STANDALONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>D:\includes\mysql-5.6.20-win32\include;D:\includes\asio-1.10.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libmysql.lib;mysqlcppconn.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libmysql.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\libs\32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -106,10 +103,11 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WIN32_WINDOWS;_CRT_SECURE_NO_WARNINGS;ASIO_STANDALONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>D:\includes\mysql-5.6.20-winx64\include;D:\includes\asio-1.10.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libmysql.lib;mysqlpp_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libmysql.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\libs\64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -137,23 +135,25 @@
     <ClCompile Include="source\Network\Handler\LoginHandler.h" />
     <ClCompile Include="source\Network\Handler\WorldHandler.h" />
     <ClCompile Include="source\Database\Database.cpp" />
-    <ClCompile Include="source\MainThread.cpp" />
+    <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Network\Session.cpp" />
-    <ClCompile Include="source\ThreadManager.cpp" />
-    <ClCompile Include="source\Utilities\Utilities.cpp" />
+    <ClCompile Include="source\stdafx.cpp" />
+    <ClCompile Include="source\Common\Thread.h" />
+    <ClCompile Include="source\Common\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Character\CharacterHeaders.h" />
     <ClInclude Include="source\Network\Protocol\zone_2232.h" />
     <ClInclude Include="source\Account\Account.h" />
     <ClInclude Include="source\Character\Character.h" />
-    <ClInclude Include="source\Network\BaseHandler.h" />
+    <ClInclude Include="source\Network\Handler\BaseHandler.h" />
     <ClInclude Include="source\Network\Protocol\login_2232.h" />
     <ClInclude Include="source\Database\Database.h" />
     <ClInclude Include="source\Network\Protocol.h" />
     <ClInclude Include="source\Network\Server.h" />
     <ClInclude Include="source\Network\Session.h" />
-    <ClInclude Include="source\Utilities\Utilities.h" />
+    <ClInclude Include="source\stdafx.h" />
+    <ClInclude Include="source\Common\Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

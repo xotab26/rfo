@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../BaseHandler.h"
+#include "BaseHandler.h"
 #include "../Protocol/login_2232.h"
 #include <time.h> 
 

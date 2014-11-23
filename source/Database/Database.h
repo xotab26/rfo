@@ -4,7 +4,7 @@
 #include "winsock.h"
 #endif
 #include "mysql.h"
-#include "../Utilities/Utilities.h"
+#include "../Common/Utilities.h"
 
 
 typedef std::map<std::string, std::string> db_row;

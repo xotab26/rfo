@@ -35,15 +35,6 @@
     <ClCompile Include="source\Database\Database.cpp">
       <Filter>Source Files\Database</Filter>
     </ClCompile>
-    <ClCompile Include="source\Utilities\Utilities.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\MainThread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\Network\Session.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
@@ -56,6 +47,18 @@
     <ClCompile Include="source\Network\Handler\LoginHandler.h">
       <Filter>Source Files\Network\Handler</Filter>
     </ClCompile>
+    <ClCompile Include="source\stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Common\Thread.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Common\Utilities.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Network\Protocol.h">
@@ -67,9 +70,6 @@
     <ClInclude Include="source\Database\Database.h">
       <Filter>Source Files\Database</Filter>
     </ClInclude>
-    <ClInclude Include="source\Utilities\Utilities.h">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="source\Network\Protocol\login_2232.h">
       <Filter>Source Files\Network\Protocol</Filter>
     </ClInclude>
@@ -80,10 +80,14 @@
       <Filter>Source Files\Network</Filter>
     </ClInclude>
     <ClInclude Include="source\Network\Protocol\zone_2232.h" />
-    <ClInclude Include="source\Network\BaseHandler.h" />
     <ClInclude Include="source\Character\Character.h">
       <Filter>Source Files\Character</Filter>
     </ClInclude>
     <ClInclude Include="source\Character\CharacterHeaders.h" />
+    <ClInclude Include="source\stdafx.h" />
+    <ClInclude Include="source\Common\Utilities.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\Handler\BaseHandler.h" />
   </ItemGroup>
 </Project>

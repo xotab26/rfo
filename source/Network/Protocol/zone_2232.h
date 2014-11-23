@@ -205,6 +205,11 @@ struct _inven_download_request_clwr
 #define inven_download_result_wrcl 6
 struct _inven_download_result_wrcl
 {
+	BYTE byRetCode;
+
+	BYTE byBagNum;
+	BYTE bySlotNum;
+
 	struct _list
 	{
 		BYTE byTableCode;
@@ -215,11 +220,14 @@ struct _inven_download_result_wrcl
 		BYTE byCsMethod;
 		DWORD dwT;
 	};
-	BYTE byRetCode;
-	BYTE byBagNum;
-	BYTE bySlotNum;
-	_list ItemSlotInfo[100];
-	int size()	{ return (sizeof(*this) - sizeof(_list)*(100 - bySlotNum)); }
+
+	_list ItemSlotInfo[bag_storage_num];
+
+	int size(){
+		if (byRetCode != 0)
+			return sizeof(byRetCode);
+		return sizeof(*this) - sizeof(_list)*(bag_storage_num - bySlotNum);
+	}
 };
 
 #define cum_download_request_clwr 7

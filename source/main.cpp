@@ -1,9 +1,6 @@
 #include "Network/Server.h"
-#include "ThreadManager.cpp"
+#include "Common/Thread.h"
 #include <exception>
-#include <iostream>
-#include <iomanip>
-#include <chrono>
 
 byte dwWorldNum;
 std::map<int, _WORLD_DATA> g_WorldData;

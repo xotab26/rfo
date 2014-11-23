@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../BaseHandler.h"
+#include "BaseHandler.h"
 #include "../Protocol/zone_2232.h"
 
 
@@ -259,7 +259,7 @@ private:
 	static void _inven_download_result_wrcl_(session nc, Packet p, Account* a){
 		_inven_download_result_wrcl send;
 		send.byRetCode = RET_CODE_SUCCESS;
-		send.bySlotNum = 50;//TODO: HARDCODED
+		send.bySlotNum = 0;//TODO: HARDCODED
 		send.byBagNum = a->m_pAvatar->dbAvatar.m_byBagNum;
 		for (int i = 0; i < 100; i++)
 		{
@@ -318,5 +318,5 @@ private:
 		BYTE byType[msg_header_num] = { init_msg, quest_download_result_wrcl };
 		nc->send_data_v2(byType, &send, send.size());
 	}
-#pragma endregion init_msg
+#pragma endregion
 };
