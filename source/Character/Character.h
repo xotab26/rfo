@@ -50,7 +50,7 @@ public:
 
 	bool del(){
 		char sQuery[256];
-		sprintf(sQuery, "DELETE FROM Characters WHERE id='%d';", m_pAvatar.dbAvatar.m_dwRecordNum);
+		sprintf(sQuery, "DELETE FROM Characters WHERE id='%x';", m_pAvatar.dbAvatar.m_dwRecordNum);
 		
 		if (db->Query(sQuery)){
 			return true;
