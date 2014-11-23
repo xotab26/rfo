@@ -103,7 +103,6 @@ static BYTE GetItemUpgedLv(DWORD dwLvBit)
 
 
 #pragma pack(push, 1)
-
 struct _POTIONKEY
 {
 	BYTE bySlotIndex;	
@@ -518,7 +517,7 @@ struct _START_NPC_QUEST_HISTORY
 	char szQuestCode[64];
 	BYTE byLevel;
 	_SYSTEMTIME tmStartTime;
-	__int64 nEndTime;
+	QWORD nEndTime;
 };
 
 struct _QUEST_DB_BASE
@@ -663,11 +662,11 @@ struct _TRADE_DB_BASE
 		DWORD dwRegistSerial;
 		BYTE byInvenIndex;
 		DWORD dwPrice;
-		__int64 tStartTime;
+		QWORD tStartTime;
 		BYTE bySellTurm;
 		DWORD dwBuyerSerial;
 		BYTE dwTax;
-		__int64 tResultTime;
+		QWORD tResultTime;
 		char wszBuyerName[17];
 		char szBuyerAccount[13];
 	};
@@ -843,7 +842,7 @@ struct _PERSONALAMINE_INVEN_DB_BASE
 
 struct _PVPPOINT_LIMIT_DB_BASE
 {
-	__int64 tUpdatedate;
+	QWORD tUpdatedate;
 	bool bUseUp;
 	BYTE byLimitRate;
 	long double dOriginalPoint;
@@ -853,7 +852,7 @@ struct _PVPPOINT_LIMIT_DB_BASE
 
 struct _PVP_ORDER_VIEW_DB_BASE
 {
-	__int64 tUpdatedate;
+	QWORD tUpdatedate;
 	int nDeath;
 	int nKill;
 	long double dTodayStacked;
