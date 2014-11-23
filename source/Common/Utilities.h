@@ -56,9 +56,10 @@ class Config{
 public:
 	Config(){ ReadCfg(); }
 
-	static void PreLoad(ConfigContainer map){
-		LogLevel = map["General"]["LogLevel"]->Value;
-		DbType = map["General"]["DbType"]->Value;
+	static void Load(ConfigContainer map){
+		auto general = map["General"];
+		LogLevel = general["LogLevel"]->Value;
+		DbType = general["DbType"]->Value;
 
 		LoginIP = map["Login"]["Address"]->Value;
 		LoginPort = map["Login"]["Port"]->Value;
@@ -117,7 +118,7 @@ public:
 		}
 
 		infile.close();
-		PreLoad(map);
+		Load(map);
 		return map;
 	}
 
