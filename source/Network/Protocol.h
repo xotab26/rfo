@@ -11,7 +11,7 @@ typedef unsigned char byte;
 typedef unsigned int uint;
 typedef unsigned long ulong;
 typedef unsigned short ushort;
-typedef unsigned __int64 QWORD;
+typedef UINT64 QWORD;
 
 struct Packet {
 	Packet(std::vector<char> _buf, short _len){

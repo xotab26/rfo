@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../stdafx.h"
 #include "Protocol.h"
 #include "../Account/Account.h"
 

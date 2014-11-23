@@ -47,9 +47,6 @@
     <ClCompile Include="source\Network\Handler\LoginHandler.h">
       <Filter>Source Files\Network\Handler</Filter>
     </ClCompile>
-    <ClCompile Include="source\stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -84,7 +81,6 @@
       <Filter>Source Files\Character</Filter>
     </ClInclude>
     <ClInclude Include="source\Character\CharacterHeaders.h" />
-    <ClInclude Include="source\stdafx.h" />
     <ClInclude Include="source\Common\Utilities.h">
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>

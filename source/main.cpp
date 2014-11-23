@@ -102,6 +102,7 @@ int main(int argc, char* argv[]) {
 				}
 			}		
 
+			sleep(250);
 			while (servers[0]->running)
 			{
 				if(Config::DEBUG) Log("Pinging SQL server to keep connection alive...");

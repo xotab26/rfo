@@ -223,11 +223,7 @@ struct _inven_download_result_wrcl
 
 	_list ItemSlotInfo[bag_storage_num];
 
-	int size(){
-		if (byRetCode != 0)
-			return sizeof(byRetCode);
-		return sizeof(*this) - sizeof(_list)*(bag_storage_num - bySlotNum);
-	}
+	int size(){	return sizeof(*this) - sizeof(_list)*(bag_storage_num - bySlotNum);	}
 };
 
 #define cum_download_request_clwr 7

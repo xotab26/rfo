@@ -137,7 +137,6 @@
     <ClCompile Include="source\Database\Database.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Network\Session.cpp" />
-    <ClCompile Include="source\stdafx.cpp" />
     <ClCompile Include="source\Common\Thread.h" />
     <ClCompile Include="source\Common\Utilities.cpp" />
   </ItemGroup>
@@ -152,7 +151,6 @@
     <ClInclude Include="source\Network\Protocol.h" />
     <ClInclude Include="source\Network\Server.h" />
     <ClInclude Include="source\Network\Session.h" />
-    <ClInclude Include="source\stdafx.h" />
     <ClInclude Include="source\Common\Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
