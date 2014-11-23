@@ -75,8 +75,6 @@ private:
 	}
 
 	static void WorldListResult(session nc, int clientVersion) {
-		auto a = getAccount(nc);
-
 		_world_list_result_locl Send;
 		BYTE byRetCode = RET_CODE_SUCCESS;
 		WORD wDataSize = 0;
