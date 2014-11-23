@@ -514,7 +514,7 @@ struct _CUTTING_DB_BASE
 
 struct _START_NPC_QUEST_HISTORY
 {
-	typedef struct _SYSTEMTIME {
+	struct _SYSTEMTIME {
 		WORD wYear;
 		WORD wMonth;
 		WORD wDayOfWeek;

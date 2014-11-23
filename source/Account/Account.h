@@ -56,7 +56,7 @@ public:
 
 			CharNum = res.size();
 
-			for (size_t i = 0; i < CharNum; i++) {
+			for (short i = 0; i < CharNum; i++) {
 				character[i].Set(db, res[i]);
 			}
 
@@ -101,11 +101,19 @@ public:
 			break;
 		}
 
-		char sQuery[512];
-		sprintf(sQuery, "INSERT INTO Characters (account,name,race,slot,class,base_shape,mapCode,posX,posY,posZ) values (%d,'%s',%d,%d,'%s',%d,%d,%f,%f,%f);",
-			AccountId, charName, byRaceSexCode, bySlotIndex, classCode, dwBaseShape, byMapCode, fPos[0], fPos[1], fPos[2]);
+		auto sQuery = std::string("INSERT INTO Characters (account,name,race,slot,class,base_shape,mapCode,posX,posY,posZ) values (");
+		sQuery.append(std::to_string(AccountId) + ",'");
+		sQuery.append(std::string(charName) + "',");
+		sQuery.append(std::to_string(byRaceSexCode) + ",");
+		sQuery.append(std::to_string(bySlotIndex) + ",'");
+		sQuery.append(std::string(classCode) + "',");
+		sQuery.append(std::to_string(dwBaseShape) + ",");
+		sQuery.append(std::to_string(byMapCode) + ",");
+		sQuery.append(std::to_string(fPos[0]) + ",");
+		sQuery.append(std::to_string(fPos[1]) + ",");
+		sQuery.append(std::to_string(fPos[2]) + ");");
 
-		if (db->Query(sQuery)){
+		if (db->Query(sQuery.c_str())){
 			return RET_CODE_SUCCESS;
 		}
 

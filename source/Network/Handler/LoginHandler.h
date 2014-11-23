@@ -78,8 +78,6 @@ private:
 		auto a = getAccount(nc);
 
 		_world_list_result_locl Send;
-		_world_user_inform_locl SSend;
-		_billing_user_inform_locl SSSend;
 		BYTE byRetCode = RET_CODE_SUCCESS;
 		WORD wDataSize = 0;
 		char szData[0x0FFF];
@@ -92,34 +90,23 @@ private:
 			byRetCode = RET_CODE_SUCCESS;
 			_world WorldData;
 			WorldData.byNum = (BYTE)(dwWorldNum);
-			SSSend.byServiceWorldNum = (BYTE)(dwWorldNum);
 
 			for (DWORD i = 0; i < dwWorldNum; i++) {
 				WorldData.bOpen = g_WorldData[i].m_bOpen;
 				strcpy(WorldData.sName, g_WorldData[i].m_szWorldName);
 				WorldData.byNameSize = (BYTE)(strlen(WorldData.sName) + 1);
 				memcpy(&szData[nPutPos], &WorldData, WorldData.Size());
-				SSend.wUserNum[i] = g_WorldData[i].m_nUserNum;
 				wDataSize += WorldData.Size();
 				nPutPos += WorldData.Size();
 				WorldData.byNum = 0;
-				SSSend.byBillState[i] = (BYTE)a->nBillInform;
 			}
-
-			SSend.byServiceWorldNum = (BYTE)dwWorldNum;
-
+			
 			Send.byRetCode = byRetCode;
 			Send.wDataSize = wDataSize + 1;
 
 			memcpy(&Send.sListData, szData, wDataSize);
 			BYTE byType[msg_header_num] = { account_msg, world_list_result_locl };
 			nc->send_data(byType, &Send, Send.size());
-
-			BYTE byType2[msg_header_num] = { account_msg, world_user_inform_locl };
-			//nc->send_data(byType2, &SSend, SSend.size());
-
-			BYTE byType3[msg_header_num] = { account_msg, billing_user_inform_locl };
-			//nc->send_data(byType3, &SSSend, SSSend.size());
 		}
 	}
 

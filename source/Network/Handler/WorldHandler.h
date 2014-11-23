@@ -131,8 +131,8 @@ private:
 	}
 
 	static void _uilock_fg_auth_req_wrcl_(session nc, Packet p, Account* a) {
-		auto pRecv = (_uilock_init_request_clwr*)p.buf;
-		auto pRecv2 = (_uilock_fg_auth_req_clwr*)p.buf;
+		//auto pRecv = (_uilock_init_request_clwr*)p.buf;
+		//auto pRecv2 = (_uilock_fg_auth_req_clwr*)p.buf;
 
 		a->UILockAuthorized = true;
 
@@ -180,8 +180,8 @@ private:
 		_sel_char_result_wrcl send;
 		send.byRetCode = RET_CODE_SUCCESS;
 		send.bySlotIndex = pRecv->bySlotIndex;
-		send.dwDalant = a->character[pRecv->bySlotIndex].m_pAvatar.dbAvatar.m_dwDalant;
-		send.dwGold = a->character[pRecv->bySlotIndex].m_pAvatar.dbAvatar.m_dwGold;
+		send.dwDalant = a->character[(int)pRecv->bySlotIndex].m_pAvatar.dbAvatar.m_dwDalant;
+		send.dwGold = a->character[(int)pRecv->bySlotIndex].m_pAvatar.dbAvatar.m_dwGold;
 		send.dwWorldSerial = 0;
 
 		BYTE byType[msg_header_num] = { system_msg, sel_char_result_wrcl };
@@ -191,14 +191,13 @@ private:
 
 #pragma region chat_msg
 	static void _chat_map_recv_yesorno_clwr_(session nc, Packet p, Account* a){
-		auto pRecv = (_chat_map_recv_yesorno_clwr*)p.buf;
+		//auto pRecv = (_chat_map_recv_yesorno_clwr*)p.buf;
 
 	}
 #pragma endregion
 
 #pragma region init_msg
 	static void _base_download_result_wrcl_(session nc, Packet p, Account* a){
-		auto pRecv = (_base_download_request_clwr*)p.buf;
 		auto m_pAvatar = &a->character[a->CharIndex].m_pAvatar;
 		auto dbAvatar = a->character[a->CharIndex].raw_data_row;
 

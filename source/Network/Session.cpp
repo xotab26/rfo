@@ -44,11 +44,11 @@ void Session::start_read() {
 	data_ = new char[MAX_RECEIVE_SIZE];
 	socket_.async_receive(asio::buffer(data_, MAX_RECEIVE_SIZE), [this, data_](std::error_code ec, size_t len) {
 		if (!ec) {
-			int totalSize = 0;
+			size_t totalSize = 0;
 			while (totalSize < len){
 				std::vector<char> data;
 				short curSize = Convert::ToShort(&data_[totalSize]);
-				for (size_t i = 0; i < curSize; i++){
+				for (int i = 0; i < curSize; i++){
 					data.push_back(data_[i + totalSize]);
 				}
 				totalSize += curSize;

@@ -49,10 +49,10 @@ public:
 	}
 
 	bool del(){
-		char sQuery[256];
-		sprintf(sQuery, "DELETE FROM Characters WHERE id='%u';", m_pAvatar.dbAvatar.m_dwRecordNum);
-		
-		if (db->Query(sQuery)){
+		std::string sQuery("DELETE FROM Characters WHERE id='");
+		sQuery.append(std::to_string(m_pAvatar.dbAvatar.m_dwRecordNum) + "';");
+
+		if (db->Query(sQuery.c_str())){
 			return true;
 		}
 
