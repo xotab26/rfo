@@ -25,28 +25,34 @@ void Log(std::string text);
 class Config{
 public:
 	static ConfigContainer PreLoad(ConfigContainer map){
-		LogLevel = map["General"]["LogLevel"];
-		DbType = map["General"]["DbType"];
-
-		LoginIP = map["Login"]["Address"];
-		LoginPort = map["Login"]["Port"];
-
-		WorldIP = map["World"]["Address"];
-		WorldPort = map["World"]["Port"];
-
-		ZoneIP = map["Zone"]["Address"];
-		ZonePort = map["Zone"]["Port"];
-
-		DbHost = map["MySQL"]["DbHost"];
-		DbName = map["MySQL"]["DbName"];
-		DbUser = map["MySQL"]["DbUser"];
-		DbPass = map["MySQL"]["DbPass"];
-
 #ifdef _DEBUG
 		Config::DEBUG = true;
 #else
 		Config::DEBUG = false;
 #endif
+
+		if (!map.empty()){
+			LogLevel = map["General"]["LogLevel"];
+			DbType = map["General"]["DbType"];
+
+			LoginIP = map["Login"]["Address"];
+			LoginPort = map["Login"]["Port"];
+
+			WorldIP = map["World"]["Address"];
+			WorldPort = map["World"]["Port"];
+
+			ZoneIP = map["Zone"]["Address"];
+			ZonePort = map["Zone"]["Port"];
+
+			DbHost = map["MySQL"]["DbHost"];
+			DbName = map["MySQL"]["DbName"];
+			DbUser = map["MySQL"]["DbUser"];
+			DbPass = map["MySQL"]["DbPass"];
+		}
+		else{
+			Log("Configuration failed to load!!");
+		}
+
 		return map;
 	}
 
@@ -91,7 +97,7 @@ public:
 		}
 
 		infile.close();		
-		return PreLoad(map);
+		return PreLoad(std::move(map));
 	}
 
 	static bool DEBUG;
