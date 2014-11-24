@@ -56,28 +56,7 @@ class Config{
 public:
 	Config(){ ReadCfg(); }
 
-	static void Load(ConfigContainer map){
-		auto general = map["General"];
-		LogLevel = general["LogLevel"]->Value;
-		DbType = general["DbType"]->Value;
-
-		LoginIP = map["Login"]["Address"]->Value;
-		LoginPort = map["Login"]["Port"]->Value;
-
-		WorldIP = map["World"]["Address"]->Value;
-		WorldPort = map["World"]["Port"]->Value;
-		WorldName = map["World"]["Name"]->Value;
-
-		ZoneIP = map["Zone"]["Address"]->Value;
-		ZonePort = map["Zone"]["Port"]->Value;
-
-		DbHost = map["MySQL"]["DbHost"]->Value;
-		DbName = map["MySQL"]["DbName"]->Value;
-		DbUser = map["MySQL"]["DbUser"]->Value;
-		DbPass = map["MySQL"]["DbPass"]->Value;
-	}
-
-	static ConfigContainer ReadCfg(){
+	static void ReadCfg(){
 		if(DEBUG) Log("Loading configuration...\n");
 		std::ifstream infile("./config.ini");
 		
@@ -112,31 +91,40 @@ public:
 
 				temp[key]->Value = value;
 				map[section] = temp;
+				Set(key.c_str(), value.c_str());
 			}else{
 				temp.clear();
 			}
 		}
 
 		infile.close();
-		Load(map);
-		return map;
+	}
+
+	static void Set(const char* key, const char* value){
+		if (!strcmp(key, "LogLevel")) LogLevel = value;
+		if (!strcmp(key, "DbType")) DbType = value;
+		if (!strcmp(key, "LoginIP")) LoginIP = value;
+		if (!strcmp(key, "LoginPort")) LoginPort = value;
+		if (!strcmp(key, "WorldIP")) WorldIP = value;
+		if (!strcmp(key, "WorldPort")) WorldPort = value;
+		if (!strcmp(key, "WorldName")) WorldName = value;
+		if (!strcmp(key, "DbHost")) DbHost = value;
+		if (!strcmp(key, "DbName")) DbName = value;
+		if (!strcmp(key, "DbUser")) DbUser = value;
+		if (!strcmp(key, "DbPass")) DbPass = value;
 	}
 
 	static bool DEBUG;
 
 	static std::string LogLevel;
 	static std::string DbType;
-
 	static std::string LoginIP;
 	static std::string LoginPort;
-
 	static std::string WorldIP;
 	static std::string WorldPort;
 	static std::string WorldName;
-
 	static std::string ZoneIP;
 	static std::string ZonePort;
-
 	static std::string DbHost;
 	static std::string DbName;
 	static std::string DbUser;

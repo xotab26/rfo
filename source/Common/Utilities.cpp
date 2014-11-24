@@ -76,17 +76,13 @@ bool Config::DEBUG;
 
 std::string Config::LogLevel;
 std::string Config::DbType;
-
 std::string Config::LoginIP;
 std::string Config::LoginPort;
-
 std::string Config::WorldIP;
 std::string Config::WorldPort;
 std::string Config::WorldName;
-
 std::string Config::ZoneIP;
 std::string Config::ZonePort;
-
 std::string Config::DbHost;
 std::string Config::DbName;
 std::string Config::DbUser;
