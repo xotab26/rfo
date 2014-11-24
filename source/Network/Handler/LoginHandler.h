@@ -30,7 +30,7 @@ private:
 			if (a->Accepted) WorldListResult(nc, p);
 		}
 		else if (id == select_world_request_cllo) {
-			SelectWorldResult(nc, p);
+			SelectWorldResult(nc);
 		}
 	}
 
@@ -113,7 +113,7 @@ private:
 		nc->send_data(byType, &Send, Send.size());
 	}
 
-	static void SelectWorldResult(session nc, Packet p) {		
+	static void SelectWorldResult(session nc) {		
 		auto srv = (WorldServer*)nc->server;
 		auto worldData = &srv->WorldData;
 
