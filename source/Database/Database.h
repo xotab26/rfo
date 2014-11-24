@@ -42,19 +42,15 @@ public:
 	bool Disconnect(){
 		if (bIsConnected){
 			mysql_close(conn);
+			mysql_server_end();
 			bIsConnected = false;
 		}
 		return true;
 	}
 
 	bool ConnectionAlive(){
-		const char *server = Host.c_str();
-		const char *user = User.c_str();
-		const char *password = Pass.c_str();
-		const char *database = Name.c_str();
-
 		mysql_init(conn);
-		if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
+		if (!mysql_real_connect(conn, Host.c_str(), User.c_str(), Pass.c_str(), Name.c_str(), 0, NULL, 0)) {
 			printf("%s\n", mysql_error(conn));
 			return false;
 		}
