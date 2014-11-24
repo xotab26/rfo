@@ -23,16 +23,13 @@ private:
 			CryptKeyResult(nc);
 		}
 		else if (id == login_account_request_cllo) {
-			auto pRecv = (_login_account_request_cllo*)p.buf;
-			Crypt::crypt_login(pRecv->szAccountID, p.len, a->CryptPlus, a->CryptKey);
-			if (a->Verify(pRecv->szAccountID, pRecv->szPassword)) LoginResult(nc);
+			LoginResult(nc, p);
 		}
 		else if (id == world_list_request_cllo) {
 			if (a->Accepted) WorldListResult(nc, p);
 		}
 		else if (id == select_world_request_cllo) {
-			auto recv = (_select_world_request_cllo*)p.buf;
-			SelectWorldResult(nc, recv->wWorldIndex);
+			SelectWorldResult(nc, p);
 		}
 	}
 
@@ -52,8 +49,13 @@ private:
 		a->CryptKey += 3;
 	}
 
-	static void LoginResult(session nc) {
+	static void LoginResult(session nc, Packet p) {
 		auto a = getAccount(nc);
+
+		auto pRecv = (_login_account_request_cllo*)p.buf;
+		Crypt::crypt_login(pRecv->szAccountID, p.len, a->CryptPlus, a->CryptKey);
+
+		if (!a->Verify(pRecv->szAccountID, pRecv->szPassword)) return;
 
 		_login_account_result_locl send;
 		send.bAdult = true;
@@ -112,11 +114,13 @@ private:
 		}
 	}
 
-	static void SelectWorldResult(session nc, WORD worldIndex) {
+	static void SelectWorldResult(session nc, Packet p) {
+		auto recv = (_select_world_request_cllo*)p.buf;
+
 		_select_world_result_locl send;
 		auto a = getAccount(nc);
 
-		auto worldData = &g_WorldData[a->WorldIndex = worldIndex];
+		auto worldData = &g_WorldData[a->WorldIndex = recv->wWorldIndex];
 
 		if (worldData->m_bOpen) {
 			send.bAllowAltTab = true;
