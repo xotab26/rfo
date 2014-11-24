@@ -79,17 +79,3 @@ void thread_sleep(int seconds){
 }
 
 bool Config::DEBUG;
-
-char Config::LogLevel[CONFIG_STR_SIZE];
-char Config::DbType[CONFIG_STR_SIZE];
-char Config::LoginIP[CONFIG_STR_SIZE];
-char Config::LoginPort[CONFIG_STR_SIZE];
-char Config::WorldIP[CONFIG_STR_SIZE];
-char Config::WorldPort[CONFIG_STR_SIZE];
-char Config::WorldName[CONFIG_STR_SIZE];
-char Config::ZoneIP[CONFIG_STR_SIZE];
-char Config::ZonePort[CONFIG_STR_SIZE];
-char Config::DbHost[CONFIG_STR_SIZE];
-char Config::DbName[CONFIG_STR_SIZE];
-char Config::DbUser[CONFIG_STR_SIZE];
-char Config::DbPass[CONFIG_STR_SIZE];

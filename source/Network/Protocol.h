@@ -45,10 +45,6 @@ enum {
 	msg_header_num = 2
 };
 
-enum SERVER_DPLOY_TYPE {
-	Login, World, Zone
-};
-
 #pragma pack(push, 1)
 
 struct _MSG_HEADER{
@@ -128,13 +124,12 @@ struct _world
 	}
 };
 
-typedef std::map<int, _WORLD_DATA> WORLD_DATA;
+typedef std::vector<_WORLD_DATA> WORLD_DATA;
 
 #ifndef GLOBAL_H // header guards
 #define GLOBAL_H
 
 extern byte dwWorldNum;
-extern std::map<int, _WORLD_DATA> g_WorldData;
 
 #define max_id_len					12	
 #define max_pw_len					12	

@@ -21,8 +21,4 @@ public:
 	static _AVATOR_DATA* getAvatar(Account* a){
 		return &a->character[a->CharIndex].m_pAvatar;
 	}
-
-	static Server* getServer(session nc){
-		return (Server*)nc->server;
-	}
 };

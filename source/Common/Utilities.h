@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <memory>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -33,16 +34,17 @@ struct KeyValue_Pairs{
 				return &_kv[i];
 			}
 		}
+		_kv.push_back(Key_Value());
 		_kv[kv_count].Key = key;
 		return &_kv[kv_count++];
 	}
 	void clear(){
 		kv_count = 0;
-		_kv = new Key_Value[MAX_KEY_VALUES];
+		_kv.clear();
 	}
 private:
 	short kv_count;
-	Key_Value* _kv;
+	std::vector<Key_Value> _kv;
 };
 
 typedef KeyValue_Pairs Option;
@@ -55,9 +57,11 @@ void thread_sleep(int seconds);
 
 class Config{
 public:
-	Config(){ ReadCfg(); }
+	Config(){
+		ReadCfg();
+	}
 
-	static void ReadCfg(){
+	void ReadCfg(){
 		if(DEBUG) Log("Loading configuration...\n");
 		std::ifstream infile("./config.ini");
 		
@@ -101,37 +105,37 @@ public:
 		infile.close();
 	}
 
-	static void Set(const char* key, const char* value){
-		if (!strcmp(key, "LogLevel")) memcpy(LogLevel, value, strlen(value));
-		if (!strcmp(key, "DbType"))	memcpy(DbType, value, strlen(value));
-		if (!strcmp(key, "LoginIP")) memcpy(LoginIP, value, strlen(value));
-		if (!strcmp(key, "LoginPort")) memcpy(LoginPort, value, strlen(value));
-		if (!strcmp(key, "WorldIP")) memcpy(WorldIP, value, strlen(value));
-		if (!strcmp(key, "WorldPort")) memcpy(WorldPort, value, strlen(value));
-		if (!strcmp(key, "WorldName")) memcpy(WorldName, value, strlen(value));
-		if (!strcmp(key, "ZoneIP")) memcpy(ZoneIP, value, strlen(value));
-		if (!strcmp(key, "ZonePort")) memcpy(ZonePort, value, strlen(value));
-		if (!strcmp(key, "DbHost")) memcpy(DbHost, value, strlen(value));
-		if (!strcmp(key, "DbName")) memcpy(DbName, value, strlen(value));
-		if (!strcmp(key, "DbUser")) memcpy(DbUser, value, strlen(value));
-		if (!strcmp(key, "DbPass")) memcpy(DbPass, value, strlen(value));
+	void Set(const char* key, const char* value){
+		if (!strcmp(key, "LogLevel")) memcpy(LogLevel, value, strlen(value) + 1);
+		if (!strcmp(key, "DbType"))	memcpy(DbType, value, strlen(value) + 1);
+		if (!strcmp(key, "LoginIP")) memcpy(LoginIP, value, strlen(value) + 1);
+		if (!strcmp(key, "LoginPort")) memcpy(LoginPort, value, strlen(value) + 1);
+		if (!strcmp(key, "WorldIP")) memcpy(WorldIP, value, strlen(value) + 1);
+		if (!strcmp(key, "WorldPort")) memcpy(WorldPort, value, strlen(value) + 1);
+		if (!strcmp(key, "WorldName")) memcpy(WorldName, value, strlen(value) + 1);
+		if (!strcmp(key, "ZoneIP")) memcpy(ZoneIP, value, strlen(value) + 1);
+		if (!strcmp(key, "ZonePort")) memcpy(ZonePort, value, strlen(value) + 1);
+		if (!strcmp(key, "DbHost")) memcpy(DbHost, value, strlen(value) + 1);
+		if (!strcmp(key, "DbName")) memcpy(DbName, value, strlen(value) + 1);
+		if (!strcmp(key, "DbUser")) memcpy(DbUser, value, strlen(value) + 1);
+		if (!strcmp(key, "DbPass")) memcpy(DbPass, value, strlen(value) + 1);
 	}
 
 	static bool DEBUG;
 
-	static char LogLevel[CONFIG_STR_SIZE];
-	static char DbType[CONFIG_STR_SIZE];
-	static char LoginIP[CONFIG_STR_SIZE];
-	static char LoginPort[CONFIG_STR_SIZE];
-	static char WorldIP[CONFIG_STR_SIZE];
-	static char WorldPort[CONFIG_STR_SIZE];
-	static char WorldName[CONFIG_STR_SIZE];
-	static char ZoneIP[CONFIG_STR_SIZE];
-	static char ZonePort[CONFIG_STR_SIZE];
-	static char DbHost[CONFIG_STR_SIZE];
-	static char DbName[CONFIG_STR_SIZE];
-	static char DbUser[CONFIG_STR_SIZE];
-	static char DbPass[CONFIG_STR_SIZE];
+	char LogLevel[CONFIG_STR_SIZE];
+	char DbType[CONFIG_STR_SIZE];
+	char LoginIP[CONFIG_STR_SIZE];
+	char LoginPort[CONFIG_STR_SIZE];
+	char WorldIP[CONFIG_STR_SIZE];
+	char WorldPort[CONFIG_STR_SIZE];
+	char WorldName[CONFIG_STR_SIZE];
+	char ZoneIP[CONFIG_STR_SIZE];
+	char ZonePort[CONFIG_STR_SIZE];
+	char DbHost[CONFIG_STR_SIZE];
+	char DbName[CONFIG_STR_SIZE];
+	char DbUser[CONFIG_STR_SIZE];
+	char DbPass[CONFIG_STR_SIZE];
 };
 
 class Print{

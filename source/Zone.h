@@ -5,20 +5,14 @@
 
 class ZoneServer {
 public:
-	void start(CDatabase* _db, int tid){
-		_t = Thread(tid, std::thread([this, tid, _db] {
-			Server srv(io_service, atoi(Config::ZonePort), db = _db);
-			server = &srv;
-			server->DEPLOY_TYPE = 2;
-			server->SERVER_INDEX = 0;
-			server->start(tid);
-		}));
-		thread_sleep(1);
+	void start(int port, CDatabase* _db, int tid){
+		server = new Server(port, _db);
+		server->setRef(this);
+		server->DEPLOY_TYPE = 2;
+		server->SERVER_INDEX = 0;
+		server->start(tid);
 	}
 
 private:
-	Thread _t;
-	CDatabase* db;
 	Server* server;
-	asio::io_service io_service;
 };

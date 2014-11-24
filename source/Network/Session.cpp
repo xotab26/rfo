@@ -14,7 +14,7 @@ size_t Session::send_data(BYTE* _type, void* data, WORD len) {
 
 	memcpy(&buffer[0], &header, MSG_HEADER_SIZE);
 	memcpy(&buffer[MSG_HEADER_SIZE], szMsg, len);
-
+	
 	return asio::write(socket_, asio::buffer(buffer, header.m_wSize));
 }
 
@@ -40,8 +40,7 @@ size_t Session::send_data_v2(BYTE* _type, void* data, WORD len) {
 void Session::start_read() {
 	if (!active) return;
 
-	char* data_;
-	data_ = new char[MAX_RECEIVE_SIZE];
+	char* data_ = new char[MAX_RECEIVE_SIZE];
 	socket_.async_receive(asio::buffer(data_, MAX_RECEIVE_SIZE), [this, data_](std::error_code ec, size_t len) {
 		if (!ec) {
 			size_t totalSize = 0;
@@ -54,7 +53,7 @@ void Session::start_read() {
 				totalSize += curSize;
 				Process(Packet(data, curSize), connection_type);
 			}
-
+			delete data_;
 			start_read();
 		}
 		else call_error(ec);

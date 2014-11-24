@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseHandler.h"
+#include "../../World.h"
 #include "../Protocol/login_2232.h"
 #include <time.h> 
 
@@ -81,47 +82,46 @@ private:
 		DWORD ver = 0;
 		if (pRecv->dwClientVersion < ver) return; //TODO: Only allow 2232(disconnect others)
 
+		auto srv = (WorldServer*)nc->server;
+		auto g_WorldData = &srv->WorldData;
+
 		_world_list_result_locl Send;
 		BYTE byRetCode = RET_CODE_SUCCESS;
 		WORD wDataSize = 0;
 		char szData[0x0FFF];
 		int nPutPos = 0;
 
-		if (g_WorldData.size() < 1) {
-			byRetCode = RET_CODE_BEFORE_WORLD_LIST;
-		}
-		else {
-			byRetCode = RET_CODE_SUCCESS;
-			_world WorldData;
-			WorldData.byNum = (BYTE)(dwWorldNum);
+		byRetCode = RET_CODE_SUCCESS;
+		_world WorldData;
+		WorldData.byNum = (BYTE)(dwWorldNum);
 
-			for (DWORD i = 0; i < dwWorldNum; i++) {
-				WorldData.bOpen = g_WorldData[i].m_bOpen;
-				strcpy(WorldData.sName, g_WorldData[i].m_szWorldName);
-				WorldData.byNameSize = (BYTE)(strlen(WorldData.sName) + 1);
-				memcpy(&szData[nPutPos], &WorldData, WorldData.Size());
-				wDataSize += WorldData.Size();
-				nPutPos += WorldData.Size();
-				WorldData.byNum = 0;
-			}
-			
-			Send.byRetCode = byRetCode;
-			Send.wDataSize = wDataSize + 1;
-
-			memcpy(&Send.sListData, szData, wDataSize);
-			BYTE byType[msg_header_num] = { account_msg, world_list_result_locl };
-			nc->send_data(byType, &Send, Send.size());
+		for (DWORD i = 0; i < dwWorldNum; i++) {
+			WorldData.bOpen = g_WorldData[i].m_bOpen;
+			strcpy(WorldData.sName, g_WorldData[i].m_szWorldName);
+			WorldData.byNameSize = (BYTE)(strlen(WorldData.sName) + 1);
+			memcpy(&szData[nPutPos], &WorldData, WorldData.Size());
+			wDataSize += WorldData.Size();
+			nPutPos += WorldData.Size();
+			WorldData.byNum = 0;
 		}
+
+		Send.byRetCode = byRetCode;
+		Send.wDataSize = wDataSize + 1;
+
+		memcpy(&Send.sListData, szData, wDataSize);
+		BYTE byType[msg_header_num] = { account_msg, world_list_result_locl };
+		nc->send_data(byType, &Send, Send.size());
 	}
 
 	static void SelectWorldResult(session nc, Packet p) {
 		auto recv = (_select_world_request_cllo*)p.buf;
+		
+		auto srv = (WorldServer*)nc->server;
+		auto worldData = &srv->WorldData;
 
 		_select_world_result_locl send;
 		auto a = getAccount(nc);
-
-		auto worldData = &g_WorldData[a->WorldIndex = recv->wWorldIndex];
-
+		
 		if (worldData->m_bOpen) {
 			send.bAllowAltTab = true;
 			send.byRetCode = RET_CODE_SUCCESS;

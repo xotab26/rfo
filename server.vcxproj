@@ -82,6 +82,8 @@
     <LinkIncremental>false</LinkIncremental>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <OutDir>$(SolutionDir)\$(Configuration)\$(Platform)\</OutDir>
+    <IncludePath>C:\Program Files %28x86%29\Visual Leak Detector\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Visual Leak Detector\lib\Win64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -132,7 +134,6 @@
     <ClCompile Include="source\Account\Account.cpp" />
     <ClCompile Include="source\Network\Handler\LoginHandler.h" />
     <ClCompile Include="source\Network\Handler\WorldHandler.h" />
-    <ClCompile Include="source\Database\Database.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Network\Session.cpp" />
     <ClCompile Include="source\Common\Thread.h" />

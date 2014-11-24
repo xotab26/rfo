@@ -11,10 +11,10 @@ using asio::ip::tcp;
 
 class Server {
 public:
-	Server(asio::io_service& io_service_, short port, CDatabase* db)
-		: acceptor(io_service_, tcp::endpoint(tcp::v4(), setPort(port))) {
+	Server(short port, CDatabase* db){
 		Log("Starting server on port " + std::to_string(port) + "");
-		io_service = &io_service_;
+		io = std::shared_ptr<asio::io_service>(new asio::io_service());
+		acceptor = std::shared_ptr<tcp::acceptor>(new tcp::acceptor(*io, tcp::endpoint(tcp::v4(), setPort(port))));
 		connection_count = 1;
 		database = db;
 		running = false;
@@ -24,9 +24,18 @@ public:
 		Log("Killing server with type " + std::to_string(DEPLOY_TYPE));
 	}
 
+	void start(int threadId) {
+		GenerateMasterKey();
+		thread_id = threadId;
+		if ((running = database->IsOpen())){
+			start_accept();
+			io->run();
+		}
+	}
+
 	void start_accept() {
-		Session::pointer nc = Session::create(acceptor.get_io_service());
-		acceptor.async_accept(nc->socket(), std::bind(&Server::handle_accept, this, nc, std::placeholders::_1));
+		Session::pointer nc = Session::create(acceptor->get_io_service());
+		acceptor->async_accept(nc->socket(), std::bind(&Server::handle_accept, this, nc, std::placeholders::_1));
 	}
 
 	void handle_accept(Session::pointer session, const std::error_code& error) {
@@ -37,22 +46,13 @@ public:
 			Connections[id] = session;
 			Connections[id]->connection_type = DEPLOY_TYPE;
 			Connections[id]->account.db = database;
+			Connections[id]->server = ServerRef;
 			Connections[id]->db = database;
-			Connections[id]->server = this;
 			Connections[id]->id = id;
 			Connections[id]->start();
 			SetTitle((int)Connections.size());
 		}
 		start_accept();
-	}
-
-	void start(int threadId) {
-		GenerateMasterKey();
-		thread_id = threadId;
-		if ((running = database->Connect())){
-			start_accept();
-			io_service->run();
-		}
 	}
 
 	int setPort(short _port){
@@ -70,6 +70,10 @@ public:
 		}
 	}
 
+	void setRef(void* serverRef){
+		ServerRef = serverRef;
+	}
+
 	std::map<int, Session::pointer> Connections;
 
 	bool running;
@@ -82,8 +86,9 @@ public:
 	DWORD m_dwMasterKey[CHECK_KEY_NUM];
 	
 	CDatabase* database;
-	asio::io_service* io_service;
-	tcp::acceptor acceptor;
+	std::shared_ptr<asio::io_service> io;
+	std::shared_ptr<tcp::acceptor> acceptor;
 private:
 	Config cfg;
+	void* ServerRef;
 };

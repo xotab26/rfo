@@ -32,9 +32,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Database\Database.cpp">
-      <Filter>Source Files\Database</Filter>
-    </ClCompile>
     <ClCompile Include="source\Network\Session.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>

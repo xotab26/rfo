@@ -13,13 +13,10 @@ typedef std::vector<db_row> db_rows;
 class CDatabase
 {
 public:
-	CDatabase(){
+	CDatabase(Config* _cfg){
 		Log("Loading database class...");
-		Host = Config::DbHost;
-		Name = Config::DbName;
-		User = Config::DbUser;
-		Pass = Config::DbPass;
 		bIsConnected = false;
+		cfg = _cfg;
 	}
 
 	~CDatabase(){
@@ -50,7 +47,7 @@ public:
 
 	bool ConnectionAlive(){
 		mysql_init(conn);
-		if (!mysql_real_connect(conn, Host.c_str(), User.c_str(), Pass.c_str(), Name.c_str(), 0, NULL, 0)) {
+		if (!mysql_real_connect(conn, cfg->DbHost, cfg->DbUser, cfg->DbPass, cfg->DbName, 0, NULL, 0)) {
 			printf("%s\n", mysql_error(conn));
 			return false;
 		}
@@ -61,21 +58,21 @@ public:
 		return true;
 	}
 
-	db_rows Select(const char *queryStr){
+	db_rows Select(std::string queryStr){
 		MYSQL_RES* res;
 		db_rows rows;
 
 		if(!IsOpen()) Connect();
 
 		try{
-			if (mysql_query(conn, queryStr)) {
+			if (mysql_query(conn, queryStr.c_str())) {
 				printf("%s\n", mysql_error(conn));
 			}
 
 			if((res = mysql_store_result(conn))){
 				std::vector<MYSQL_FIELD*> fields;
 				MYSQL_ROW row;
-				MYSQL_FIELD *field;
+				MYSQL_FIELD* field;
 				char* field_name;
 
 				while ((row = mysql_fetch_row(res))) {
@@ -92,6 +89,7 @@ public:
 						my_row[field_name] = row[i];
 					} 
 					rows.push_back(my_row);
+					delete field;
 				}
 			}
 		}
@@ -103,16 +101,16 @@ public:
 		return rows;
 	}
 
-	bool Query(const char* queryStr){
-		if (mysql_query(conn, queryStr)) {
+	bool Query(std::string queryStr){
+		if (mysql_query(conn, queryStr.c_str())) {
 			printf("%s\n", mysql_error(conn));
 			return false;
 		}
 		return true;
 	}
 
-	bool Insert(const char *queryStr){
-		if (mysql_query(conn, queryStr)) {
+	bool Insert(std::string queryStr){
+		if (mysql_query(conn, queryStr.c_str())) {
 			printf("%s\n", mysql_error(conn));
 			return false;
 		}
@@ -128,16 +126,8 @@ public:
 		}
 	}
 
-	const char* GetError(){
-		return SqlError.c_str();
-	}
-
-	static std::string Name;
-	static std::string Host;
-	static std::string User;
-	static std::string Pass;
 private:
 	MYSQL* conn;
-	std::string SqlError;
+	Config* cfg;
 	bool bIsConnected;
 };
