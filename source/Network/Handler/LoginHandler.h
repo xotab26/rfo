@@ -23,7 +23,7 @@ private:
 			CryptKeyResult(nc);
 		}
 		else if (id == login_account_request_cllo) {
-			_login_account_request_cllo* pRecv = (_login_account_request_cllo*)p.buf;
+			auto pRecv = (_login_account_request_cllo*)p.buf;
 			Crypt::crypt_login(pRecv->szAccountID, p.len, a->CryptPlus, a->CryptKey);
 			if (a->Verify(pRecv->szAccountID, pRecv->szPassword)) LoginResult(nc);
 		}
@@ -31,7 +31,7 @@ private:
 			if (a->Accepted) WorldListResult(nc, p);
 		}
 		else if (id == select_world_request_cllo) {
-			_select_world_request_cllo* recv = (_select_world_request_cllo*)p.buf;
+			auto recv = (_select_world_request_cllo*)p.buf;
 			SelectWorldResult(nc, recv->wWorldIndex);
 		}
 	}

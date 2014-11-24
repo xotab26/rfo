@@ -50,9 +50,6 @@ public:
 		GenerateMasterKey();
 		thread_id = threadId;
 		if ((running = database->Connect())){
-			char* p = new char[2];
-			strcpy(p = new char[2], std::to_string(Port).c_str());
-
 			start_accept();
 			io_service->run();
 		}
@@ -85,7 +82,6 @@ public:
 	DWORD m_dwMasterKey[CHECK_KEY_NUM];
 	
 	CDatabase* database;
-
 	asio::io_service* io_service;
 	tcp::acceptor acceptor;
 private:
