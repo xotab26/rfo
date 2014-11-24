@@ -27,8 +27,8 @@ byte dwWorldNum = 0;
 int server_index = 0;
 std::map<int, _WORLD_DATA> g_WorldData;
 void create_world(const char* worldName){
-	int port = atoi(Config::WorldPort.c_str());
-	DWORD ipAddr = GetIPAddress(Config::WorldIP.c_str());
+	int port = atoi(Config::WorldPort);
+	DWORD ipAddr = GetIPAddress(Config::WorldIP);
 	int id = server_thread(server_index++, port, 1);
 
 	g_WorldData[dwWorldNum].SetWorld(worldName, 0, true, id);
@@ -49,15 +49,15 @@ int getType(const char* v) {
 void new_server(int type_){
 	switch (type_){
 	case 0:
-		server_thread(server_index++, atoi(Config::LoginPort.c_str()), 0);
+		server_thread(server_index++, atoi(Config::LoginPort), 0);
 		break;
 
 	case 1:
-		create_world(Config::WorldName.c_str());
+		create_world(Config::WorldName);
 		break;
 
 	case 2:
-		server_thread(server_index++, atoi(Config::ZonePort.c_str()), 2);
+		server_thread(server_index++, atoi(Config::ZonePort), 2);
 		break;
 	}
 }

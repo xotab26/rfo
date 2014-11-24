@@ -10,6 +10,7 @@
 #include <exception>
 
 #define MAX_KEY_VALUES 50
+#define CONFIG_STR_SIZE 50
 
 typedef unsigned short WORD;
 typedef unsigned long DWORD;
@@ -103,33 +104,35 @@ public:
 
 	static void Set(const char* key, const char* value){
 		if (!strcmp(key, "LogLevel")) memcpy(LogLevel, value, strlen(value));
-		if (!strcmp(key, "DbType"))		DbType = value;
-		if (!strcmp(key, "LoginIP"))	LoginIP = value;
-		if (!strcmp(key, "LoginPort"))	LoginPort = value;
-		if (!strcmp(key, "WorldIP"))	WorldIP = value;
-		if (!strcmp(key, "WorldPort"))	WorldPort = value;
-		if (!strcmp(key, "WorldName"))	WorldName = value;
-		if (!strcmp(key, "DbHost"))		DbHost = value;
-		if (!strcmp(key, "DbName"))		DbName = value;
-		if (!strcmp(key, "DbUser"))		DbUser = value;
-		if (!strcmp(key, "DbPass"))		DbPass = value;
+		if (!strcmp(key, "DbType"))	memcpy(DbType, value, strlen(value));
+		if (!strcmp(key, "LoginIP")) memcpy(LoginIP, value, strlen(value));
+		if (!strcmp(key, "LoginPort")) memcpy(LoginPort, value, strlen(value));
+		if (!strcmp(key, "WorldIP")) memcpy(WorldIP, value, strlen(value));
+		if (!strcmp(key, "WorldPort")) memcpy(WorldPort, value, strlen(value));
+		if (!strcmp(key, "WorldName")) memcpy(WorldName, value, strlen(value));
+		if (!strcmp(key, "ZoneIP")) memcpy(ZoneIP, value, strlen(value));
+		if (!strcmp(key, "ZonePort")) memcpy(ZonePort, value, strlen(value));
+		if (!strcmp(key, "DbHost")) memcpy(DbHost, value, strlen(value));
+		if (!strcmp(key, "DbName")) memcpy(DbName, value, strlen(value));
+		if (!strcmp(key, "DbUser")) memcpy(DbUser, value, strlen(value));
+		if (!strcmp(key, "DbPass")) memcpy(DbPass, value, strlen(value));
 	}
 
 	static bool DEBUG;
 
-	static char LogLevel[50];
-	static std::string DbType;
-	static std::string LoginIP;
-	static std::string LoginPort;
-	static std::string WorldIP;
-	static std::string WorldPort;
-	static std::string WorldName;
-	static std::string ZoneIP;
-	static std::string ZonePort;
-	static std::string DbHost;
-	static std::string DbName;
-	static std::string DbUser;
-	static std::string DbPass;
+	static char LogLevel[CONFIG_STR_SIZE];
+	static char DbType[CONFIG_STR_SIZE];
+	static char LoginIP[CONFIG_STR_SIZE];
+	static char LoginPort[CONFIG_STR_SIZE];
+	static char WorldIP[CONFIG_STR_SIZE];
+	static char WorldPort[CONFIG_STR_SIZE];
+	static char WorldName[CONFIG_STR_SIZE];
+	static char ZoneIP[CONFIG_STR_SIZE];
+	static char ZonePort[CONFIG_STR_SIZE];
+	static char DbHost[CONFIG_STR_SIZE];
+	static char DbName[CONFIG_STR_SIZE];
+	static char DbUser[CONFIG_STR_SIZE];
+	static char DbPass[CONFIG_STR_SIZE];
 };
 
 class Print{

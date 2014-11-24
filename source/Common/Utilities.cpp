@@ -74,16 +74,16 @@ void Log(const std::string fmt, ...) {
 
 bool Config::DEBUG;
 
-char Config::LogLevel[50];
-std::string Config::DbType;
-std::string Config::LoginIP;
-std::string Config::LoginPort;
-std::string Config::WorldIP;
-std::string Config::WorldPort;
-std::string Config::WorldName;
-std::string Config::ZoneIP;
-std::string Config::ZonePort;
-std::string Config::DbHost;
-std::string Config::DbName;
-std::string Config::DbUser;
-std::string Config::DbPass;
+char Config::LogLevel[CONFIG_STR_SIZE];
+char Config::DbType[CONFIG_STR_SIZE];
+char Config::LoginIP[CONFIG_STR_SIZE];
+char Config::LoginPort[CONFIG_STR_SIZE];
+char Config::WorldIP[CONFIG_STR_SIZE];
+char Config::WorldPort[CONFIG_STR_SIZE];
+char Config::WorldName[CONFIG_STR_SIZE];
+char Config::ZoneIP[CONFIG_STR_SIZE];
+char Config::ZonePort[CONFIG_STR_SIZE];
+char Config::DbHost[CONFIG_STR_SIZE];
+char Config::DbName[CONFIG_STR_SIZE];
+char Config::DbUser[CONFIG_STR_SIZE];
+char Config::DbPass[CONFIG_STR_SIZE];
