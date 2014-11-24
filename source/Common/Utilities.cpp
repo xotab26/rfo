@@ -1,5 +1,7 @@
 #include "Utilities.h"
 #include <ctime>
+#include <thread>
+#include <chrono>
 #include <iostream>
 #include <fstream>
 #include <string.h>
@@ -70,6 +72,10 @@ void Log(const std::string fmt, ...) {
 	std::stringstream ss;
 	ss << "[" << date << "] " << str << '\n';
 	std::cout << ss.str().c_str();
+}
+
+void thread_sleep(int seconds){
+	std::this_thread::sleep_for(std::chrono::seconds(seconds));
 }
 
 bool Config::DEBUG;

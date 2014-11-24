@@ -128,6 +128,8 @@ struct _world
 	}
 };
 
+typedef std::map<int, _WORLD_DATA> WORLD_DATA;
+
 #ifndef GLOBAL_H // header guards
 #define GLOBAL_H
 

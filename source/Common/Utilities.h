@@ -49,10 +49,9 @@ typedef KeyValue_Pairs Option;
 typedef std::map<std::string, Option> ConfigContainer;
 
 int setTitle(std::string titleMsg);
-
 DWORD GetIPAddress(const char* ipAddress);
-
 void Log(const std::string fmt, ...);
+void thread_sleep(int seconds);
 
 class Config{
 public:

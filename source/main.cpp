@@ -1,43 +1,18 @@
-#include "Network/Server.h"
-#include "Common/Thread.h"
+#include "Login.h"
+#include "World.h"
+#include "Zone.h"
 #include <exception>
 
 
 Config cfg;
-CDatabase db;
-asio::io_service* io_service;
-std::map<int, Server*> servers;
-int run_server(int id, int port, int deploy_type) {
-	Server srv(io_service[id], port, &db);
-	servers[id] = std::move(&srv);
-	servers[id]->DEPLOY_TYPE = deploy_type;
-	servers[id]->SERVER_INDEX = 0;
-	servers[id]->start(id);
-	return id;
-}
-
-ThreadManager TManager;
-int server_thread(int id, int port, int deploy_type) {
-	int _id = TManager.create(std::thread([id, port, deploy_type] { run_server(id, port, deploy_type); }));
-	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	return _id;
-}
 
 byte dwWorldNum = 0;
+WORLD_DATA g_WorldData;
 int server_index = 0;
-std::map<int, _WORLD_DATA> g_WorldData;
-void create_world(const char* worldName){
-	int port = atoi(Config::WorldPort);
-	DWORD ipAddr = GetIPAddress(Config::WorldIP);
-	int id = server_thread(server_index++, port, 1);
 
-	g_WorldData[dwWorldNum].SetWorld(worldName, 0, true, id);
-	g_WorldData[dwWorldNum].OpenWorld(ipAddr, port);
-	WorldServer* ws = ((WorldServer*)servers[id]);
-	ws->WorldData = &g_WorldData[dwWorldNum];
-	ws->WorldNum = id;
-	dwWorldNum++;
-}
+LoginServer login;
+WorldServer world;
+ZoneServer zone;
 
 int getType(const char* v) {
 	if (std::string(v) == "login") return 0;
@@ -46,18 +21,18 @@ int getType(const char* v) {
 	return -1;
 }
 
-void new_server(int type_){
+void new_server(int type_, CDatabase* db){
 	switch (type_){
 	case 0:
-		server_thread(server_index++, atoi(Config::LoginPort), 0);
+		login.start(db, server_index++);
 		break;
 
 	case 1:
-		create_world(Config::WorldName);
+		world.start(db, server_index++);
 		break;
 
 	case 2:
-		server_thread(server_index++, atoi(Config::ZonePort), 2);
+		zone.start(db, server_index++);
 		break;
 	}
 }
@@ -72,39 +47,34 @@ int main(int argc, char* argv[]) {
 	Log("[[[[[[[[[[Developed By Tsume]]]]]]]]]]\n");
 	setTitle(std::string(" - Connections: 0").c_str());
 
-	TManager.start();
-	
-	io_service = new asio::io_service[TManager.max_threads];
+	CDatabase db;
 	
 	try{
 		if (db.Connect())
 		{
 			if (argc > 1) {
-				new_server(getType(argv[1]));
+				new_server(getType(argv[1]), &db);
 
 				if (argc > 2){
-					new_server(getType(argv[2]));
+					new_server(getType(argv[2]), &db);
 				}
 
 				if (argc > 3){
-					new_server(getType(argv[3]));
+					new_server(getType(argv[3]), &db);
 				}
 			}
 			else{
-				new_server(0);
-				new_server(1);
-				new_server(2);
+				new_server(0, &db);
+				new_server(1, &db);
+				new_server(2, &db);
 				Config::DEBUG = true;
-			}		
+			}
 
-			while (servers[0]->running)
-			{
-				if(Config::DEBUG) Log("Pinging SQL server to keep connection alive...");
+			bool running = true;
 
-				if (!db.ConnectionAlive()){
-					Log("Connection to database lost!!");
-					break;
-				}
+			while (running){
+				if (Config::DEBUG) Log("Pinging SQL server to keep connection alive...");
+				if (!db.ConnectionAlive()){ Log("Connection to database lost!!"); break; }
 				std::this_thread::sleep_for(std::chrono::minutes(2));
 			}
 		}

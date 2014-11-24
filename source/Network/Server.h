@@ -91,17 +91,3 @@ public:
 private:
 	Config cfg;
 };
-
-class LoginServer : public Server {
-public:
-};
-
-class WorldServer : public Server {
-public:
-	unsigned long WorldNum;
-	_WORLD_DATA* WorldData;
-};
-
-class ZoneServer : public Server {
-public:
-};

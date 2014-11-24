@@ -85,5 +85,8 @@
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="source\Network\Handler\BaseHandler.h" />
+    <ClInclude Include="source\Login.h" />
+    <ClInclude Include="source\World.h" />
+    <ClInclude Include="source\Zone.h" />
   </ItemGroup>
 </Project>

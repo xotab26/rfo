@@ -1,40 +1,44 @@
+#pragma once
+
 #include "Utilities.h"
 #include <thread>
 #include <memory>
 
 
+class Thread {
+public:
+	Thread(){}
+
+	Thread(int _id, std::thread _t) {
+		if (Config::DEBUG) Log("Spawning new thread (id " + std::to_string(id = _id) + ")");
+		_thread = std::make_shared<std::thread>(std::move(_t));
+	}
+
+	Thread(int _id, void(*func)(int)) {
+		if (Config::DEBUG) Log("Spawning new thread (id " + std::to_string(id = _id) + ")");
+		auto _t = std::thread([func, _id]{ (*func)(_id); });
+		_thread = std::make_shared<std::thread>(std::move(_t));
+	}
+
+	void join(){
+		_thread->join();
+	}
+
+	void detach(){
+		_thread->detach();
+	}
+
+	int id;
+private:
+	std::shared_ptr<std::thread> _thread;
+};
+
 class ThreadManager {
 public:
-	class Thread {
-	public:
-		Thread(){}
-
-		Thread(int _id, std::thread _t) {
-			if (Config::DEBUG) Log("Spawning new thread (id " + std::to_string(id = _id) + ")");
-			_thread = std::make_shared<std::thread>(std::move(_t));
-		}
-
-		Thread(int _id, void(*func)(int)) {
-			if (Config::DEBUG) Log("Spawning new thread (id " + std::to_string(id = _id) + ")");
-			auto _t = std::thread([func, _id]{ (*func)(_id); });
-			_thread = std::make_shared<std::thread>(std::move(_t));
-		}
-
-		void join(){
-			_thread->join();
-		}
-
-		void detach(){
-			_thread->detach();
-		}
-
-		int id;
-	private:
-		std::shared_ptr<std::thread> _thread;
-	};
 
 	ThreadManager() {
 		max_threads = std::thread::hardware_concurrency() * 2;
+		max_threads = 16;
 	}
 
 	void start(){
