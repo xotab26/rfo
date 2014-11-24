@@ -113,9 +113,7 @@ private:
 		nc->send_data(byType, &Send, Send.size());
 	}
 
-	static void SelectWorldResult(session nc, Packet p) {
-		auto recv = (_select_world_request_cllo*)p.buf;
-		
+	static void SelectWorldResult(session nc, Packet p) {		
 		auto srv = (WorldServer*)nc->server;
 		auto worldData = &srv->WorldData;
 
