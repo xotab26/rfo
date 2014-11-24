@@ -74,7 +74,7 @@ void Log(const std::string fmt, ...) {
 
 bool Config::DEBUG;
 
-std::string Config::LogLevel;
+char Config::LogLevel[50];
 std::string Config::DbType;
 std::string Config::LoginIP;
 std::string Config::LoginPort;

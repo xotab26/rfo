@@ -102,22 +102,22 @@ public:
 	}
 
 	static void Set(const char* key, const char* value){
-		if (!strcmp(key, "LogLevel")) LogLevel = value;
-		if (!strcmp(key, "DbType")) DbType = value;
-		if (!strcmp(key, "LoginIP")) LoginIP = value;
-		if (!strcmp(key, "LoginPort")) LoginPort = value;
-		if (!strcmp(key, "WorldIP")) WorldIP = value;
-		if (!strcmp(key, "WorldPort")) WorldPort = value;
-		if (!strcmp(key, "WorldName")) WorldName = value;
-		if (!strcmp(key, "DbHost")) DbHost = value;
-		if (!strcmp(key, "DbName")) DbName = value;
-		if (!strcmp(key, "DbUser")) DbUser = value;
-		if (!strcmp(key, "DbPass")) DbPass = value;
+		if (!strcmp(key, "LogLevel")) memcpy(LogLevel, value, strlen(value));
+		if (!strcmp(key, "DbType"))		DbType = value;
+		if (!strcmp(key, "LoginIP"))	LoginIP = value;
+		if (!strcmp(key, "LoginPort"))	LoginPort = value;
+		if (!strcmp(key, "WorldIP"))	WorldIP = value;
+		if (!strcmp(key, "WorldPort"))	WorldPort = value;
+		if (!strcmp(key, "WorldName"))	WorldName = value;
+		if (!strcmp(key, "DbHost"))		DbHost = value;
+		if (!strcmp(key, "DbName"))		DbName = value;
+		if (!strcmp(key, "DbUser"))		DbUser = value;
+		if (!strcmp(key, "DbPass"))		DbPass = value;
 	}
 
 	static bool DEBUG;
 
-	static std::string LogLevel;
+	static char LogLevel[50];
 	static std::string DbType;
 	static std::string LoginIP;
 	static std::string LoginPort;
