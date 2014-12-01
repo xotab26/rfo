@@ -66,8 +66,8 @@ int main(int argc, char* argv[]) {
 			}
 			else{
 				new_server(0, &cfg, &db, s_index++, &login);
-				//new_server(1, &cfg, &db, s_index++, &world);
-				//new_server(2, &cfg, &db, s_index++, &zone);
+				new_server(1, &cfg, &db, s_index++, &world);
+				new_server(2, &cfg, &db, s_index++, &zone);
 				Config::DEBUG = true;
 			}
 
