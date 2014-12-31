@@ -2,3 +2,5 @@ server.opensdf
 server.sdf
 Debug/test-server.lnk
 Debug/
+obj/
+Release/
