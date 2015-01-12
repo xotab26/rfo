@@ -12,11 +12,11 @@ public:
 		WorldNum = tid;
 		dwWorldNum++;
 
-		server = new Server(atoi(cfg->WorldPort), _db);
+		server = new Server();
 		server->setRef(this);
 		server->DEPLOY_TYPE = 1;
 		server->SERVER_INDEX = 0;
-		server->start(tid);
+		server->Start(atoi(cfg->WorldPort), _db);
 	}
 
 	unsigned long WorldNum;

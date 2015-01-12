@@ -53,6 +53,9 @@
     <ClCompile Include="source\Common\Utilities.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="source\Network\Server.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Network\Protocol.h">
@@ -73,17 +76,29 @@
     <ClInclude Include="source\Network\Session.h">
       <Filter>Source Files\Network</Filter>
     </ClInclude>
-    <ClInclude Include="source\Network\Protocol\zone_2232.h" />
     <ClInclude Include="source\Character\Character.h">
       <Filter>Source Files\Character</Filter>
     </ClInclude>
-    <ClInclude Include="source\Character\CharacterHeaders.h" />
     <ClInclude Include="source\Common\Utilities.h">
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="source\Network\Handler\BaseHandler.h" />
-    <ClInclude Include="source\Login.h" />
-    <ClInclude Include="source\World.h" />
-    <ClInclude Include="source\Zone.h" />
+    <ClInclude Include="source\Network\Handler\BaseHandler.h">
+      <Filter>Source Files\Network\Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\Protocol\zone_2232.h">
+      <Filter>Source Files\Network\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Login.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="source\World.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Zone.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Character\CharacterHeaders.h">
+      <Filter>Source Files\Character</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

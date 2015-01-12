@@ -88,7 +88,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;_WIN32_WINDOWS;_CRT_SECURE_NO_WARNINGS;ASIO_STANDALONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\includes\mysql-5.6.20-win32\include;D:\includes\asio-1.10.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\includes\mysql-5.6.20-win32\include;D:\includes\asio-1.10.4\include;D:\Projects\Lauvis\NetLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
@@ -100,7 +100,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;_WIN32_WINDOWS;_CRT_SECURE_NO_WARNINGS;ASIO_STANDALONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\includes\mysql-5.6.20-winx64\include;D:\includes\asio-1.10.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\includes\mysql-5.6.20-winx64\include;D:\includes\asio-1.10.4\include;D:\Projects\Lauvis\NetLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Network\Server.cpp" />
     <ClCompile Include="source\Account\Account.cpp" />
     <ClCompile Include="source\Network\Handler\LoginHandler.h" />
     <ClCompile Include="source\Network\Handler\WorldHandler.h" />
@@ -154,6 +155,11 @@
     <ClInclude Include="source\Common\Utilities.h" />
     <ClInclude Include="source\World.h" />
     <ClInclude Include="source\Zone.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lauvis\NetLib\NetLib.vcxproj">
+      <Project>{f99669d6-84bf-4d24-a80c-1d4c0471cfeb}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

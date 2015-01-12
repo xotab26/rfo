@@ -3,10 +3,6 @@
 #include "Zone.h"
 #include <exception>
 
-#ifdef _WIN32_WINDOWS
-#include "vld.h"
-#endif//_WIN32_WINDOWS
-
 byte dwWorldNum = 0;
 std::thread _t[10];
 

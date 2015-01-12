@@ -2,7 +2,7 @@
 
 #ifndef HAS_ASIO
 #define HAS_ASIO
-#include "asio.hpp"
+#include "SkyNetLib.h"
 #include "../Common/Utilities.h"
 #endif
 
@@ -40,7 +40,6 @@ struct Packet {
 enum {
 	CHECK_KEY_NUM = 4,
 	MAX_WORLD_PER_GLOBAL = 1,
-	MAX_RECEIVE_SIZE = 4096,
 	MAX_CHAR_PER_WORLDUSER = 3,
 	msg_header_num = 2
 };

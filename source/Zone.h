@@ -6,11 +6,11 @@
 class ZoneServer {
 public:
 	void start(int port, CDatabase* _db, int tid){
-		server = new Server(port, _db);
+		server = new Server();
 		server->setRef(this);
 		server->DEPLOY_TYPE = 2;
 		server->SERVER_INDEX = 0;
-		server->start(tid);
+		server->Start(port, _db);
 	}
 
 private:

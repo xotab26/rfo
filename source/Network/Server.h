@@ -1,81 +1,34 @@
 #pragma once
-
 #include "Session.h"
 #include <string>
 #include <iostream>
 #include <functional>
-#include <asio.hpp>
 
-using asio::ip::tcp;
+using namespace SkyNetLib::SNServer;
+using namespace std;
 
-
-class Server {
+class Server
+{
 public:
-	Server(short port, CDatabase* db){
-		Log("Starting server on port " + std::to_string(port) + "");
-		io = std::shared_ptr<asio::io_service>(new asio::io_service());
-		acceptor = std::shared_ptr<tcp::acceptor>(new tcp::acceptor(*io, tcp::endpoint(tcp::v4(), setPort(port))));
-		connection_count = 1;
-		database = db;
-		running = false;
-	}
+	void Start(short port, CDatabase* db);
 
-	~Server() {
-		Log("Killing server with type " + std::to_string(DEPLOY_TYPE));
-	}
+	int setPort(short _port);
 
-	void start(int threadId) {
-		GenerateMasterKey();
-		thread_id = threadId;
-		if ((running = database->IsOpen())){
-			start_accept();
-			io->run();
-		}
-	}
+	void SetTitle(int count);
 
-	void start_accept() {
-		Session::pointer nc = Session::create(acceptor->get_io_service());
-		acceptor->async_accept(nc->socket(), std::bind(&Server::handle_accept, this, nc, std::placeholders::_1));
-	}
+	void GenerateMasterKey();
 
-	void handle_accept(Session::pointer session, const std::error_code& error) {
-		if (!error) {
-			int id = connection_count++;
-			Log("new connection. cid = " + std::to_string(id));
-			memcpy(session->account.m_dwMasterKey, m_dwMasterKey, sizeof(DWORD)*CHECK_KEY_NUM);
-			Connections[id] = session;
-			Connections[id]->connection_type = DEPLOY_TYPE;
-			Connections[id]->account.db = database;
-			Connections[id]->server = ServerRef;
-			Connections[id]->db = database;
-			Connections[id]->id = id;
-			Connections[id]->start();
-			SetTitle((int)Connections.size());
-		}
-		start_accept();
-	}
+	void setRef(void* serverRef);
 
-	int setPort(short _port){
-		return Port = _port;
-	}
+	void Process(Packet p, int conn_type, Session* se);
 
-	void SetTitle(int count){
-		setTitle(std::string(" - Connections: " + std::to_string(count)).c_str());
-	}
+	void OnConnected(void* p);	
+	void OnDisconnected(void* p);	
+	void OnMessageRecv(struct ns_connection *, struct iobuf *);	
+	void OnMessageSent(struct ns_connection *, struct iobuf *);
 
-	void GenerateMasterKey() {
-		for (int i = 0; i < CHECK_KEY_NUM; i++) {
-			DWORD dwR1 = ::rand();
-			m_dwMasterKey[i] = (dwR1 << 16) + ::rand();
-		}
-	}
-
-	void setRef(void* serverRef){
-		ServerRef = serverRef;
-	}
-
-	std::map<int, Session::pointer> Connections;
-
+	std::map<void*, Session*> Connections;
+	
 	bool running;
 	int thread_id;
 	int DEPLOY_TYPE; //0 login - 1 world - 2 zone - 3 db
@@ -84,11 +37,10 @@ public:
 	short Port;
 
 	DWORD m_dwMasterKey[CHECK_KEY_NUM];
-	
+
 	CDatabase* database;
-	std::shared_ptr<asio::io_service> io;
-	std::shared_ptr<tcp::acceptor> acceptor;
-private:
+
 	Config cfg;
+
 	void* ServerRef;
 };

@@ -85,7 +85,7 @@ private:
 
 	static void _chat_msg(session nc, Packet p, Account* a) {
 		int id = p.id;
-		if (nc->active && a->Accepted)
+		if (a->Accepted)
 		{
 			switch (id)
 			{
